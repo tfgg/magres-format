@@ -37,3 +37,7 @@ From inside Python you can import the magres.format module and use the MagresFil
 
 The 'data_dict' member variable contains all the information parsed from the file. You can also request the data
 serialized as JSON by the .as_json() method and load JSON data with the .load_json() method.
+
+The module also include the useful magres.constants module, which gives the best-known gamma constants and quadrupole 
+oments for all isotopes, the most common isotopes used experiment, and useful helper functions such as K_to_J, which
+converts a reduced K tensor to a full J tensor.

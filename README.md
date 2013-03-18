@@ -33,7 +33,7 @@ From inside Python you can import the magres.format module and use the MagresFil
      >>> from magres.format import MagresFile
      >>> magres_file = MagresFile(open('samples/T1Si0.magres'))
      >>> magres_file
-     >>> <magres.format.MagresFile object at 0x26ad690>
+     <magres.format.MagresFile object at 0x26ad690>
 
 The 'data_dict' member variable contains all the information parsed from the file. You can also request the data
 serialized as JSON by the .as_json() method and load JSON data with the .load_json() method.

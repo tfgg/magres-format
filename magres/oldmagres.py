@@ -146,13 +146,3 @@ class OldMagres(object):
 
     return magres_file
 
-if __name__ == "__main__":
-  if len(sys.argv) == 2:
-    oldmagres_file = OldMagres(open(sys.argv[1]).read())
-
-  if len(sys.argv) > 2:
-    oldmagres_file = OldMagres(open(sys.argv[1]).read(), open(sys.argv[2]).read())
-
-  magres_file = oldmagres_file.as_new_format()
-
-  print magres_file

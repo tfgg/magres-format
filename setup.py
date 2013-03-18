@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from distutils.core import setup
 
 setup(name='Magres format',
@@ -7,4 +8,5 @@ setup(name='Magres format',
       author_email='timothy.green@gmail.com',
       url='http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat',
       packages=['magres'],
+      scripts=['bin/convertoldmagres.py'],
       )

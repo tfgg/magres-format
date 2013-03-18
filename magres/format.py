@@ -271,7 +271,7 @@ def write_generic_block(data):
 
   return "\n".join(out)
 
-class MagresFile:
+class MagresFile(object):
   block_parsers = {'magres': parse_magres_block,
                    'atoms': parse_atoms_block,
                    'calculation': parse_generic_block,}
@@ -319,7 +319,7 @@ class MagresFile:
         data_dict = self.block_parsers[block[0]](block)
         self.data_dict[block[0]] = data_dict
       else:
-        print "Block type \"%s\" not recognised" % block[0]
+        #print "Block type \"%s\" not recognised" % block[0]
 
         # Throw in the text content of blocks we don't recognise
         if include_unrecognised:

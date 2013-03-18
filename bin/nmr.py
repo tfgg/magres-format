@@ -23,7 +23,7 @@ def castep_get_lattice(castep_file):
            [yx, yy, yz],
            [zx, zy, zz],]
 
-class OldMagres:
+class OldMagres(object):
   def __init__(self, magres_file=None, castep_file=None):
     if magres_file is not None:
       self.parse(magres_file)

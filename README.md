@@ -39,5 +39,5 @@ The 'data_dict' member variable contains all the information parsed from the fil
 serialized as JSON by the .as_json() method and load JSON data with the .load_json() method.
 
 The module also include the useful magres.constants module, which gives the best-known gamma constants and quadrupole 
-moments for all isotopes, the most common isotopes used in experiments, and useful helper functions such as K_to_J, which
+moments for all isotopes, the most common isotopes used in experiments, and helper functions such as K_to_J, which
 converts a reduced K tensor to a full J tensor.

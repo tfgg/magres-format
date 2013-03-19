@@ -1,7 +1,7 @@
 magres-format
 =============
 
-Code for parsing CASTEP ab-initio magnetic resonance file format. See more at http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat
+Code for parsing the CCP-NC ab-initio magnetic resonance file format as used in the latest version of Castep. See more at http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat
 
 Installing
 ----------

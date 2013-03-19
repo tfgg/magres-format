@@ -15,7 +15,7 @@ and the Python module and associated scripts should now be installed.
 Conversion script usage
 -----------------------
 
-The convertoldmagres.py script installed by the above command will convert an old-style CASTEP magres file to
+The convertoldmagres.py script installed by the above command will convert an old-style Castep magres file to
 the new-style format for use with the new tools. You use it from the command line like:
 
     convertoldmagres.py sample.magres > sample.new.magres

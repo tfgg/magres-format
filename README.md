@@ -1,7 +1,7 @@
 magres-format
 =============
 
-Code for parsing CASTEP ab-initio magnetic resonance file format. See more at http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat
+Code for parsing the CCP-NC ab-initio magnetic resonance file format as used in the latest version of Castep. See more at http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat
 
 Installing
 ----------
@@ -15,7 +15,7 @@ and the Python module and associated scripts should now be installed.
 Conversion script usage
 -----------------------
 
-The convertoldmagres.py script installed by the above command will convert an old-style CASTEP magres file to
+The convertoldmagres.py script installed by the above command will convert an old-style Castep magres file to
 the new-style format for use with the new tools. You use it from the command line like:
 
     convertoldmagres.py sample.magres > sample.new.magres
@@ -39,5 +39,5 @@ The 'data_dict' member variable contains all the information parsed from the fil
 serialized as JSON by the .as_json() method and load JSON data with the .load_json() method.
 
 The module also include the useful magres.constants module, which gives the best-known gamma constants and quadrupole 
-moments for all isotopes, the most common isotopes used in experiments, and useful helper functions such as K_to_J, which
+moments for all isotopes, the most common isotopes used in experiments, and helper functions such as K_to_J, which
 converts a reduced K tensor to a full J tensor.

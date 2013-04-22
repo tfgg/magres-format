@@ -293,6 +293,9 @@ class MagresFile(object):
         file_contents = open(data).read()
       except:
         file_contents = data
+    elif type(data) == dict:
+      self.data_dict = data
+      return
     else:
       try:
         file_contents = data.read()
@@ -324,13 +327,22 @@ class MagresFile(object):
         # Throw in the text content of blocks we don't recognise
         if include_unrecognised:
           self.data_dict[block[0]] = block_data[1]
+ 
+    self.gen_atom_lookup()
 
+  def gen_atom_lookup(self):
+    self.atoms_label = {}
+
+    for s, label, i, pos in self.data_dict['atoms']['atom']:
+      self.atoms_label[(label, i)] = (s, label, i, numpy.array(pos))
+
+  @classmethod
   def load_json(self, json_string):
     """
       Load from a json dictionary
     """
-
-    self.data_dict = json.loads(json_string)
+    
+    return MagresFile(json.loads(json_string))
 
   def as_json(self):
     """

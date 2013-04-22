@@ -67,15 +67,16 @@ class OldMagres(object):
 
     found_atoms = set()
 
-    for s, i, x, y, z in coords:
+    for label, i, x, y, z in coords:
       i = int(i)
-      index = (s,i)
+      s = label.split(':')[0]
+      index = (label,i)
 
       if index not in found_atoms:
-        self.data['atoms']['atom'].append((s, s, i, [[x,y,z]]))
+        self.data['atoms']['atom'].append((s, label, i, [[x,y,z]]))
         found_atoms.add(index)
 
-    perturbing_index = ('Al', 15)
+    perturbing_index = None 
 
     def shape_tensor(els):
       return numpy.reshape(numpy.array(map(float,els)), (3,3)).tolist()
@@ -88,7 +89,6 @@ class OldMagres(object):
     ms_units = False
     efg_units = False
     jc_units = False
-
 
     for atom in atoms:
       index = atom[1], int(atom[2])

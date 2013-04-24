@@ -351,6 +351,23 @@ class MagresFile(object):
 
     return json.dumps(self.data_dict)
 
+  def as_ase(self):
+    from ase import Atoms, Atom
+
+    if 'lattice' in self.data_dict['atoms']:
+      atoms = Atoms(cell=self.data_dict['atoms']['lattice'][0], pbc=(1,1,1))
+    else:
+      atoms = Atoms()
+
+    for s, label, i, pos in self.data_dict['atoms']['atom']:
+      atom = Atom(s, (pos[0][0], pos[1][0], pos[1][0]), tag=i)
+      atoms.append(atom)
+
+    if 'efg' in self.data_dict['magres']:
+      array = 
+
+    return atoms
+
   def __str__(self):
     """
       Convert the internal data dictionary representation to a magres-abinitio format file

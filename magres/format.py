@@ -287,6 +287,8 @@ class MagresFile(object):
   def __init__(self, data=None):
     if data is not None:
       self.parse(data)
+    
+    magres.schema.validate.validate_magres(self.data_dict)
 
   def parse(self, data, clean=True, include_unrecognised=False):
     if type(data) == str:

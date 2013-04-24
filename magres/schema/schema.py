@@ -107,7 +107,9 @@ schema = {
             }
          }
 
-input = json.load(open(sys.argv[1]))
+#input = json.load(open(sys.argv[1]))
 
-validate(input, schema)
+#validate(input, schema)
+
+print json.dumps(schema)
 

@@ -12,9 +12,9 @@ blocks_re = re.compile(r"<(?P<block_name>.*?)>(.*?)\</(?P=block_name)>", re.M | 
 
 if numpy is not None:
   def tensor33(x):
-    return numpy.mat(numpy.reshape(x, (3,3))).tolist()
+    return numpy.squeeze(numpy.reshape(x, (3,3))).tolist()
   def tensor31(x):
-    return numpy.mat(numpy.reshape(x, (3,1))).tolist()
+    return numpy.squeeze(numpy.reshape(x, (3,1))).tolist()
 else:
   def tensor33(x):
     return [x[0:3], x[3:6], x[6:]] 
@@ -122,18 +122,18 @@ def parse_magres_block(block):
   name, records = block
 
   # Atom label, atom index and 3x3 tensor
-  def sitensor33(d):
-     return (data[0], int(data[1]), tensor33(map(float, data[2:])))
+  def sitensor33(name):
+     return lambda d: {'atom': {'label': data[0], 'index': int(data[1])}, name: tensor33(map(float, data[2:]))}
   
   # 2x(Atom label, atom index) and 3x3 tensor
-  def sisitensor33(d):
-     return (data[0], int(data[1]), data[2], int(data[3]), tensor33(map(float, data[4:])))
+  def sisitensor33(name):
+     return lambda d: {'atom1': {'label': data[0], 'index': int(data[1])}, 'atom2': {'label': data[2], 'index': int(data[3])}, name: tensor33(map(float, data[4:]))}
     
-  tags = {'ms': sitensor33,
-          'efg': sitensor33,
-          'efg_local': sitensor33, 'efg_nonlocal': sitensor33,
-          'isc': sisitensor33,
-          'isc_fc': sisitensor33, 'isc_spin': sisitensor33, 'isc_orbital_p': sisitensor33, 'isc_orbital_d': sisitensor33,
+  tags = {'ms': sitensor33('sigma'),
+          'efg': sitensor33('V'),
+          'efg_local': sitensor33('V_local'), 'efg_nonlocal': sitensor33('V_nonlocal'),
+          'isc': sisitensor33('K'),
+          'isc_fc': sisitensor33('K_fc'), 'isc_spin': sisitensor33('K_spin'), 'isc_orbital_p': sisitensor33('K_p'), 'isc_orbital_d': sisitensor33('K_d'),
           'units': check_units}
 
   data_dict = {}
@@ -163,29 +163,29 @@ def write_magres_block(data):
 
   out = []
 
-  def siout(tag):
+  def siout(tag, tensor_name):
     if tag in data:
-      for s, i, tensor in data[tag]:
-        out.append("  %s %s %d %s" % (tag, s, i,tensor_string(tensor)))
+      for atom_si in data[tag]:
+        out.append("  %s %s %d %s" % (tag, atom_si['atom']['label'], atom_si['atom']['index'], tensor_string(atom_si[tensor_name])))
 
   write_units(data, out)
 
-  siout('ms')
+  siout('ms', 'sigma')
 
-  siout('efg_local')
-  siout('efg_nonlocal')
-  siout('efg')
+  siout('efg_local', 'V_local')
+  siout('efg_nonlocal', 'V_nonlocal')
+  siout('efg', 'V')
 
-  def sisiout(tag):
+  def sisiout(tag, tensor_name):
     if tag in data:
       for s1, i1, s2, i2, tensor in data[tag]:
-        out.append("  %s %s %d %s %d %s" % (tag, s1, i1, s2, i2, tensor_string(tensor)))
+        out.append("  %s %s %d %s %d %s" % (tag, atom_si['atom1']['label'], atom_si['atom1']['index'], atom_si['atom2']['label'], atom_si['atom2']['index'], tensor_string(atom_si[tensor_name])))
 
-  sisiout("isc_fc")
-  sisiout("isc_orbital_p")
-  sisiout("isc_orbital_d")
-  sisiout("isc_spin")
-  sisiout("isc")
+  sisiout("isc_fc", 'K_fc')
+  sisiout("isc_orbital_p", 'K_p')
+  sisiout("isc_orbital_d", 'K_d')
+  sisiout("isc_spin", 'K_spin')
+  sisiout("isc", 'K')
 
   return "\n".join(out)
 
@@ -202,7 +202,7 @@ def parse_atoms_block(block):
 
   # Atom record: label, index, x, y, z
   def atom(d):
-    return (data[0], data[1], int(data[2]), tensor31(map(float, data[3:])))
+    return {'species': data[0], 'label': data[1], 'index': int(data[2]), 'position': tensor31(map(float, data[3:]))}
 
   def symmetry(d):
     return " ".join(data)
@@ -238,8 +238,8 @@ def write_atoms_block(data):
       out.append("  symmetry %s" % sym)
 
   if 'atom' in data:
-    for s, l, i, p in data['atom']:
-      out.append("  atom %s %s %s %s" % (s, l, i, " ".join(map(str, p[0]))))
+    for a in data['atom']:
+      out.append("  atom %s %s %s %s" % (a['species'], a['label'], a['index'], " ".join(map(str, a['position']))))
 
   return "\n".join(out)
 
@@ -363,9 +363,6 @@ class MagresFile(object):
       atom = Atom(s, (pos[0][0], pos[1][0], pos[1][0]), tag=i)
       atoms.append(atom)
 
-    if 'efg' in self.data_dict['magres']:
-      array = 
-
     return atoms
 
   def __str__(self):
@@ -398,6 +395,7 @@ if __name__ == "__main__":
   magres_file = MagresFile(f)
 
   # Convert it to json and back again for giggles
+  #print magres_file.as_json()
   magres_file.load_json(magres_file.as_json())
 
   print magres_file

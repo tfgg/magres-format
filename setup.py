@@ -7,6 +7,6 @@ setup(name='Magres format',
       author='Timothy Green',
       author_email='timothy.green@gmail.com',
       url='http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat',
-      packages=['magres'],
+      packages=['magres', 'magres.schema'],
       scripts=['scripts/convertoldmagres.py'],
       )

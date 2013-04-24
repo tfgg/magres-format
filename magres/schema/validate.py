@@ -1,7 +1,14 @@
 import sys
 from schema import schema
-from jsonschema import validate
+
+try:
+  from jsonschema import validate
+except ImportError:
+  validate = None
 
 def validate_magres(d):
-  validate(d, schema)
-
+  # Only validate if we have the jsonschema module
+  if validate is not None:
+    validate(d, schema)
+  else:
+    return

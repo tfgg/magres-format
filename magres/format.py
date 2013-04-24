@@ -1,5 +1,6 @@
 import re
 import json
+import magres.schema.validate
 
 try:
   import numpy
@@ -131,9 +132,9 @@ def parse_magres_block(block):
     
   tags = {'ms': sitensor33('sigma'),
           'efg': sitensor33('V'),
-          'efg_local': sitensor33('V_local'), 'efg_nonlocal': sitensor33('V_nonlocal'),
+          'efg_local': sitensor33('V'), 'efg_nonlocal': sitensor33('V'),
           'isc': sisitensor33('K'),
-          'isc_fc': sisitensor33('K_fc'), 'isc_spin': sisitensor33('K_spin'), 'isc_orbital_p': sisitensor33('K_p'), 'isc_orbital_d': sisitensor33('K_d'),
+          'isc_fc': sisitensor33('K'), 'isc_spin': sisitensor33('K'), 'isc_orbital_p': sisitensor33('K'), 'isc_orbital_d': sisitensor33('K'),
           'units': check_units}
 
   data_dict = {}
@@ -349,7 +350,11 @@ class MagresFile(object):
       Dump as a json dictionary for easy storage/transmission
     """
 
-    return json.dumps(self.data_dict)
+    magres.schema.validate.validate_magres(self.data_dict)
+
+    json_out = json.dumps(self.data_dict)
+
+    return json_out
 
   def as_ase(self):
     from ase import Atoms, Atom

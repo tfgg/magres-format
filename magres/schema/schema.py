@@ -111,5 +111,6 @@ schema = {
 
 #validate(input, schema)
 
-print json.dumps(schema)
+if __name__ == "__main__":
+  print json.dumps(schema)
 

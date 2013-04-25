@@ -53,6 +53,6 @@ We use the [JSONschema](http://json-schema.org/) definition to provide a specifi
 
 To dump the JSON representation of a .magres simply do
 
-   magresjson.py sample.magres > sample.magres.json
+    magresjson.py sample.magres > sample.magres.json
 
 and sample.magres.json should now contain a schema-compliant JSON representation of sample.magres.

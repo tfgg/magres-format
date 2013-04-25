@@ -330,14 +330,6 @@ class MagresFile(object):
         # Throw in the text content of blocks we don't recognise
         if include_unrecognised:
           self.data_dict[block[0]] = block_data[1]
- 
-    self.gen_atom_lookup()
-
-  def gen_atom_lookup(self):
-    self.atoms_label = {}
-
-    for s, label, i, pos in self.data_dict['atoms']['atom']:
-      self.atoms_label[(label, i)] = (s, label, i, numpy.array(pos))
 
   @classmethod
   def load_json(self, json_string):
@@ -358,19 +350,19 @@ class MagresFile(object):
 
     return json_out
 
-  def as_ase(self):
-    from ase import Atoms, Atom
+  #def as_ase(self):
+  #  from ase import Atoms, Atom
 
-    if 'lattice' in self.data_dict['atoms']:
-      atoms = Atoms(cell=self.data_dict['atoms']['lattice'][0], pbc=(1,1,1))
-    else:
-      atoms = Atoms()
+  #  if 'lattice' in self.data_dict['atoms']:
+  #    atoms = Atoms(cell=self.data_dict['atoms']['lattice'][0], pbc=(1,1,1))
+  #  else:
+  #    atoms = Atoms()
 
-    for s, label, i, pos in self.data_dict['atoms']['atom']:
-      atom = Atom(s, (pos[0][0], pos[1][0], pos[1][0]), tag=i)
-      atoms.append(atom)
+  #  for s, label, i, pos in self.data_dict['atoms']['atom']:
+  #    atom = Atom(s, (pos[0][0], pos[1][0], pos[1][0]), tag=i)
+  #    atoms.append(atom)
 
-    return atoms
+  #  return atoms
 
   def __str__(self):
     """

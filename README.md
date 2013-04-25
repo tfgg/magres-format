@@ -45,3 +45,14 @@ serialized as JSON by the .as_json() method and load JSON data with the .load_js
 The module also include the useful magres.constants module, which gives the best-known gamma constants and quadrupole 
 moments for all isotopes, the most common isotopes used in experiments, and helper functions such as K_to_J, which
 converts a reduced K tensor to a full J tensor.
+
+JSON schema
+-----------
+
+We use the (JSONschema)[http://json-schema.org/] definition to provide a specification for the internal datastructure used by the parser and the format of the JSON emitted and consumed by .as_json() and .load_json() on MagresFile.
+
+To dump the JSON representation of a .magres simply do
+
+   magresjson.py sample.magres > sample.magres.json
+
+and sample.magres.json should now contain a schema-compliant JSON representation of sample.magres.

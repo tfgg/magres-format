@@ -8,9 +8,13 @@ Installing
 
 Clone the repository or download and extract the .zip file somewhere. From the command line, run:
 
-    python setup.py install
+    sudo python setup.py install
+    
+to install it globally, or
 
-and the Python module and associated scripts should now be installed.
+    python setup.py install --user
+    
+to install it just for your user account ([read more here](http://docs.python.org/2/install/#alternate-installation)), and the Python module and associated scripts should now be installed.
 
 Conversion script usage
 -----------------------

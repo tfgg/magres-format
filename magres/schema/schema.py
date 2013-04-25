@@ -8,9 +8,17 @@ schema = {
             "type": "object",
             "properties": {
               "calculation": {
-                "type": "array",
-                "items": {
-                  "type": "string"
+                "type": "object",
+                "patternProperties": {
+                  ".*": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
                 }
               },
               "atoms": {

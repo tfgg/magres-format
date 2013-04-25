@@ -84,6 +84,20 @@ class MagresAtom(object):
   def position(self):
     return numpy.array(self.magres_atom['position'])
 
+  @property
+  def efg_isotope(self):
+    if hasattr(self, '_efg_isotope'):
+      return self._efg_isotope
+    else:
+      return constants.Q_common[self.species]
+  
+  @property
+  def isc_isotope(self):
+    if hasattr(self, '_isc_isotope'):
+      return self._isc_isotope
+    else:
+      return constants.gamma_common[self.species]
+
 class MagresAtoms(object):
   def __init__(self, atoms=None):
     if atoms is not None:
@@ -179,18 +193,6 @@ class MagresAtoms(object):
       return self.species_index[label]
     else:
       return self.species_index[label][index]
-
-  def get_efg_isotope(self):
-    if hasattr(self, 'efg_isotope'):
-      return self.efg_isotope
-    else:
-      return constants.Q_common[self.species]
-  
-  def get_isc_isotope(self):
-    if hasattr(self, 'isc_isotope'):
-      return self.isc_isotope
-    else:
-      return constants.gamma_common[self.species]
 
   def __getitem__(self, idx):
     if type(idx) == tuple:

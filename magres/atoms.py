@@ -1,3 +1,4 @@
+import math
 import constants
 import numpy
 from format import MagresFile
@@ -25,6 +26,10 @@ class MagresAtomIsc(object):
     self.magres_isc = magres_isc
 
   @property
+  def dist(self):
+    return self.atom1.r(self.atom2.position)
+
+  @property
   def K(self):
     return self.magres_isc['K']
   
@@ -34,17 +39,72 @@ class MagresAtomIsc(object):
 
   @property
   def J(self):
-    return constants.K_to_J(self.K, self.atom1.species, self.atom2.species)
+    return constants.K_to_J_iso(self.K, self.atom1.species, self.atom1.isc_isotope, self.atom2.species, self.atom2.isc_isotope)
 
   @property
   def J_iso(self):
     return numpy.trace(self.J)/3.0
 
-class AtomMs(object):
-  def __init__(self, atom, ms, reference=None):
+  @property
+  def K_sym(self):
+    return (self.K + self.K.T)/2.0
+  
+  @property
+  def K_asym(self):
+    return (self.K - self.K.T)/2.0
+  
+  @property
+  def J_sym(self):
+    return (self.J + self.J.T)/2.0
+  
+  @property
+  def J_asym(self):
+    return (self.J - self.J.T)/2.0
+
+  def haeberlen_pcs(self, tensor):
+    evals, evecs = numpy.linalg.eig(tensor)
+    iso = sum(evals)/3.0
+    evals = sorted(evals, key=lambda x: abs(x - iso))
+
+    return (evals[1], evals[0], evals[2])
+
+  @property
+  def K_haeberlen(self):
+    return self.haeberlen_pcs(self.K)
+  
+  @property
+  def J_haeberlen(self):
+    return self.haeberlen_pcs(self.J)
+
+  @property
+  def K_aniso(self):
+    jx = self.K_haeberlen
+    return jx[2] - (jx[0] + jx[1])/2.0
+  
+  @property
+  def J_aniso(self):
+    jx = self.J_haeberlen
+    return jx[2] - (jx[0] + jx[1])/2.0
+
+  @property
+  def K_eta(self):
+    jx = self.K_haeberlen
+    return (jx[1] - jx[0]) / (jx[2] - sum(jx)/3.0)
+  
+  @property
+  def J_eta(self):
+    jx = self.J_haeberlen
+    return (jx[1] - jx[0]) / (jx[2] - sum(jx)/3.0)
+
+class MagresAtomMs(object):
+  def __init__(self, atom, magres_ms, reference=None):
     self.atom = atom
-    self.ms = ms
+    self.magres_ms = magres_ms
     self.reference = reference
+
+  @property
+  def sigma(self):
+    return self.magres_ms['sigma']
 
   @property
   def iso(self):
@@ -53,20 +113,21 @@ class AtomMs(object):
     else:
       reference = self.reference
 
-    return numpy.linalg.trace(self.ms)/3.0
+    return reference - numpy.trace(self.sigma)/3.0
 
 class MagresAtom(object):
-  def __init__(self, magres_atom, efg=None, isc=None, ms=None):
+  def __init__(self, magres_atom):
     self.magres_atom = magres_atom
 
-    if efg is not None:
-      self.efg = AtomEfg(self, efg)
-    
-    if isc is not None:
-      self.isc = AtomIsc(self, isc)
-    
-    if ms is not None:
-      self.ms = AtomMs(self, ms)
+  def __str__(self):
+    if self.species != self.label:
+      return "%s(%s)%d" % (self.species, self.label, self.index)
+    else:
+      return "%s%d" % (self.species, self.index)
+
+  def r(self, r):
+    dr = self.position - r
+    return math.sqrt(numpy.dot(dr, dr))
 
   @property
   def label(self):
@@ -89,14 +150,36 @@ class MagresAtom(object):
     if hasattr(self, '_efg_isotope'):
       return self._efg_isotope
     else:
-      return constants.Q_common[self.species]
-  
+      return constants.Q_iso[self.species]
+
+  @efg_isotope.setter
+  def efg_isotope(self, value):
+    if (self.species, value) not in constants.Q:
+      raise ValueError("Unknown isotope %d%s" % (value, self.species))
+    else:
+      self._efg_isotope = value
+
   @property
   def isc_isotope(self):
     if hasattr(self, '_isc_isotope'):
       return self._isc_isotope
     else:
-      return constants.gamma_common[self.species]
+      return constants.gamma_iso[self.species]
+
+  @isc_isotope.setter
+  def isc_isotope(self, value):
+    if (self.species, value) not in constants.gamma:
+      raise ValueError("Unknown isotope %d%s" % (value, self.species))
+    else:
+      self._isc_isotope = value
+
+  @property
+  def gamma(self):
+    return constants.gamma[self.isc_isotope]
+  
+  @property
+  def Q(self):
+    return constants.Q[self.efg_isotope]
 
 class MagresAtoms(object):
   def __init__(self, atoms=None):
@@ -124,6 +207,19 @@ class MagresAtoms(object):
       temp_label_index[(atom.label, atom.index)] = atom
 
       atoms.append(atom)
+
+    ms_types = ['ms']
+    for ms_type in ms_types:
+      if ms_type not in magres_file.data_dict['magres']:
+        continue
+      
+      setattr(self, ms_type, [])
+
+      for magres_ms in magres_file.data_dict['magres'][ms_type]:
+        atom = temp_label_index[(magres_ms['atom']['label'], magres_ms['atom']['index'])]
+        magres_atom_ms = MagresAtomMs(atom, magres_ms)
+        getattr(self, ms_type).append(magres_atom_ms)
+        setattr(atom, ms_type, magres_atom_ms)
 
     efg_types = ['efg', 'efg_local', 'efg_nonlocal']
     for efg_type in efg_types:

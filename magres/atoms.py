@@ -1,3 +1,4 @@
+import os
 import math
 import constants
 import numpy
@@ -24,6 +25,10 @@ class MagresAtomIsc(object):
     self.atom1 = atom1
     self.atom2 = atom2
     self.magres_isc = magres_isc
+
+  @property
+  def symbol(self):
+    return "%d%s -> %d%s" % (self.atom1.isc_isotope, self.atom1, self.atom2.isc_isotope, self.atom2)
 
   @property
   def dist(self):
@@ -150,12 +155,15 @@ class MagresAtom(object):
     if hasattr(self, '_efg_isotope'):
       return self._efg_isotope
     else:
-      return constants.Q_iso[self.species]
+      if self.species in constants.Q_iso:
+        return constants.Q_iso[self.species]
+      else:
+        return None
 
   @efg_isotope.setter
   def efg_isotope(self, value):
     if (self.species, value) not in constants.Q:
-      raise ValueError("Unknown isotope %d%s" % (value, self.species))
+      raise ValueError("Unknown EFG isotope %d%s" % (value, self.species))
     else:
       self._efg_isotope = value
 
@@ -164,12 +172,15 @@ class MagresAtom(object):
     if hasattr(self, '_isc_isotope'):
       return self._isc_isotope
     else:
-      return constants.gamma_iso[self.species]
+      if self.species in constants.gamma_iso:
+        return constants.gamma_iso[self.species]
+      else:
+        return None
 
   @isc_isotope.setter
   def isc_isotope(self, value):
     if (self.species, value) not in constants.gamma:
-      raise ValueError("Unknown isotope %d%s" % (value, self.species))
+      raise ValueError("Unknown ISC isotope %d%s" % (value, self.species))
     else:
       self._isc_isotope = value
 
@@ -251,7 +262,11 @@ class MagresAtoms(object):
 
   @classmethod
   def load_magres(self, f):
-    magres_file = MagresFile(f)
+    if type(f) == str and os.path.isfile(f):
+      magres_file = MagresFile(open(f))
+    else:
+      magres_file = MagresFile(f)
+
     return MagresAtoms(magres_file)
 
   def add(self, atoms):
@@ -289,6 +304,16 @@ class MagresAtoms(object):
       return self.species_index[label]
     else:
       return self.species_index[label][index]
+
+  def within(self, pos, dist):
+    if type(pos) is MagresAtom:
+      pos = pos.position
+
+    atoms = []
+    for atom in self.atoms:
+      if numpy.dot(atom.position, pos) <= dist**2:
+        atoms.append(atom)
+    return atoms
 
   def __getitem__(self, idx):
     if type(idx) == tuple:

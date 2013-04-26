@@ -8,5 +8,5 @@ setup(name='Magres format',
       author_email='timothy.green@gmail.com',
       url='http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat',
       packages=['magres', 'magres.schema'],
-      scripts=['scripts/convertoldmagres.py'],
+      scripts=['scripts/convertoldmagres.py', 'scripts/magresjson.py'],
       )

@@ -1,9 +1,10 @@
 import sys
 from magres.atoms import MagresAtoms
 
+# Load ethanol-jc.magres sample into an atoms structure
 atoms = MagresAtoms.load_magres("samples/ethanol-jc.magres")
 
-# Set all the hydrogens to be tritium
+# For fun, set all the hydrogens to be tritium
 for atom in atoms.get_species('H'):
   atom.isc_isotope = 3
 
@@ -14,7 +15,7 @@ try:
 except ValueError, e:
   print >>sys.stderr, "Error changing C isotopes:", e
 
-# Loop over and print out all couplings
+# Loop over and print out coupling symbol, distance between atoms, isotropic reduced coupling, anisotropic reduced coupling and reduced asymmetry
 for isc in atoms.isc:
   print isc.symbol, isc.dist, isc.K_iso, isc.K_aniso, isc.K_eta
 

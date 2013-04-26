@@ -15,7 +15,7 @@ try:
 except ValueError, e:
   print >>sys.stderr, "Error changing C isotopes:", e
 
-# Loop over and print out coupling symbol, distance between atoms, isotropic reduced coupling, anisotropic reduced coupling and reduced asymmetry
+# Loop over and print out coupling symbol, distance between atoms, isotropic coupling, anisotropic coupling and asymmetry
 for isc in atoms.isc:
-  print isc.symbol, isc.dist, isc.K_iso, isc.K_aniso, isc.K_eta
+  print isc.symbol, isc.dist, isc.J_iso, isc.J_aniso, isc.J_eta
 

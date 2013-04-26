@@ -11,7 +11,7 @@ class MagresAtomEfg(object):
 
   @property
   def V(self):
-    return self.magres_efg['V']
+    return numpy.array(self.magres_efg['V'])
 
   @property
   def Cq(self):
@@ -36,7 +36,7 @@ class MagresAtomIsc(object):
 
   @property
   def K(self):
-    return self.magres_isc['K']
+    return numpy.array(self.magres_isc['K'])
   
   @property
   def K_iso(self):

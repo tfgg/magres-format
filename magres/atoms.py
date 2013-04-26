@@ -16,9 +16,9 @@ class MagresAtomEfg(object):
   @property
   def Cq(self):
     try:
-      return constants.efg_to_Cq(self.V, self.atom.species)
+      return constants.efg_to_Cq_isotope(self.V, self.atom.species, self.atom.isotope)
     except KeyError:
-      return None
+      return 0.0
 
 class MagresAtomIsc(object):
   def __init__(self, atom1, atom2, magres_isc):
@@ -28,7 +28,7 @@ class MagresAtomIsc(object):
 
   @property
   def symbol(self):
-    return "%d%s -> %d%s" % (self.atom1.isc_isotope, self.atom1, self.atom2.isc_isotope, self.atom2)
+    return "%s -> %s" % (self.atom1, self.atom2)
 
   @property
   def dist(self):
@@ -44,7 +44,7 @@ class MagresAtomIsc(object):
 
   @property
   def J(self):
-    return constants.K_to_J_iso(self.K, self.atom1.species, self.atom1.isc_isotope, self.atom2.species, self.atom2.isc_isotope)
+    return constants.K_to_J_iso(self.K, self.atom1.species, self.atom1.isotope, self.atom2.species, self.atom2.isotope)
 
   @property
   def J_iso(self):
@@ -126,9 +126,9 @@ class MagresAtom(object):
 
   def __str__(self):
     if self.species != self.label:
-      return "%s(%s)%d" % (self.species, self.label, self.index)
+      return "%d%s(%s)%d" % (self.isotope, self.species, self.label, self.index)
     else:
-      return "%s%d" % (self.species, self.index)
+      return "%d%s%d" % (self.isotope, self.species, self.index)
 
   def r(self, r):
     dr = self.position - r
@@ -149,6 +149,23 @@ class MagresAtom(object):
   @property
   def position(self):
     return numpy.array(self.magres_atom['position'])
+
+  @property
+  def isotope(self):
+    if hasattr(self, '_isotope'):
+      return self._isotope
+    else:
+      if self.species in constants.gamma_iso:
+        return constants.gamma_iso[self.species]
+      else:
+        return None
+
+  @isotope.setter
+  def isotope(self, value):
+    if (self.species, value) in constants.gamma:
+      self._isotope = value
+    else:
+      raise ValueError("Unknown NMR isotope %d%s" % (value, self.species))
 
   @property
   def efg_isotope(self):
@@ -186,11 +203,17 @@ class MagresAtom(object):
 
   @property
   def gamma(self):
-    return constants.gamma[self.isc_isotope]
+    if self.isotope in constants.gamma:
+      return constants.gamma[self.isotope]
+    else:
+      return 0.0
   
   @property
   def Q(self):
-    return constants.Q[self.efg_isotope]
+    if self.isotope in constants.Q:
+      return constants.Q[self.isotope]
+    else:
+      return 0.0
 
 class MagresAtoms(object):
   def __init__(self, atoms=None):

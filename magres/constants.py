@@ -23,6 +23,10 @@ def efg_to_Cq(efg, s):
   else:
     return None
 
+def efg_to_Cq_isotope(efg, species, isotope):
+  # Magic constants to convert from millibarns to a.u. and then back to MHz
+  return sorted_evals(efg)[0] * (Q[(species, isotope)] * units.millibarn) / units.megahertz
+
 def val_to_Cq(ev, s):
   if s in Q_iso:
     return ev * Q_common[s] * units.millibarn / units.megahertz

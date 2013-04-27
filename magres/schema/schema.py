@@ -92,7 +92,6 @@ schema = {
                 }
               }
             },
-            "required": ["magres"],
             "definitions": {
               "atomindex": {
                 "type": "object",

@@ -2,7 +2,10 @@ import os
 import math
 import constants
 import numpy
+
 from peak.util.proxies import ObjectWrapper
+
+import utils
 from format import MagresFile
 
 class MagresAtomEfg(object):
@@ -184,25 +187,10 @@ class MagresAtom(object):
     else:
       return 0.0
 
-class MagresAtomImage(ObjectWrapper):
-  """
-    Proxy object view into a MagresAtom for periodic images.
-    Read-only position, otherwise identical.
-  """
-
+class MagresAtomImage(object):
   def __init__(self, atom, position):
-    super(MagresAtomImage, self).__init__(atom)
-    self._position = position
-
-  @property
-  def position(self):
-    return self._position
-
-  def dist(self, r):
-    if type(r) in [MagresAtom, MagresAtomImage]:
-      r = r.position
-    dr = self.position - r
-    return math.sqrt(numpy.dot(dr, dr))
+    self.atom = atom
+    self.position = position
 
 class MagresAtoms(object):
   def __init__(self, atoms=None):
@@ -234,44 +222,45 @@ class MagresAtoms(object):
 
       atoms.append(atom)
 
-    ms_types = ['ms']
-    for ms_type in ms_types:
-      if ms_type not in magres_file.data_dict['magres']:
-        continue
+    if 'magres' in magres_file.data_dict:
+      ms_types = ['ms']
+      for ms_type in ms_types:
+        if ms_type not in magres_file.data_dict['magres']:
+          continue
+        
+        setattr(self, ms_type, [])
+
+        for magres_ms in magres_file.data_dict['magres'][ms_type]:
+          atom = temp_label_index[(magres_ms['atom']['label'], magres_ms['atom']['index'])]
+          magres_atom_ms = MagresAtomMs(atom, magres_ms)
+          getattr(self, ms_type).append(magres_atom_ms)
+          setattr(atom, ms_type, magres_atom_ms)
+
+      efg_types = ['efg', 'efg_local', 'efg_nonlocal']
+      for efg_type in efg_types:
+        if efg_type not in magres_file.data_dict['magres']:
+          continue
+        
+        setattr(self, efg_type, [])
+
+        for magres_efg in magres_file.data_dict['magres'][efg_type]:
+          atom = temp_label_index[(magres_efg['atom']['label'], magres_efg['atom']['index'])]
+          magres_atom_efg = MagresAtomEfg(atom, magres_efg)
+          getattr(self, efg_type).append(magres_atom_efg)
+          setattr(atom, efg_type, magres_atom_efg)
       
-      setattr(self, ms_type, [])
+      isc_types = ['isc', 'isc_spin', 'isc_fc', 'isc_orbital_p', 'isc_orbital_d']
+      for isc_type in isc_types:
+        if isc_type not in magres_file.data_dict['magres']:
+          continue
 
-      for magres_ms in magres_file.data_dict['magres'][ms_type]:
-        atom = temp_label_index[(magres_ms['atom']['label'], magres_ms['atom']['index'])]
-        magres_atom_ms = MagresAtomMs(atom, magres_ms)
-        getattr(self, ms_type).append(magres_atom_ms)
-        setattr(atom, ms_type, magres_atom_ms)
+        setattr(self, isc_type, [])
 
-    efg_types = ['efg', 'efg_local', 'efg_nonlocal']
-    for efg_type in efg_types:
-      if efg_type not in magres_file.data_dict['magres']:
-        continue
-      
-      setattr(self, efg_type, [])
-
-      for magres_efg in magres_file.data_dict['magres'][efg_type]:
-        atom = temp_label_index[(magres_efg['atom']['label'], magres_efg['atom']['index'])]
-        magres_atom_efg = MagresAtomEfg(atom, magres_efg)
-        getattr(self, efg_type).append(magres_atom_efg)
-        setattr(atom, efg_type, magres_atom_efg)
-    
-    isc_types = ['isc', 'isc_spin', 'isc_fc', 'isc_orbital_p', 'isc_orbital_d']
-    for isc_type in isc_types:
-      if isc_type not in magres_file.data_dict['magres']:
-        continue
-
-      setattr(self, isc_type, [])
-
-      for magres_isc in magres_file.data_dict['magres'][isc_type]:
-        atom1 = temp_label_index[(magres_isc['atom1']['label'], magres_isc['atom1']['index'])]
-        atom2 = temp_label_index[(magres_isc['atom2']['label'], magres_isc['atom2']['index'])]
-        magres_atom_isc = MagresAtomIsc(atom1, atom2, magres_isc)
-        getattr(self, isc_type).append(magres_atom_isc) 
+        for magres_isc in magres_file.data_dict['magres'][isc_type]:
+          atom1 = temp_label_index[(magres_isc['atom1']['label'], magres_isc['atom1']['index'])]
+          atom2 = temp_label_index[(magres_isc['atom2']['label'], magres_isc['atom2']['index'])]
+          magres_atom_isc = MagresAtomIsc(atom1, atom2, magres_isc)
+          getattr(self, isc_type).append(magres_atom_isc) 
 
     self.atoms = atoms
 
@@ -321,15 +310,22 @@ class MagresAtoms(object):
       return self.species_index[label][index-1]
 
   def within(self, pos, max_dr):
+    """
+      Gives you all atoms within max_dr angstroms of pos, including all images
+    """
+
     if type(pos) is MagresAtom:
       pos = pos.position
 
     atoms = []
     for atom in self.atoms:
-      dr, min_p = self.least_mirror(atom.position, pos)
+      images = self.all_images_within(atom.position, pos, max_dr)
 
-      if dr <= max_dr:
-        atoms.append(MagresAtomImage(atom, min_p))
+      for image_dist, image_pos in images:
+        print image_pos
+        atoms.append(MagresAtomImage(atom, image_pos))
+
+    print ""
 
     return atoms
 
@@ -352,6 +348,66 @@ class MagresAtoms(object):
             min_p = ap
 
     return (math.sqrt(min), min_p)
+
+  def all_images_within(self, a, b, r):
+    """
+      Give all images of a to b within distance r.
+      FIX: Needs to use a larger supercell for non-cubic cells.
+    """
+
+    images = []
+
+    for i in utils.insideout():
+      any_j = False
+
+      for j in utils.insideout():
+        any_k = False
+
+        for k in utils.insideout():
+          R = numpy.dot(self.lattice.T, numpy.array([float(i), float(j), float(k)]))
+
+          if numpy.dot(R,R) > r*r:
+            break
+
+          any_k = True
+          any_j = True
+      
+          ap = numpy.add(a, R)
+          dr = numpy.subtract(ap, b)
+          d = numpy.dot(dr, dr)
+
+          images.append((math.sqrt(d), ap))
+
+        if not any_k:
+          break
+
+      if not any_j:
+        break
+
+    images = sorted(images, key=lambda (d,p): d)
+
+    return images
+
+  def all_images(self, a, b, n):
+    """
+      Give the n closest images of a to b.
+      FIX: Needs to use a larger supercell for non-cubic cells.
+    """
+
+    images = []
+
+    for i in range(-1,2):
+      for j in range(-1,2):
+        for k in range(-1,2):
+          ap = numpy.add(a, numpy.dot(self.lattice.T, (float(i), float(j), float(k))))
+          r = numpy.subtract(ap, b)
+          d = numpy.dot(r, r)
+
+          images.append((math.sqrt(d), ap))
+
+    images = sorted(images, key=lambda (d,p): d)
+
+    return images
 
   def __getitem__(self, idx):
     if type(idx) == tuple:

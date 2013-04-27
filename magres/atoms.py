@@ -322,10 +322,7 @@ class MagresAtoms(object):
       images = self.all_images_within(atom.position, pos, max_dr)
 
       for image_dist, image_pos in images:
-        print image_pos
         atoms.append(MagresAtomImage(atom, image_pos))
-
-    print ""
 
     return atoms
 

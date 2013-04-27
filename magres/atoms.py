@@ -2,6 +2,7 @@ import os
 import math
 import constants
 import numpy
+from peak.util.proxies import ObjectWrapper
 from format import MagresFile
 
 class MagresAtomEfg(object):
@@ -32,7 +33,7 @@ class MagresAtomIsc(object):
 
   @property
   def dist(self):
-    return self.atom1.r(self.atom2.position)
+    return self.atom1.dist(self.atom2.position)
 
   @property
   def K(self):
@@ -130,7 +131,9 @@ class MagresAtom(object):
     else:
       return "%d%s%d" % (self.isotope, self.species, self.index)
 
-  def r(self, r):
+  def dist(self, r):
+    if type(r) in [MagresAtom, MagresAtomImage]:
+      r = r.position
     dr = self.position - r
     return math.sqrt(numpy.dot(dr, dr))
 
@@ -168,40 +171,6 @@ class MagresAtom(object):
       raise ValueError("Unknown NMR isotope %d%s" % (value, self.species))
 
   @property
-  def efg_isotope(self):
-    if hasattr(self, '_efg_isotope'):
-      return self._efg_isotope
-    else:
-      if self.species in constants.Q_iso:
-        return constants.Q_iso[self.species]
-      else:
-        return None
-
-  @efg_isotope.setter
-  def efg_isotope(self, value):
-    if (self.species, value) not in constants.Q:
-      raise ValueError("Unknown EFG isotope %d%s" % (value, self.species))
-    else:
-      self._efg_isotope = value
-
-  @property
-  def isc_isotope(self):
-    if hasattr(self, '_isc_isotope'):
-      return self._isc_isotope
-    else:
-      if self.species in constants.gamma_iso:
-        return constants.gamma_iso[self.species]
-      else:
-        return None
-
-  @isc_isotope.setter
-  def isc_isotope(self, value):
-    if (self.species, value) not in constants.gamma:
-      raise ValueError("Unknown ISC isotope %d%s" % (value, self.species))
-    else:
-      self._isc_isotope = value
-
-  @property
   def gamma(self):
     if self.isotope in constants.gamma:
       return constants.gamma[self.isotope]
@@ -214,6 +183,26 @@ class MagresAtom(object):
       return constants.Q[self.isotope]
     else:
       return 0.0
+
+class MagresAtomImage(ObjectWrapper):
+  """
+    Proxy object view into a MagresAtom for periodic images.
+    Read-only position, otherwise identical.
+  """
+
+  def __init__(self, atom, position):
+    super(MagresAtomImage, self).__init__(atom)
+    self._position = position
+
+  @property
+  def position(self):
+    return self._position
+
+  def dist(self, r):
+    if type(r) in [MagresAtom, MagresAtomImage]:
+      r = r.position
+    dr = self.position - r
+    return math.sqrt(numpy.dot(dr, dr))
 
 class MagresAtoms(object):
   def __init__(self, atoms=None):
@@ -233,6 +222,9 @@ class MagresAtoms(object):
   def from_magres(self, magres_file):
     self.magres_file = magres_file
     atoms = []
+
+    if 'lattice' in magres_file.data_dict['atoms'] and len(magres_file.data_dict['atoms']['lattice']) == 1:
+      self.lattice = numpy.array(magres_file.data_dict['atoms']['lattice'][0])
 
     temp_label_index = {}
     for magres_atom in magres_file.data_dict['atoms']['atom']:
@@ -320,23 +312,46 @@ class MagresAtoms(object):
     if index is None:
       return self.label_index[label]
     else:
-      return self.label_index[label][index]
+      return self.label_index[label][index-1]
 
   def get_species(self, label, index=None):
     if index is None:
       return self.species_index[label]
     else:
-      return self.species_index[label][index]
+      return self.species_index[label][index-1]
 
-  def within(self, pos, dist):
+  def within(self, pos, max_dr):
     if type(pos) is MagresAtom:
       pos = pos.position
 
     atoms = []
     for atom in self.atoms:
-      if numpy.dot(atom.position, pos) <= dist**2:
-        atoms.append(atom)
+      dr, min_p = self.least_mirror(atom.position, pos)
+
+      if dr <= max_dr:
+        atoms.append(MagresAtomImage(atom, min_p))
+
     return atoms
+
+  def least_mirror(self, a, b):
+    """
+      Give the closest periodic image of a to b given the current lattice.
+    """
+    min = None
+    min_p = None
+
+    for i in range(-1,2):
+      for j in range(-1,2):
+        for k in range(-1,2):
+          ap = numpy.add(a, numpy.dot(self.lattice.T, (float(i), float(j), float(k))))
+          r = numpy.subtract(ap, b)
+          d = numpy.dot(r, r)
+
+          if min is None or d < min:
+            min = d
+            min_p = ap
+
+    return (math.sqrt(min), min_p)
 
   def __getitem__(self, idx):
     if type(idx) == tuple:

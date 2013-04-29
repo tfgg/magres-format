@@ -211,7 +211,7 @@ class MagresAtoms(object):
     self.magres_file = magres_file
     atoms = []
 
-    if 'lattice' in magres_file.data_dict['atoms'] and len(magres_file.data_dict['atoms']['lattice']) == 1:
+    if 'atoms' in magres_file.data_dict and 'lattice' in magres_file.data_dict['atoms'] and len(magres_file.data_dict['atoms']['lattice']) == 1:
       self.lattice = numpy.array(magres_file.data_dict['atoms']['lattice'][0])
 
     temp_label_index = {}

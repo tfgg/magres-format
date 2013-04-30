@@ -179,13 +179,13 @@ def write_magres_block(data):
 
   def sisiout(tag, tensor_name):
     if tag in data:
-      for s1, i1, s2, i2, tensor in data[tag]:
-        out.append("  %s %s %d %s %d %s" % (tag, atom_si['atom1']['label'], atom_si['atom1']['index'], atom_si['atom2']['label'], atom_si['atom2']['index'], tensor_string(atom_si[tensor_name])))
+      for isc in data[tag]:
+        out.append("  %s %s %d %s %d %s" % (tag, isc['atom1']['label'], isc['atom1']['index'], isc['atom2']['label'], isc['atom2']['index'], tensor_string(isc[tensor_name])))
 
-  sisiout("isc_fc", 'K_fc')
-  sisiout("isc_orbital_p", 'K_p')
-  sisiout("isc_orbital_d", 'K_d')
-  sisiout("isc_spin", 'K_spin')
+  sisiout("isc_fc", 'K')
+  sisiout("isc_orbital_p", 'K')
+  sisiout("isc_orbital_d", 'K')
+  sisiout("isc_spin", 'K')
   sisiout("isc", 'K')
 
   return "\n".join(out)

@@ -407,7 +407,8 @@ class MagresAtoms(object):
       images = self.all_images_within(atom.position, pos, max_dr)
 
       for image_dist, image_pos in images:
-        atoms.append(MagresAtomImage(atom, image_pos))
+        if image_dist < max_dr:
+          atoms.append(MagresAtomImage(atom, image_pos))
 
     return atoms
 

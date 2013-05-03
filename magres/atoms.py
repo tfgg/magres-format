@@ -9,22 +9,45 @@ import utils
 from format import MagresFile
 
 class MagresAtomEfg(object):
+  """
+    Representation of the electric field gradient on a particular atom.
+  """
+
   def __init__(self, atom, magres_efg):
     self.atom = atom
     self.magres_efg = magres_efg
 
   @property
   def V(self):
+    """
+      Return the EFG V tensor in atomic units (?)
+    """
     return numpy.array(self.magres_efg['V'])
 
   @property
   def Cq(self):
+    """
+      Calculate the Cq from the V tensor
+    """
     try:
       return constants.efg_to_Cq_isotope(self.V, self.atom.species, self.atom.isotope)
     except KeyError:
       return 0.0
 
+  @property
+  def evecs(self):
+    """
+      Calculate and sort the eigenvectors.
+    """
+    
+    evals, evecs = numpy.linalg.eig(self.magres_efg['V'])
+
+    return zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x)))[1]
+
 class MagresAtomIsc(object):
+  """
+    Representation of the indirect spin coupling between two atoms.
+  """
   def __init__(self, atom1, atom2, magres_isc):
     self.atom1 = atom1
     self.atom2 = atom2
@@ -32,45 +55,78 @@ class MagresAtomIsc(object):
 
   @property
   def symbol(self):
+    """
+      A textual symbol representing this coupling.
+    """
     return "%s -> %s" % (self.atom1, self.atom2)
 
   @property
   def dist(self):
+    """
+      The distance between the two atoms involved.
+    """
     return self.atom1.dist(self.atom2.position)
 
   @property
   def K(self):
+    """
+      The reduced indirect spin-spin coupling K tensor.
+    """
     return numpy.array(self.magres_isc['K'])
   
   @property
   def K_iso(self):
+    """
+      The isotropic component of the reduced indirect spin-spin coupling tensor.
+    """
     return numpy.trace(self.K)/3.0
 
   @property
   def J(self):
+    """
+      The spin-spin coupling J tensor.
+    """
     return constants.K_to_J_iso(self.K, self.atom1.species, self.atom1.isotope, self.atom2.species, self.atom2.isotope)
 
   @property
   def J_iso(self):
+    """
+      The isotropic component of the indirect spin-spin coupling J tensor.
+    """
     return numpy.trace(self.J)/3.0
 
   @property
   def K_sym(self):
+    """
+      The symmetric component of the reduced indirect spin-spin coupling tensor K.
+    """
     return (self.K + self.K.T)/2.0
   
   @property
   def K_asym(self):
+    """
+      The asymmetric component of the reduced indirect spin-spin coupling tensor K.
+    """
     return (self.K - self.K.T)/2.0
   
   @property
   def J_sym(self):
+    """
+      The symmetric component of the indirect spin-spin coupling tensor J.
+    """
     return (self.J + self.J.T)/2.0
   
   @property
   def J_asym(self):
+    """
+      The asymmetric component of the indirect spin-spin coupling tensor J.
+    """
     return (self.J - self.J.T)/2.0
 
   def haeberlen_pcs(self, tensor):
+    """
+      Calculate the principal components of tensor according to Haeberlen convention.
+    """
     evals, evecs = numpy.linalg.eig(tensor)
     iso = sum(evals)/3.0
     evals = sorted(evals, key=lambda x: abs(x - iso))
@@ -79,33 +135,55 @@ class MagresAtomIsc(object):
 
   @property
   def K_haeberlen(self):
+    """
+      The principal components of K by Haeberlen convention
+    """
     return self.haeberlen_pcs(self.K)
   
   @property
   def J_haeberlen(self):
+    """
+      The principal components of J by Haeberlen convention
+    """
     return self.haeberlen_pcs(self.J)
 
   @property
   def K_aniso(self):
+    """
+      The K anisotropy.
+    """
     jx = self.K_haeberlen
     return jx[2] - (jx[0] + jx[1])/2.0
   
   @property
   def J_aniso(self):
+    """
+      The J anisotropy.
+    """
     jx = self.J_haeberlen
     return jx[2] - (jx[0] + jx[1])/2.0
 
   @property
   def K_eta(self):
+    """
+      The K principal component asymmetry.
+    """
     jx = self.K_haeberlen
     return (jx[1] - jx[0]) / (jx[2] - sum(jx)/3.0)
   
   @property
   def J_eta(self):
+    """
+      The K principal component asymmetry.
+    """
     jx = self.J_haeberlen
     return (jx[1] - jx[0]) / (jx[2] - sum(jx)/3.0)
 
 class MagresAtomMs(object):
+  """
+    Representation of the magnetic shielding of a particular atom.
+  """
+
   def __init__(self, atom, magres_ms, reference=None):
     self.atom = atom
     self.magres_ms = magres_ms
@@ -113,10 +191,17 @@ class MagresAtomMs(object):
 
   @property
   def sigma(self):
+    """
+      The sigma tensor.
+    """
     return self.magres_ms['sigma']
 
   @property
   def iso(self):
+    """
+      The referenced isotropic component of the sigma tensor.
+    """
+
     if self.reference is None:
       reference = 0.0
     else:

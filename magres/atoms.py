@@ -3,9 +3,9 @@ import math
 import constants
 import numpy
 
-from peak.util.proxies import ObjectWrapper
-
 import utils
+from utils import lazyproperty
+
 from format import MagresFile
 
 class MagresAtomEfg(object):

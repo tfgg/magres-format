@@ -17,14 +17,14 @@ class MagresAtomEfg(object):
     self.atom = atom
     self.magres_efg = magres_efg
 
-  @property
+  @lazyproperty
   def V(self):
     """
       Return the EFG V tensor in atomic units (?)
     """
     return numpy.array(self.magres_efg['V'])
 
-  @property
+  @lazyproperty
   def Cq(self):
     """
       Calculate the Cq from the V tensor
@@ -34,12 +34,11 @@ class MagresAtomEfg(object):
     except KeyError:
       return 0.0
 
-  @property
+  @lazyproperty
   def evecs(self):
     """
       Calculate and sort the eigenvectors.
     """
-    
     evals, evecs = numpy.linalg.eig(self.magres_efg['V'])
 
     return zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x)))[1]

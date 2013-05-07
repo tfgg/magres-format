@@ -312,10 +312,11 @@ class MagresAtoms(object):
       atoms.append(atom)
 
     if 'magres' in magres_file.data_dict:
-      ms_types = ['ms']
-      for ms_type in ms_types:
-        if ms_type not in magres_file.data_dict['magres']:
+      for tag in magres_file.data_dict['magres']:
+        if not (tag.startswith("ms_") or tag == "ms"):
           continue
+
+        ms_type = tag
         
         setattr(self, ms_type, [])
 
@@ -325,10 +326,11 @@ class MagresAtoms(object):
           getattr(self, ms_type).append(magres_atom_ms)
           setattr(atom, ms_type, magres_atom_ms)
 
-      efg_types = ['efg', 'efg_local', 'efg_nonlocal']
-      for efg_type in efg_types:
-        if efg_type not in magres_file.data_dict['magres']:
+      for tag in magres_file.data_dict['magres']:
+        if not (tag.startswith("efg_") or tag == "efg"):
           continue
+
+        efg_type = tag
         
         setattr(self, efg_type, [])
 
@@ -338,10 +340,11 @@ class MagresAtoms(object):
           getattr(self, efg_type).append(magres_atom_efg)
           setattr(atom, efg_type, magres_atom_efg)
       
-      isc_types = ['isc', 'isc_spin', 'isc_fc', 'isc_orbital_p', 'isc_orbital_d']
-      for isc_type in isc_types:
-        if isc_type not in magres_file.data_dict['magres']:
+      for tag in magres_file.data_dict['magres']:
+        if not (tag.startswith("isc_") or tag == "isc"):
           continue
+
+        isc_type = tag
 
         setattr(self, isc_type, [])
 

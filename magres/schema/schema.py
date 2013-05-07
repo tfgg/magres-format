@@ -1,6 +1,5 @@
 import json
 import sys
-from jsonschema import validate
 
 schema = {
             "title": "magres file",
@@ -160,10 +159,6 @@ schema = {
               }
             }
          }
-
-#input = json.load(open(sys.argv[1]))
-
-#validate(input, schema)
 
 if __name__ == "__main__":
   print json.dumps(schema)

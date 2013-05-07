@@ -38,7 +38,9 @@ class MagresAtomEfg(object):
   def evalsvecs(self):
     evals, evecs = numpy.linalg.eig(self.magres_efg['V'])
 
-    return zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x)))
+    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x)))
+
+    return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
 
   @lazyproperty
   def evecs(self):

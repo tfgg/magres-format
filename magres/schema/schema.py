@@ -88,6 +88,20 @@ schema = {
                         }
                       }
                     }
+                  },
+                  "(ms)": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "atom": {
+                          "$ref": "#/definitions/atomindex"
+                        },
+                        "sigma": {
+                          "$ref": "#/definitions/tensor33"
+                        }
+                      }
+                    }
                   }
                 }
               }

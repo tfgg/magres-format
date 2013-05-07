@@ -24,6 +24,12 @@ schema = {
               "atoms": {
                 "type": "object",
                 "properties": {
+                  "units": {
+                    "$ref": "#/definitions/units"
+                  },
+                  "symmetry": {
+                    "$ref": "#/definitions/symmetry"
+                  },
                   "lattice": {
                     "type": "array",
                     "items": {"$ref": "#/definitions/tensor33"},
@@ -67,6 +73,9 @@ schema = {
                   }
                 },
                 "patternProperties": {
+                  "units": {
+                    "$ref": "#/definitions/units"
+                  },
                   "(efg|efg_.*)": {
                     "type": "array",
                     "items": {
@@ -133,6 +142,21 @@ schema = {
                 "items": {"type": "array", "items": {"type": "number"}, "maxItems": 3, "minItems": 3},
                 "maxItems": 3,
                 "minItems": 3
+              },
+              "units": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {"type": "string"},
+                  "maxItems": 2,
+                  "minItems": 2
+                }
+              },
+              "symmetry": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                }
               }
             }
          }

@@ -4,6 +4,7 @@
   units atom Angstrom
   units lattice Angstrom
   lattice 1.0 0.0 0.0 0.0 1.5 0.0 0.0 0.0 3.0
+  symmetry x,y,z
   atom H H 1 0.0 0.0 0.0
 </atoms>
 

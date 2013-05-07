@@ -4,7 +4,7 @@ from jsonschema import validate
 
 schema = {
             "title": "magres file",
-            "description": "JSON serialisation of a ab-intio magres file",
+            "description": "JSON serialisation of a ab-initio magres file",
             "type": "object",
             "properties": {
               "calculation": {

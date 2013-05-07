@@ -57,8 +57,17 @@ schema = {
               },
               "magres": {
                 "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
                 "patternProperties": {
-                  "(efg|efg_local|efg_ions|efg_nonlocal)": {
+                  "(efg|efg_.*)": {
                     "type": "array",
                     "items": {
                       "type": "object",
@@ -72,7 +81,7 @@ schema = {
                       }
                     }
                   },
-                  "(isc|isc_spin|isc_fc|isc_orbital_p|isc_orbital_d)": {
+                  "(isc|isc_.*)": {
                     "type": "array",
                     "items": {
                       "type": "object",
@@ -89,7 +98,7 @@ schema = {
                       }
                     }
                   },
-                  "(ms)": {
+                  "(ms|ms_.*)": {
                     "type": "array",
                     "items": {
                       "type": "object",

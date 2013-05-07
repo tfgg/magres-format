@@ -358,7 +358,7 @@ class MagresAtoms(object):
 
   @classmethod
   def load_magres(self, f):
-    if type(f) == str and os.path.isfile(f):
+    if type(f) == str:
       magres_file = MagresFile(open(f))
     else:
       magres_file = MagresFile(f)

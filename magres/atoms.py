@@ -35,13 +35,18 @@ class MagresAtomEfg(object):
       return 0.0
 
   @lazyproperty
-  def evecs(self):
-    """
-      Calculate and sort the eigenvectors.
-    """
+  def evalsvecs(self):
     evals, evecs = numpy.linalg.eig(self.magres_efg['V'])
 
-    return zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x)))[1]
+    return zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x)))
+
+  @lazyproperty
+  def evecs(self):
+    return self.evalsvecs[1]
+  
+  @lazyproperty
+  def evals(self):
+    return self.evalsvecs[0]
 
 class MagresAtomIsc(object):
   """

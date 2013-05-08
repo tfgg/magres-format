@@ -397,8 +397,10 @@ class MagresAtoms(object):
     else:
       if index is None:
         return self.label_index[label]
-      else:
+      elif len(self.label_index[label]) >= index:
         return self.label_index[label][index-1]
+      else:
+        return []
 
   def get_species(self, species, index=None):
     if species not in self.species_index:
@@ -406,8 +408,10 @@ class MagresAtoms(object):
     else:
       if index is None:
         return self.species_index[species]
-      else:
+      elif len(self.species_index[species]) >= index:
         return self.species_index[species][index-1]
+      else:
+        return []
 
   def within(self, pos, max_dr):
     """

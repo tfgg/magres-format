@@ -283,6 +283,15 @@ class MagresAtomImage(object):
     self.atom = atom
     self.position = position
 
+class LabelNotFound(Exception):
+  pass
+
+class SpeciesNotFound(Exception):
+  pass
+
+class AtomNotFound(Exception):
+  pass
+
 class MagresAtoms(object):
   def __init__(self, atoms=None):
     if atoms is not None:
@@ -400,7 +409,7 @@ class MagresAtoms(object):
       elif len(self.label_index[label]) >= index:
         return self.label_index[label][index-1]
       else:
-        return []
+        raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms at the %s label." % (label, index, len(self.label_index[label]), label))
 
   def get_species(self, species, index=None):
     if species not in self.species_index:
@@ -411,7 +420,7 @@ class MagresAtoms(object):
       elif len(self.species_index[species]) >= index:
         return self.species_index[species][index-1]
       else:
-        return []
+        raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms in the %s species." % (species, index, len(self.species_index[species]), species))
 
   def within(self, pos, max_dr):
     """

@@ -75,5 +75,5 @@ for s1,i1,s2,i2,iscs in matching_Js:
     J_isos.append(iscs[tensor].J_iso)
     K_isos.append(iscs[tensor].K_iso)
 
-  print "%s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % K_iso for K_iso in J_isos]) + "\t" + str(d)
+  print "%s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % K_iso for K_iso in K_isos]) + "\t" + str(d)
 

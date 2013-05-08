@@ -392,16 +392,22 @@ class MagresAtoms(object):
         self.species_index[atom.species] = [atom]
 
   def get_label(self, label, index=None):
-    if index is None:
-      return self.label_index[label]
+    if label not in self.label_index:
+      return []
     else:
-      return self.label_index[label][index-1]
+      if index is None:
+        return self.label_index[label]
+      else:
+        return self.label_index[label][index-1]
 
-  def get_species(self, label, index=None):
-    if index is None:
-      return self.species_index[label]
+  def get_species(self, species, index=None):
+    if species not in self.species_index:
+      return []
     else:
-      return self.species_index[label][index-1]
+      if index is None:
+        return self.species_index[species]
+      else:
+        return self.species_index[species][index-1]
 
   def within(self, pos, max_dr):
     """

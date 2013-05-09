@@ -1,6 +1,8 @@
-
-The magres format parser
+magres.format
 ========================
 
 .. automodule:: magres.format
       :members:
+
+.. autoclass:: magres.format.MagresFile
+

@@ -10,9 +10,8 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
-   
-   format
-   atoms
+
+   modules
 
 
 Indices and tables

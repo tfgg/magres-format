@@ -1,3 +1,10 @@
+"""
+  magres.atoms is a collection of user-friendly data structures for representing
+  groups of atoms and their NMR parameters. The NMR parameter structures can
+  calculate a variety of properties from the underlying tensors, according to
+  a variety of conventions.
+"""
+
 import os
 import math
 import constants
@@ -293,6 +300,10 @@ class AtomNotFound(Exception):
   pass
 
 class MagresAtoms(object):
+  """
+    A collection of atoms, including lattice parameters, and (if available) lists of NMR parameters.
+  """
+
   def __init__(self, atoms=None):
     if atoms is not None:
       if type(atoms) == list:
@@ -308,6 +319,10 @@ class MagresAtoms(object):
     self.build_index()
 
   def from_magres(self, magres_file):
+    """
+      Take a MagresFile and create the MagresAtoms structure.
+    """
+
     self.magres_file = magres_file
     atoms = []
 
@@ -369,6 +384,16 @@ class MagresAtoms(object):
 
   @classmethod
   def load_magres(self, f):
+    """
+      A class method to easily load a :py:class:`magres.format.MagresFile` and return the corresponding MagresAtoms.
+
+      >>> MagresAtoms.load_magres("path/to/magres/file.magres")
+
+      or
+
+      >>> MagresAtoms.load_magres(open("path/to/magres/file.magres"))
+    """
+
     if type(f) == str:
       magres_file = MagresFile(open(f))
     else:
@@ -377,6 +402,10 @@ class MagresAtoms(object):
     return MagresAtoms(magres_file)
 
   def add(self, atoms):
+    """
+      Add an extra atom or list of atoms.
+    """
+
     if type(atoms) == Atom:
       self.atoms.append(atoms)
     elif type(atom) == list:
@@ -401,6 +430,13 @@ class MagresAtoms(object):
         self.species_index[atom.species] = [atom]
 
   def get_label(self, label, index=None):
+    """
+      Get all atoms of a particular label or a single atom of a particular label and index.
+
+      >>> atoms.get_label("Al2")
+      >>> atoms.get_label("Al2", 10)
+    """
+
     if label not in self.label_index:
       return []
     else:
@@ -412,6 +448,13 @@ class MagresAtoms(object):
         raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms at the %s label." % (label, index, len(self.label_index[label]), label))
 
   def get_species(self, species, index=None):
+    """
+      Get all atoms of a particular species or a single atom of a particular species and index.
+      
+      >>> atoms.get_species("Al")
+      >>> atoms.get_species("Al", 10)
+    """
+
     if species not in self.species_index:
       return []
     else:
@@ -463,7 +506,6 @@ class MagresAtoms(object):
   def all_images_within(self, a, b, r):
     """
       Give all images of a to b within distance r.
-      FIX: Needs to use a larger supercell for non-cubic cells.
     """
 
     images = []
@@ -494,27 +536,6 @@ class MagresAtoms(object):
 
       if not any_j:
         break
-
-    images = sorted(images, key=lambda (d,p): d)
-
-    return images
-
-  def all_images(self, a, b, n):
-    """
-      Give the n closest images of a to b.
-      FIX: Needs to use a larger supercell for non-cubic cells.
-    """
-
-    images = []
-
-    for i in range(-1,2):
-      for j in range(-1,2):
-        for k in range(-1,2):
-          ap = numpy.add(a, numpy.dot(self.lattice.T, (float(i), float(j), float(k))))
-          r = numpy.subtract(ap, b)
-          d = numpy.dot(r, r)
-
-          images.append((math.sqrt(d), ap))
 
     images = sorted(images, key=lambda (d,p): d)
 

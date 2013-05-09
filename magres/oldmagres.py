@@ -40,7 +40,7 @@ class OldMagres(object):
     if 'units' not in self.data['atoms']:
       self.data['atoms']['units'] = []
 
-    self.data['atoms']['units'].append(('lattice', 'Angstrom'))
+    self.data['atoms']['units'].append(['lattice', 'Angstrom'])
     self.data['atoms']['lattice'].append(lattice)
 
   def parse(self, magres_file):
@@ -63,7 +63,7 @@ class OldMagres(object):
 
     self.data = {'atoms': {'atom': [], 'units': []}, 'magres': {'units': []}}
 
-    self.data['atoms']['units'].append(('atom', 'Angstrom'))
+    self.data['atoms']['units'].append(['atom', 'Angstrom'])
 
     found_atoms = set()
 
@@ -73,7 +73,7 @@ class OldMagres(object):
       index = (label,i)
 
       if index not in found_atoms:
-        self.data['atoms']['atom'].append((s, label, i, [[x,y,z]]))
+        self.data['atoms']['atom'].append({'species': s, 'label': label, 'index': i, 'position':[float(x),float(y),float(z)]})
         found_atoms.add(index)
 
     perturbing_index = None 
@@ -96,36 +96,36 @@ class OldMagres(object):
       shielding_tensors = shielding_tensor_regex.findall(atom[3])
       if len(shielding_tensors) != 0:
         if not ms_units:
-          self.data['magres']['units'].append(('ms', 'ppm'))
+          self.data['magres']['units'].append(['ms', 'ppm'])
           ms_units = True
 
         if 'ms' not in self.data['magres']:
           self.data['magres']['ms'] = []
 
         for tensor in shielding_tensors:
-          self.data['magres']['ms'].append((index[0], index[1], shape_tensor(tensor[1:])))
+          self.data['magres']['ms'].append({'atom': {'label': index[0], 'index': index[1]}, 'sigma': shape_tensor(tensor[1:])})
 
       efg_tensors = efg_tensor_regex.findall(atom[3])
 
       if len(efg_tensors) != 0:
         if not efg_units:
-          self.data['magres']['units'].append(('efg', 'au'))
+          self.data['magres']['units'].append(['efg', 'au'])
           efg_units = True
 
         if 'efg' not in self.data['magres']:
           self.data['magres']['efg'] = []
 
         for tensor in efg_tensors:
-          self.data['magres']['efg'].append((index[0], index[1], shape_tensor(tensor[1:])))
+          self.data['magres']['efg'].append({'atom': {'label': index[0], 'index': index[1]}, 'V': shape_tensor(tensor[1:])})
 
       jc_tensors = jc_tensor_regex.findall(atom[3])
       if len(jc_tensors) != 0:
         if not jc_units:
-          self.data['magres']['units'].append(('isc', '10^19.T^2.J^-1'))
-          self.data['magres']['units'].append(('isc_fc', '10^19.T^2.J^-1'))
-          self.data['magres']['units'].append(('isc_spin', '10^19.T^2.J^-1'))
-          self.data['magres']['units'].append(('isc_orbital_p', '10^19.T^2.J^-1'))
-          self.data['magres']['units'].append(('isc_orbital_d', '10^19.T^2.J^-1'))
+          self.data['magres']['units'].append(['isc', '10^19.T^2.J^-1'])
+          self.data['magres']['units'].append(['isc_fc', '10^19.T^2.J^-1'])
+          self.data['magres']['units'].append(['isc_spin', '10^19.T^2.J^-1'])
+          self.data['magres']['units'].append(['isc_orbital_p', '10^19.T^2.J^-1'])
+          self.data['magres']['units'].append(['isc_orbital_d', '10^19.T^2.J^-1'])
           jc_units = True
 
         for tensor in jc_tensors:
@@ -138,11 +138,11 @@ class OldMagres(object):
           if tag not in self.data['magres']:
             self.data['magres'][tag] = []
 
-          self.data['magres'][tag].append((perturbing_index[0], perturbing_index[1], index[0], index[1],  shape_tensor(tensor[1:])))
+          self.data['magres'][tag].append({'atom1': {'label': perturbing_index[0], 'index': perturbing_index[1]}, 'atom2': {'label': index[0], 'index': index[1]},  'K': shape_tensor(tensor[1:])})
  
   def as_new_format(self):
     magres_file = format.MagresFile()
-    magres_file.data_dict = self.data
+    magres_file.load(self.data)
 
     return magres_file
 

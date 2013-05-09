@@ -286,8 +286,22 @@ class MagresFile(object):
 
   def __init__(self, data=None):
     if data is not None:
-      self.parse(data)
-    
+      self.load(data)
+
+  def load(self, data):
+    if type(data) == dict:
+      self.data_dict = data
+    else:
+      if type(data) == str:
+        file_contents = data
+      else:
+        try:
+          file_contents = data.read()
+        except:
+          raise BadMagresFile("Can't load given magres file")
+
+      self.parse(file_contents)
+
     magres.schema.validate.validate_magres(self.data_dict)
 
   def parse(self, data, clean=True, include_unrecognised=False):

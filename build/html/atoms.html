@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>magres.atoms &mdash; Magres format 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Magres format 0.9 documentation" href="index.html" />
+    <link rel="up" title="Python modules" href="modules.html" />
+    <link rel="prev" title="magres.format" href="format.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="format.html" title="magres.format"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Magres format 0.9 documentation</a> &raquo;</li>
+          <li><a href="modules.html" accesskey="U">Python modules</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-magres.atoms">
+<span id="magres-atoms"></span><h1>magres.atoms<a class="headerlink" href="#module-magres.atoms" title="Permalink to this headline">¶</a></h1>
+<p>magres.atoms is a collection of user-friendly data structures for representing
+groups of atoms and their NMR parameters. The NMR parameter structures can
+calculate a variety of properties from the underlying tensors, according to
+a variety of conventions.</p>
+<dl class="class">
+<dt id="magres.atoms.MagresAtoms">
+<em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtoms</tt><big>(</big><em>atoms=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms" title="Permalink to this definition">¶</a></dt>
+<dd><p>A collection of atoms, including lattice parameters, and (if available) lists of NMR parameters.</p>
+<dl class="method">
+<dt id="magres.atoms.MagresAtoms.add">
+<tt class="descname">add</tt><big>(</big><em>atoms</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an extra atom or list of atoms.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="magres.atoms.MagresAtoms.all_images_within">
+<tt class="descname">all_images_within</tt><big>(</big><em>a</em>, <em>b</em>, <em>r</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.all_images_within" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give all images of a to b within distance r.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="magres.atoms.MagresAtoms.from_magres">
+<tt class="descname">from_magres</tt><big>(</big><em>magres_file</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.from_magres" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a MagresFile and create the MagresAtoms structure.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="magres.atoms.MagresAtoms.get_label">
+<tt class="descname">get_label</tt><big>(</big><em>label</em>, <em>index=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.get_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all atoms of a particular label or a single atom of a particular label and index.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s">&quot;Al2&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s">&quot;Al2&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="magres.atoms.MagresAtoms.get_species">
+<tt class="descname">get_species</tt><big>(</big><em>species</em>, <em>index=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.get_species" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all atoms of a particular species or a single atom of a particular species and index.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&quot;Al&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&quot;Al&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="magres.atoms.MagresAtoms.least_mirror">
+<tt class="descname">least_mirror</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.least_mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give the closest periodic image of a to b given the current lattice.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="magres.atoms.MagresAtoms.load_magres">
+<em class="property">classmethod </em><tt class="descname">load_magres</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.load_magres" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class method to easily load a <a class="reference internal" href="format.html#magres.format.MagresFile" title="magres.format.MagresFile"><tt class="xref py py-class docutils literal"><span class="pre">magres.format.MagresFile</span></tt></a> and return the corresponding MagresAtoms.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">MagresAtoms</span><span class="o">.</span><span class="n">load_magres</span><span class="p">(</span><span class="s">&quot;path/to/magres/file.magres&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">MagresAtoms</span><span class="o">.</span><span class="n">load_magres</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&quot;path/to/magres/file.magres&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="magres.atoms.MagresAtoms.within">
+<tt class="descname">within</tt><big>(</big><em>pos</em>, <em>max_dr</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.within" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives you all atoms within max_dr angstroms of pos, including all images</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="magres.atoms.MagresAtom">
+<em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtom</tt><big>(</big><em>magres_atom</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="magres.atoms.MagresAtomMs">
+<em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtomMs</tt><big>(</big><em>atom</em>, <em>magres_ms</em>, <em>reference=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomMs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation of the magnetic shielding of a particular atom.</p>
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.iso">
+<tt class="descname">iso</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.iso" title="Permalink to this definition">¶</a></dt>
+<dd><p>The referenced isotropic component of the sigma tensor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.sigma">
+<tt class="descname">sigma</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.sigma" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sigma tensor.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="magres.atoms.MagresAtomEfg">
+<em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtomEfg</tt><big>(</big><em>atom</em>, <em>magres_efg</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomEfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation of the electric field gradient on a particular atom.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="magres.atoms.MagresAtomIsc">
+<em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtomIsc</tt><big>(</big><em>atom1</em>, <em>atom2</em>, <em>magres_isc</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomIsc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation of the indirect spin coupling between two atoms.</p>
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.J">
+<tt class="descname">J</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.J" title="Permalink to this definition">¶</a></dt>
+<dd><p>The spin-spin coupling J tensor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.J_aniso">
+<tt class="descname">J_aniso</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.J_aniso" title="Permalink to this definition">¶</a></dt>
+<dd><p>The J anisotropy.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.J_asym">
+<tt class="descname">J_asym</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.J_asym" title="Permalink to this definition">¶</a></dt>
+<dd><p>The asymmetric component of the indirect spin-spin coupling tensor J.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.J_eta">
+<tt class="descname">J_eta</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.J_eta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The K principal component asymmetry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.J_haeberlen">
+<tt class="descname">J_haeberlen</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.J_haeberlen" title="Permalink to this definition">¶</a></dt>
+<dd><p>The principal components of J by Haeberlen convention</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.J_iso">
+<tt class="descname">J_iso</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.J_iso" title="Permalink to this definition">¶</a></dt>
+<dd><p>The isotropic component of the indirect spin-spin coupling J tensor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.J_sym">
+<tt class="descname">J_sym</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.J_sym" title="Permalink to this definition">¶</a></dt>
+<dd><p>The symmetric component of the indirect spin-spin coupling tensor J.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.K">
+<tt class="descname">K</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.K" title="Permalink to this definition">¶</a></dt>
+<dd><p>The reduced indirect spin-spin coupling K tensor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.K_aniso">
+<tt class="descname">K_aniso</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.K_aniso" title="Permalink to this definition">¶</a></dt>
+<dd><p>The K anisotropy.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.K_asym">
+<tt class="descname">K_asym</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.K_asym" title="Permalink to this definition">¶</a></dt>
+<dd><p>The asymmetric component of the reduced indirect spin-spin coupling tensor K.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.K_eta">
+<tt class="descname">K_eta</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.K_eta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The K principal component asymmetry.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.K_haeberlen">
+<tt class="descname">K_haeberlen</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.K_haeberlen" title="Permalink to this definition">¶</a></dt>
+<dd><p>The principal components of K by Haeberlen convention</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.K_iso">
+<tt class="descname">K_iso</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.K_iso" title="Permalink to this definition">¶</a></dt>
+<dd><p>The isotropic component of the reduced indirect spin-spin coupling tensor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.K_sym">
+<tt class="descname">K_sym</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.K_sym" title="Permalink to this definition">¶</a></dt>
+<dd><p>The symmetric component of the reduced indirect spin-spin coupling tensor K.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.dist">
+<tt class="descname">dist</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>The distance between the two atoms involved.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="magres.atoms.MagresAtomIsc.haeberlen_pcs">
+<tt class="descname">haeberlen_pcs</tt><big>(</big><em>tensor</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomIsc.haeberlen_pcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the principal components of tensor according to Haeberlen convention.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomIsc.symbol">
+<tt class="descname">symbol</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.symbol" title="Permalink to this definition">¶</a></dt>
+<dd><p>A textual symbol representing this coupling.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="format.html"
+                        title="previous chapter">magres.format</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/atoms.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="format.html" title="magres.format"
+             >previous</a> |</li>
+        <li><a href="index.html">Magres format 0.9 documentation</a> &raquo;</li>
+          <li><a href="modules.html" >Python modules</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tim Green.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

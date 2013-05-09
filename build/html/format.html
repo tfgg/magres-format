@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>magres.format &mdash; Magres format 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Magres format 0.9 documentation" href="index.html" />
+    <link rel="up" title="Python modules" href="modules.html" />
+    <link rel="next" title="magres.atoms" href="atoms.html" />
+    <link rel="prev" title="Python modules" href="modules.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="atoms.html" title="magres.atoms"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="Python modules"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Magres format 0.9 documentation</a> &raquo;</li>
+          <li><a href="modules.html" accesskey="U">Python modules</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-magres.format">
+<span id="magres-format"></span><h1>magres.format<a class="headerlink" href="#module-magres.format" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="magres.format.check_units">
+<tt class="descclassname">magres.format.</tt><tt class="descname">check_units</tt><big>(</big><em>d</em><big>)</big><a class="headerlink" href="#magres.format.check_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that given units for a particular tag are correct.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="magres.format.get_version">
+<tt class="descclassname">magres.format.</tt><tt class="descname">get_version</tt><big>(</big><em>file_contents</em><big>)</big><a class="headerlink" href="#magres.format.get_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look for and parse the magres file format version line</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="magres.format.parse_atoms_block">
+<tt class="descclassname">magres.format.</tt><tt class="descname">parse_atoms_block</tt><big>(</big><em>block</em><big>)</big><a class="headerlink" href="#magres.format.parse_atoms_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse atoms block into data dictionary given list of record tuples.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="magres.format.parse_block">
+<tt class="descclassname">magres.format.</tt><tt class="descname">parse_block</tt><big>(</big><em>block</em><big>)</big><a class="headerlink" href="#magres.format.parse_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse block contents into a series of (tag, data) records</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="magres.format.parse_blocks">
+<tt class="descclassname">magres.format.</tt><tt class="descname">parse_blocks</tt><big>(</big><em>file_contents</em><big>)</big><a class="headerlink" href="#magres.format.parse_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse series of XML-like deliminated blocks into a list of (block_name, contents) tuples</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="magres.format.parse_generic_block">
+<tt class="descclassname">magres.format.</tt><tt class="descname">parse_generic_block</tt><big>(</big><em>block</em><big>)</big><a class="headerlink" href="#magres.format.parse_generic_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse any other block into data dictionary given list of record tuples.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="magres.format.parse_magres_block">
+<tt class="descclassname">magres.format.</tt><tt class="descname">parse_magres_block</tt><big>(</big><em>block</em><big>)</big><a class="headerlink" href="#magres.format.parse_magres_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse magres block into data dictionary given list of record tuples.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="magres.format.write_magres_block">
+<tt class="descclassname">magres.format.</tt><tt class="descname">write_magres_block</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#magres.format.write_magres_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out a &lt;magres&gt; block from its dictionary representation</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="magres.format.MagresFile">
+<em class="property">class </em><tt class="descclassname">magres.format.</tt><tt class="descname">MagresFile</tt><big>(</big><em>data=None</em><big>)</big><a class="headerlink" href="#magres.format.MagresFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">Python modules</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="atoms.html"
+                        title="next chapter">magres.atoms</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/format.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="atoms.html" title="magres.atoms"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="Python modules"
+             >previous</a> |</li>
+        <li><a href="index.html">Magres format 0.9 documentation</a> &raquo;</li>
+          <li><a href="modules.html" >Python modules</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tim Green.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

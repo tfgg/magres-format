@@ -2,12 +2,8 @@ from magres.atoms import MagresAtoms
 
 atoms = MagresAtoms.load_magres('samples/simple.magres')
 
-images = atoms.within(atoms[0], 3.0)
+images = atoms.within(atoms[0], 5.0)
 
 for image in images:
-  print image, atoms[0].dist(image), image.position
+  print image, atoms[0].dist(image), " ".join(map(str,image.position))
 
-images[0].species = images[0].label = 'K'
-
-for image in images:
-  print image, atoms[0].dist(image), image.position

@@ -2,8 +2,12 @@ from magres.atoms import MagresAtoms
 
 atoms = MagresAtoms.load_magres('samples/simple.magres')
 
-images = atoms.within(atoms[0], 5.0)
+print "5-1"
+for atom in atoms.within(atoms[0], 5.0).within(atoms[0], 1.0):
+  print atom, atom.position
 
-for image in images:
-  print image, atoms[0].dist(image), " ".join(map(str,image.position))
+print "1-5"
+for atom in atoms.within(atoms[0], 1.0).within(atoms[0], 5.0):
+  print atom, atom.position
+
 

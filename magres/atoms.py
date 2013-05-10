@@ -298,6 +298,13 @@ class MagresAtomImage(object):
     object.__setattr__(self, "position", position)
     object.__setattr__(self, "atom", atom)
 
+  def dist(self, r):
+    if hasattr(r, 'position'):
+      r = r.position
+
+    dr = self.position - r
+    return math.sqrt(numpy.dot(dr, dr))
+
   def __str__(self):
     return str(self.atom)
   
@@ -309,6 +316,8 @@ class MagresAtomImage(object):
       return object.__getattribute__(self, "atom")
     elif name == "position":
       return object.__getattribute__(self, "position")
+    elif name == "dist":
+      return object.__getattribute__(self, "dist")
     else:
       return getattr(object.__getattribute__(self, "atom"), name)
 
@@ -329,113 +338,22 @@ class SpeciesNotFound(Exception):
 class AtomNotFound(Exception):
   pass
 
-class MagresAtoms(object):
-  """
-    A collection of atoms, including lattice parameters, and (if available) lists of NMR parameters.
-  """
-
-  def __init__(self, atoms=None):
+class MagresAtomsView(object):
+  def __init__(self, atoms=None, lattice=None):
     if atoms is not None:
-      if type(atoms) == list:
-        self.atoms = atoms
-      elif type(atoms) == MagresFile:
-        self.from_magres(atoms) 
+      self.atoms = atoms
     else:
       self.atoms = []
+
+    if lattice is not None:
+      self.lattice = lattice
+    else:
+      self.lattice = None
 
     self.label_index = {}
     self.species_index = {}
 
     self.build_index()
-
-  def from_magres(self, magres_file):
-    """
-      Take a MagresFile and create the MagresAtoms structure.
-    """
-
-    self.magres_file = magres_file
-    atoms = []
-
-    if 'atoms' in magres_file.data_dict and 'lattice' in magres_file.data_dict['atoms'] and len(magres_file.data_dict['atoms']['lattice']) == 1:
-      self.lattice = numpy.array(magres_file.data_dict['atoms']['lattice'][0])
-
-    if 'atoms' in magres_file.data_dict and 'atom' in magres_file.data_dict['atoms']:
-      temp_label_index = {}
-      for magres_atom in magres_file.data_dict['atoms']['atom']:
-        atom = MagresAtom(magres_atom)
-
-        temp_label_index[(atom.label, atom.index)] = atom
-
-        atoms.append(atom)
-
-    if 'magres' in magres_file.data_dict:
-      for tag in magres_file.data_dict['magres']:
-        if not (tag.startswith("ms_") or tag == "ms"):
-          continue
-
-        ms_type = tag
-        
-        setattr(self, ms_type, [])
-
-        for magres_ms in magres_file.data_dict['magres'][ms_type]:
-          atom = temp_label_index[(magres_ms['atom']['label'], magres_ms['atom']['index'])]
-          magres_atom_ms = MagresAtomMs(atom, magres_ms)
-          getattr(self, ms_type).append(magres_atom_ms)
-          setattr(atom, ms_type, magres_atom_ms)
-
-      for tag in magres_file.data_dict['magres']:
-        if not (tag.startswith("efg_") or tag == "efg"):
-          continue
-
-        efg_type = tag
-        
-        setattr(self, efg_type, [])
-
-        for magres_efg in magres_file.data_dict['magres'][efg_type]:
-          atom = temp_label_index[(magres_efg['atom']['label'], magres_efg['atom']['index'])]
-          magres_atom_efg = MagresAtomEfg(atom, magres_efg)
-          getattr(self, efg_type).append(magres_atom_efg)
-          setattr(atom, efg_type, magres_atom_efg)
-      
-      for tag in magres_file.data_dict['magres']:
-        if not (tag.startswith("isc_") or tag == "isc"):
-          continue
-
-        isc_type = tag
-
-        setattr(self, isc_type, [])
-
-        for magres_isc in magres_file.data_dict['magres'][isc_type]:
-          atom1 = temp_label_index[(magres_isc['atom1']['label'], magres_isc['atom1']['index'])]
-          atom2 = temp_label_index[(magres_isc['atom2']['label'], magres_isc['atom2']['index'])]
-          magres_atom_isc = MagresAtomIsc(atom1, atom2, magres_isc)
-          getattr(self, isc_type).append(magres_atom_isc) 
-
-          if not hasattr(atom1, isc_type):
-            setattr(atom1, isc_type, {})
-
-          getattr(atom1, isc_type)[atom2] = magres_atom_isc
-
-    self.atoms = atoms
-
-  @classmethod
-  def load_magres(self, f):
-    """
-      A class method to easily load a :py:class:`magres.format.MagresFile` and return the corresponding MagresAtoms.
-
-      >>> MagresAtoms.load_magres("path/to/magres/file.magres")
-
-      or
-
-      >>> MagresAtoms.load_magres(open("path/to/magres/file.magres"))
-    """
-
-    if type(f) == str:
-      magres_file = MagresFile(open(f))
-    else:
-      magres_file = MagresFile(f)
-
-    return MagresAtoms(magres_file)
 
   def add(self, atoms):
     """
@@ -483,6 +401,19 @@ class MagresAtoms(object):
       else:
         raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms at the %s label." % (label, index, len(self.label_index[label]), label))
 
+  def label(self, label):
+    """
+      test version of get_label that returns the list of atoms as a magresatoms object, to make chaining easy.
+    """
+    if type(label) != list:
+      label = [label]
+      
+    rtn_atoms = []
+    for l in label:
+      if l in self.label_index:
+        rtn_atoms += self.label_index[l]
+    return MagresAtomsView(rtn_atoms, self.lattice)
+
   def get_species(self, species, index=None):
     """
       Get all atoms of a particular species or a single atom of a particular species and index.
@@ -501,23 +432,41 @@ class MagresAtoms(object):
       else:
         raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms in the %s species." % (species, index, len(self.species_index[species]), species))
 
+  def species(self, species):
+    """
+      test version of get_species that returns the list of atoms as a magresatoms object, to make chaining easy.
+    """
+    if type(species) != list:
+      species = [species]
+      
+    rtn_atoms = []
+    for s in species:
+      if s in self.species_index:
+        rtn_atoms += self.species_index[s]
+    return MagresAtomsView(rtn_atoms, self.lattice)
+
   def within(self, pos, max_dr):
     """
-      Gives you all atoms within max_dr angstroms of pos, including all images
+      Gives you all atoms within max_dr angstroms of pos, including all images.
     """
 
     if type(pos) is MagresAtom:
       pos = pos.position
 
     atoms = []
+
     for atom in self.atoms:
-      images = self.all_images_within(atom.position, pos, max_dr)
+      if type(atom) == MagresAtom:
+        images = self.all_images_within(atom.position, pos, max_dr)
 
-      for image_dist, image_pos in images:
-        if image_dist <= max_dr:
-          atoms.append(MagresAtomImage(atom, image_pos))
+        for image_dist, image_pos in images:
+          if image_dist <= max_dr:
+            atoms.append(MagresAtomImage(atom, image_pos))
+      else:
+        if atom.dist(pos) <= max_dr:
+          atoms.append(atom)
 
-    return atoms
+    return MagresAtomsView(atoms, self.lattice)
 
   def least_mirror(self, a, b):
     """
@@ -586,3 +535,121 @@ class MagresAtoms(object):
 
   def __iter__(self):
     return self.atoms.__iter__()
+
+  def __len__(self):
+    return len(self.atoms)
+
+class MagresAtoms(MagresAtomsView):
+  """
+    A collection of atoms, including lattice parameters, and (if available) lists of NMR parameters.
+  """
+
+  def __init__(self, atoms=None, lattice=None):
+    if atoms is not None:
+      # We've been passed a list of MagresAtom or MagresAtomImage, just drop it in.
+      if type(atoms) == list and all([type(atom) in [MagresAtom, MagresAtomImage] for atom in atoms]):
+        pass
+      # We've been passed a MagresFile, build all the atoms off it
+      elif type(atoms) == MagresFile:
+        atoms, lattice = self._from_magres(atoms) 
+      # We've been passed a list of MagresFiles, merge them and build the atoms
+      elif type(atoms) == list and all([type(magres_file) is MagresFile for magres_file in atoms]):
+        atoms, lattice = self._from_magres(MagresFile.merge(atoms))
+    else:
+      atoms = []
+
+    super(MagresAtoms, self).__init__(atoms, lattice)
+
+  def _from_magres(self, magres_file):
+    """
+      Take a MagresFile and create the MagresAtoms structure.
+    """
+
+    self.magres_file = magres_file
+    atoms = []
+
+    if 'atoms' in magres_file.data_dict and 'lattice' in magres_file.data_dict['atoms'] and len(magres_file.data_dict['atoms']['lattice']) == 1:
+      lattice = numpy.array(magres_file.data_dict['atoms']['lattice'][0])
+
+    if 'atoms' in magres_file.data_dict and 'atom' in magres_file.data_dict['atoms']:
+      temp_label_index = {}
+      for magres_atom in magres_file.data_dict['atoms']['atom']:
+        atom = MagresAtom(magres_atom)
+
+        temp_label_index[(atom.label, atom.index)] = atom
+
+        atoms.append(atom)
+
+    if 'magres' in magres_file.data_dict:
+      for tag in magres_file.data_dict['magres']:
+        if not (tag.startswith("ms_") or tag == "ms"):
+          continue
+
+        ms_type = tag
+        
+        setattr(self, ms_type, [])
+
+        for magres_ms in magres_file.data_dict['magres'][ms_type]:
+          atom = temp_label_index[(magres_ms['atom']['label'], magres_ms['atom']['index'])]
+          magres_atom_ms = MagresAtomMs(atom, magres_ms)
+          getattr(self, ms_type).append(magres_atom_ms)
+          setattr(atom, ms_type, magres_atom_ms)
+
+      for tag in magres_file.data_dict['magres']:
+        if not (tag.startswith("efg_") or tag == "efg"):
+          continue
+
+        efg_type = tag
+        
+        setattr(self, efg_type, [])
+
+        for magres_efg in magres_file.data_dict['magres'][efg_type]:
+          atom = temp_label_index[(magres_efg['atom']['label'], magres_efg['atom']['index'])]
+          magres_atom_efg = MagresAtomEfg(atom, magres_efg)
+          getattr(self, efg_type).append(magres_atom_efg)
+          setattr(atom, efg_type, magres_atom_efg)
+      
+      for tag in magres_file.data_dict['magres']:
+        if not (tag.startswith("isc_") or tag == "isc"):
+          continue
+
+        isc_type = tag
+
+        setattr(self, isc_type, [])
+
+        for magres_isc in magres_file.data_dict['magres'][isc_type]:
+          atom1 = temp_label_index[(magres_isc['atom1']['label'], magres_isc['atom1']['index'])]
+          atom2 = temp_label_index[(magres_isc['atom2']['label'], magres_isc['atom2']['index'])]
+          magres_atom_isc = MagresAtomIsc(atom1, atom2, magres_isc)
+          getattr(self, isc_type).append(magres_atom_isc) 
+
+          if not hasattr(atom1, isc_type):
+            setattr(atom1, isc_type, {})
+
+          getattr(atom1, isc_type)[atom2] = magres_atom_isc
+
+    return (atoms, lattice)
+
+  @classmethod
+  def load_magres(self, f):
+    """
+      A class method to easily load a :py:class:`magres.format.MagresFile` and return the corresponding MagresAtoms.
+
+      >>> MagresAtoms.load_magres("path/to/magres/file.magres")
+
+      or
+
+      >>> MagresAtoms.load_magres(open("path/to/magres/file.magres"))
+    """
+
+    if type(f) == str:
+      magres_file = MagresFile(open(f))
+    elif type(f) == MagresFile:
+      magres_file = f
+    elif type(f) == list:
+      magres_file = f
+    else:
+      magres_file = MagresFile(f)
+    
+    return MagresAtoms(magres_file)
+

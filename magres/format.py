@@ -346,12 +346,35 @@ class MagresFile(object):
           self.data_dict[block[0]] = block_data[1]
 
   @classmethod
-  def load_json(self, json_string):
+  def load_json(klass, json_string):
     """
       Load from a json dictionary
     """
     
     return MagresFile(json.loads(json_string))
+
+  @classmethod
+  def merge(klass, magres_files):
+    # Make the output magres file using the first magres file's data dictionary
+    out_magres_file = MagresFile(dict(magres_files[0].data_dict))
+    out_dict = out_magres_file.data_dict
+
+    # We should check that the atoms and lattice are the same here. We don't.
+
+    # Loop through the rest and add their information in
+    for magres_file in magres_files[1:]:
+      data_dict = magres_file.data_dict
+
+      if 'magres' not in out_dict:
+        out_dict['magres'] = {}
+
+      for tag_key in data_dict['magres']:
+        if tag_key not in out_dict['magres']:
+          out_dict['magres'][tag_key] = data_dict['magres'][tag_key]
+        else:
+          out_dict['magres'][tag_key] += data_dict['magres'][tag_key]
+
+    return out_magres_file
 
   def as_json(self):
     """

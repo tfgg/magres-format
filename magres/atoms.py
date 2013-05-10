@@ -233,7 +233,7 @@ class MagresAtom(object):
       return "%d%s%d" % (self.isotope, self.species, self.index)
 
   def dist(self, r):
-    if type(r) in [MagresAtom, MagresAtomImage]:
+    if hasattr(r, 'position'):
       r = r.position
     dr = self.position - r
     return math.sqrt(numpy.dot(dr, dr))
@@ -242,10 +242,18 @@ class MagresAtom(object):
   def label(self):
     return self.magres_atom['label']
   
+  @label.setter
+  def label(self, value):
+    self.magres_atom['label'] = value
+
   @property
   def species(self):
     return self.magres_atom['species']
-  
+ 
+  @species.setter
+  def species(self, value):
+    self.magres_atom['species'] = value
+
   @property
   def index(self):
     return self.magres_atom['index']
@@ -287,8 +295,30 @@ class MagresAtom(object):
 
 class MagresAtomImage(object):
   def __init__(self, atom, position):
-    self.atom = atom
-    self.position = position
+    object.__setattr__(self, "position", position)
+    object.__setattr__(self, "atom", atom)
+
+  def __str__(self):
+    return str(self.atom)
+  
+  def __unicode__(self):
+    return unicode(self.atom)
+
+  def __getattribute__(self, name):
+    if name == "atom":
+      return object.__getattribute__(self, "atom")
+    elif name == "position":
+      return object.__getattribute__(self, "position")
+    else:
+      return getattr(object.__getattribute__(self, "atom"), name)
+
+  def __setattr__(self, name, value):
+    if name == "position":
+      object.__setattr__(self, "position", value)
+    elif name == "atom":
+      object.__setattr__(self, "atom", value)
+    else:
+      setattr(object.__getattribute__(self, "atom"), name, value)
 
 class LabelNotFound(Exception):
   pass
@@ -329,13 +359,14 @@ class MagresAtoms(object):
     if 'atoms' in magres_file.data_dict and 'lattice' in magres_file.data_dict['atoms'] and len(magres_file.data_dict['atoms']['lattice']) == 1:
       self.lattice = numpy.array(magres_file.data_dict['atoms']['lattice'][0])
 
-    temp_label_index = {}
-    for magres_atom in magres_file.data_dict['atoms']['atom']:
-      atom = MagresAtom(magres_atom)
+    if 'atoms' in magres_file.data_dict and 'atom' in magres_file.data_dict['atoms']:
+      temp_label_index = {}
+      for magres_atom in magres_file.data_dict['atoms']['atom']:
+        atom = MagresAtom(magres_atom)
 
-      temp_label_index[(atom.label, atom.index)] = atom
+        temp_label_index[(atom.label, atom.index)] = atom
 
-      atoms.append(atom)
+        atoms.append(atom)
 
     if 'magres' in magres_file.data_dict:
       for tag in magres_file.data_dict['magres']:
@@ -379,6 +410,11 @@ class MagresAtoms(object):
           atom2 = temp_label_index[(magres_isc['atom2']['label'], magres_isc['atom2']['index'])]
           magres_atom_isc = MagresAtomIsc(atom1, atom2, magres_isc)
           getattr(self, isc_type).append(magres_atom_isc) 
+
+          if not hasattr(atom1, isc_type):
+            setattr(atom1, isc_type, {})
+
+          getattr(atom1, isc_type)[atom2] = magres_atom_isc
 
     self.atoms = atoms
 

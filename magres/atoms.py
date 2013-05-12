@@ -462,7 +462,7 @@ class MagresAtomsView(object):
         for image_dist, image_pos in images:
           if image_dist <= max_dr:
             atoms.append(MagresAtomImage(atom, image_pos))
-      else:
+      elif type(atom) == MagresAtomImage:
         if atom.dist(pos) <= max_dr:
           atoms.append(atom)
 
@@ -503,9 +503,12 @@ class MagresAtomsView(object):
 
         for k in utils.insideout():
           R = numpy.dot(self.lattice.T, numpy.array([float(i), float(j), float(k)]))
-
-          if numpy.dot(R,R) > r*r:
-            break
+          
+          if numpy.dot(a+R-b,a+R-b) > r*r:
+            if k < 0:
+              break
+            else:
+              continue
 
           any_k = True
           any_j = True
@@ -516,10 +519,10 @@ class MagresAtomsView(object):
 
           images.append((math.sqrt(d), ap))
 
-        if not any_k:
+        if not any_k and j < 0:
           break
 
-      if not any_j:
+      if not any_j and i < 0:
         break
 
     images = sorted(images, key=lambda (d,p): d)

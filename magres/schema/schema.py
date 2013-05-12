@@ -5,6 +5,7 @@ schema = {
             "title": "magres file",
             "description": "JSON serialisation of a ab-initio magres file",
             "type": "object",
+            "required": ["atoms"],
             "properties": {
               "calculation": {
                 "type": "object",
@@ -56,7 +57,8 @@ schema = {
                           "minItems": 3
                         }
                       }
-                    }
+                    },
+                    "required": ['species', 'label', 'index', 'position']
                   }
                 }
               },
@@ -134,7 +136,8 @@ schema = {
                     "type": "integer",
                     "minimum": 0
                   }
-                }
+                },
+                "required": ['label', 'index']
               },
               "tensor33": {
                 "type": "array",

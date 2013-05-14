@@ -17,3 +17,4 @@ magres.atoms
 
 .. autoclass:: magres.atoms.MagresAtomIsc
   :members:
+

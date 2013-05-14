@@ -84,12 +84,181 @@ a variety of conventions.</p>
 <dt id="magres.atoms.MagresAtomMs">
 <em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtomMs</tt><big>(</big><em>atom</em>, <em>magres_ms</em>, <em>reference=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomMs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Representation of the magnetic shielding of a particular atom.</p>
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.aniso">
+<tt class="descname">aniso</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.aniso" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shielding anisotropy. Defined by</p>
+<p><img class="math" src="_images/math/755d9e90a9520d8e2b18aae76f254a20ef830c51.png" alt="\Delta \sigma = \sigma_{ZZ} - (\sigma_{XX} + \sigma_{YY})/2.0"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.asym">
+<tt class="descname">asym</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.asym" title="Permalink to this definition">¶</a></dt>
+<dd><p>The asymmetric part of sigma.</p>
+<p><img class="math" src="_images/math/9d1c54ff87a1351631297c8c8338cfec27dda5fe.png" alt="\sigma_{asym} = (\sigma - \sigma^T)/2.0"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.eta">
+<tt class="descname">eta</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.eta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shielding asymmetry. Defined by</p>
+<p><img class="math" src="_images/math/d7b2b70272badb81aab88726006454cc9f99c2ff.png" alt="\eta = (\sigma_{YY} - \sigma_{XX}) / \zeta"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evals">
+<tt class="descname">evals</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evals" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues of sigma, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/fa64ed1a2c2473a3c463ff35a4adffcc11d5e7cc.png" alt="|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|"/></p>
+<p>where</p>
+<blockquote>
+<div>sigma_xx = evals[0]
+sigma_yy = evals[1]
+sigma_zz = evals[2]</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evals_mehring">
+<tt class="descname">evals_mehring</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evals_mehring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues of sigma ordered according to the Mehring notation:</p>
+<p><img class="math" src="_images/math/559442d02157db31e09ec4d45ebdd86c9e9c60ba.png" alt="\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evalsvecs">
+<tt class="descname">evalsvecs</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evalsvecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues and eigenvectors of sigma, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/fa64ed1a2c2473a3c463ff35a4adffcc11d5e7cc.png" alt="|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|"/></p>
+<p>where</p>
+<blockquote>
+<div>sigma_xx = evals[0]
+sigma_yy = evals[1]
+sigma_zz = evals[2]</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evalsvecs_mehring">
+<tt class="descname">evalsvecs_mehring</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evalsvecs_mehring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues and eigenvectors of sigma ordered according to the Mehring notation:</p>
+<p><img class="math" src="_images/math/559442d02157db31e09ec4d45ebdd86c9e9c60ba.png" alt="\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evecs">
+<tt class="descname">evecs</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvectors of sigma, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/fa64ed1a2c2473a3c463ff35a4adffcc11d5e7cc.png" alt="|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|"/></p>
+<p>where</p>
+<blockquote>
+<div>sigma_xx = evals[0]
+sigma_yy = evals[1]
+sigma_zz = evals[2]</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evecs_mehring">
+<tt class="descname">evecs_mehring</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evecs_mehring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvectors of sigma ordered according to the Mehring notation:</p>
+<p><img class="math" src="_images/math/559442d02157db31e09ec4d45ebdd86c9e9c60ba.png" alt="\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.iso">
+<tt class="descname">iso</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.iso" title="Permalink to this definition">¶</a></dt>
+<dd><p>The isotropic part of sigma. Defined by</p>
+<p><img class="math" src="_images/math/973a5a600ed13b120acd928b22e5d18d3326f693.png" alt="\sigma_{iso} = (\sigma_{XX} + \sigma_{YY} + \sigma_{ZZ})/3.0"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.sigma">
+<tt class="descname">sigma</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.sigma" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sigma tensor, i.e. the magnetic shielding.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.skew">
+<tt class="descname">skew</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.skew" title="Permalink to this definition">¶</a></dt>
+<dd><p>The skew of sigma. Defined by</p>
+<p><img class="math" src="_images/math/6a008dc193bb0447e83a6fa261859391f1cdb7cd.png" alt="\kappa = 3(\sigma_{iso} - \sigma_{22}) / \Omega"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.span">
+<tt class="descname">span</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.span" title="Permalink to this definition">¶</a></dt>
+<dd><p>The span of sigma. Defined by</p>
+<p><img class="math" src="_images/math/8a9da62f2671ae8e23b387adaaca107c43d5ddc0.png" alt="\Omega = \sigma_{33} - \sigma_{11}"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.sym">
+<tt class="descname">sym</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.sym" title="Permalink to this definition">¶</a></dt>
+<dd><p>The symmetric part of sigma.</p>
+<p><img class="math" src="_images/math/81a5edbb09f46b023fcd8fe48516d7c9fd245130.png" alt="\sigma_{sym} = (\sigma + \sigma^T)/2.0"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.zeta">
+<tt class="descname">zeta</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.zeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shielding anisotropy (alternative). Defined by</p>
+<p><img class="math" src="_images/math/5e65db6262f6fb759db598c5cf559b03813f8bb5.png" alt="\zeta = \sigma_{ZZ} - \sigma_{iso}"/></p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="magres.atoms.MagresAtomEfg">
 <em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtomEfg</tt><big>(</big><em>atom</em>, <em>magres_efg</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomEfg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Representation of the electric field gradient on a particular atom.</p>
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.Cq">
+<tt class="descname">Cq</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.Cq" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Cq of the V tensor.</p>
+<p><img class="math" src="_images/math/0698d5ef5e4eb8fa4d7aca15cb2fddad9b4e4bf2.png" alt="C_q = eV_{ZZ} Q / h"/></p>
+<p>Where Q is the quadrupole moment of this particular species, e is the electron charge and h is Planck&#8217;s constant.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.V">
+<tt class="descname">V</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.V" title="Permalink to this definition">¶</a></dt>
+<dd><p>The EFG V tensor in atomic units.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.evals">
+<tt class="descname">evals</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.evals" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues of V, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/343cb9d58ca020accfed329330e05d0fdd6a575d.png" alt="|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|"/></p>
+<p>where</p>
+<blockquote>
+<div>V_XX = evals[0]
+V_YY = evals[1]
+V_ZZ = evals[2]</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.evalsvecs">
+<tt class="descname">evalsvecs</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.evalsvecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues and eigenvectors of V, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/343cb9d58ca020accfed329330e05d0fdd6a575d.png" alt="|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|"/></p>
+<p>where</p>
+<blockquote>
+<div>V_XX = evals[0]
+V_YY = evals[1]
+V_ZZ = evals[2]</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.evecs">
+<tt class="descname">evecs</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.evecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvectors of V, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/343cb9d58ca020accfed329330e05d0fdd6a575d.png" alt="|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|"/></p>
+<p>where</p>
+<blockquote>
+<div>V_XX = evals[0]
+V_YY = evals[1]
+V_ZZ = evals[2]</div></blockquote>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">

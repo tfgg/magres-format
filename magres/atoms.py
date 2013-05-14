@@ -27,14 +27,18 @@ class MagresAtomEfg(object):
   @lazyproperty
   def V(self):
     """
-      Return the EFG V tensor in atomic units (?)
+      The EFG V tensor in atomic units.
     """
     return numpy.array(self.magres_efg['V'])
 
   @lazyproperty
   def Cq(self):
     """
-      Calculate the Cq from the V tensor
+      The Cq of the V tensor.
+
+      :math:`C_q = eV_{ZZ} Q / h`
+
+      Where Q is the quadrupole moment of this particular species, e is the electron charge and h is Planck's constant.
     """
     try:
       return constants.efg_to_Cq_isotope(self.V, self.atom.species, self.atom.isotope)
@@ -43,6 +47,17 @@ class MagresAtomEfg(object):
 
   @lazyproperty
   def evalsvecs(self):
+    """
+      The eigenvalues and eigenvectors of V, ordered according to the Haeberlen convention:
+
+      :math:`|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|`
+      
+      where
+
+        V_XX = evals[0]
+        V_YY = evals[1]
+        V_ZZ = evals[2]
+    """
     evals, evecs = numpy.linalg.eig(self.magres_efg['V'])
 
     se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x)))
@@ -51,10 +66,32 @@ class MagresAtomEfg(object):
 
   @lazyproperty
   def evecs(self):
+    """
+      The eigenvectors of V, ordered according to the Haeberlen convention:
+
+      :math:`|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|`
+      
+      where
+
+        V_XX = evals[0]
+        V_YY = evals[1]
+        V_ZZ = evals[2]
+    """
     return self.evalsvecs[1]
   
   @lazyproperty
   def evals(self):
+    """
+      The eigenvalues of V, ordered according to the Haeberlen convention:
+
+      :math:`|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|`
+      
+      where
+
+        V_XX = evals[0]
+        V_YY = evals[1]
+        V_ZZ = evals[2]
+    """
     return self.evalsvecs[0]
 
 class MagresAtomIsc(object):
@@ -221,6 +258,8 @@ class MagresAtomMs(object):
   def sym(self):
     """
       The symmetric part of sigma.
+      
+      :math:`\sigma_{sym} = (\sigma + \sigma^T)/2.0`
     """
     return (sigma + sigma.T)/2.0
   
@@ -228,6 +267,8 @@ class MagresAtomMs(object):
   def asym(self):
     """
       The asymmetric part of sigma.
+
+      :math:`\sigma_{asym} = (\sigma - \sigma^T)/2.0`
     """
     return (sigma - sigma.T)/2.0
 
@@ -236,7 +277,7 @@ class MagresAtomMs(object):
     """
       The isotropic part of sigma. Defined by
 
-        sigma_iso = (sigma_xx + sigma_yy + sigma_zz)/3.0
+      :math:`\sigma_{iso} = (\sigma_{XX} + \sigma_{YY} + \sigma_{ZZ})/3.0`
 
     """
     return numpy.trace(self.sigma)/3.0
@@ -246,7 +287,7 @@ class MagresAtomMs(object):
     """
       The shielding anisotropy. Defined by
 
-        delta sigma = sigma_zz - (sigma_xx + sigma_yy)/2.0
+      :math:`\Delta \sigma = \sigma_{ZZ} - (\sigma_{XX} + \sigma_{YY})/2.0`
     """
     ev = self.evals
     return ev[2] - (ev[0] + ev[1])/2.0
@@ -256,7 +297,7 @@ class MagresAtomMs(object):
     """
       The shielding anisotropy (alternative). Defined by
 
-        zeta = sigma_zz - sigma_iso
+      :math:`\zeta = \sigma_{ZZ} - \sigma_{iso}`
     """
     return self.evals[2] - self.iso
 
@@ -265,7 +306,7 @@ class MagresAtomMs(object):
     """
       The shielding asymmetry. Defined by
 
-        eta = (sigma_yy - sigma_xx) / zeta
+      :math:`\eta = (\sigma_{YY} - \sigma_{XX}) / \zeta`
     """
     return (self.evals[1] - self.evals[0]) / self.zeta
 
@@ -274,7 +315,7 @@ class MagresAtomMs(object):
     """
       The eigenvalues and eigenvectors of sigma, ordered according to the Haeberlen convention:
 
-        |sigma_zz - sigma_iso| >= |sigma_xx - sigma_iso| >= |sigma_yy - sigma_iso|
+      :math:`|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|`
       
       where
 
@@ -294,7 +335,7 @@ class MagresAtomMs(object):
     """
       The eigenvectors of sigma, ordered according to the Haeberlen convention:
 
-        |sigma_zz - sigma_iso| >= |sigma_xx - sigma_iso| >= |sigma_yy - sigma_iso|
+      :math:`|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|`
 
       where
 
@@ -309,7 +350,7 @@ class MagresAtomMs(object):
     """
       The eigenvalues of sigma, ordered according to the Haeberlen convention:
 
-        |sigma_zz - sigma_iso| >= |sigma_xx - sigma_iso| >= |sigma_yy - sigma_iso|
+      :math:`|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|`
 
       where
 
@@ -318,6 +359,56 @@ class MagresAtomMs(object):
         sigma_zz = evals[2]
     """
     return self.evalsvecs[0]
+
+  @lazyproperty
+  def evalsvecs_mehring(self):
+    """
+      The eigenvalues and eigenvectors of sigma ordered according to the Mehring notation:
+
+      :math:`\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}`
+    """
+ 
+    evals, evecs = numpy.linalg.eig(self.sigma)
+
+    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): x))
+
+    return ([se[0][0], se[0][1], se[0][2]], [se[1][0], se[1][1], se[1][2]])
+  
+  @lazyproperty
+  def evals_mehring(self):
+    """
+      The eigenvalues of sigma ordered according to the Mehring notation:
+
+      :math:`\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}`
+    """
+    return self.evalsvecs_mehring[0]
+
+  @lazyproperty
+  def evecs_mehring(self):
+    """
+      The eigenvectors of sigma ordered according to the Mehring notation:
+
+      :math:`\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}`
+    """
+    return self.evalsvecs_mehring[1]
+
+  @lazyproperty
+  def span(self):
+    """
+      The span of sigma. Defined by
+
+      :math:`\Omega = \sigma_{33} - \sigma_{11}`
+    """
+    return self.evals_mehring[2] - self.evals_mehring[0]
+  
+  @lazyproperty
+  def skew(self):
+    """
+      The skew of sigma. Defined by
+
+      :math:`\kappa = 3(\sigma_{iso} - \sigma_{22}) / \Omega`
+    """
+    return 3.0*(self.iso - self.evals_mehring[1]) / self.span
 
 class MagresAtom(object):
   def __init__(self, magres_atom):

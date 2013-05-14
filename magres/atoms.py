@@ -136,36 +136,44 @@ class MagresAtomIsc(object):
     """
     return (self.J - self.J.T)/2.0
 
-  def haeberlen_pcs(self, tensor):
-    """
-      Calculate the principal components of tensor according to Haeberlen convention.
-    """
-    evals, evecs = numpy.linalg.eig(tensor)
-    iso = sum(evals)/3.0
-    evals = sorted(evals, key=lambda x: abs(x - iso))
+  @lazyproperty
+  def K_evalsvecs(self):
+    evals, evecs = numpy.linalg.eig(self.K)
 
-    return (evals[1], evals[0], evals[2])
+    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x-self.K_iso)))
 
-  @property
-  def K_haeberlen(self):
-    """
-      The principal components of K by Haeberlen convention
-    """
-    return self.haeberlen_pcs(self.K)
+    return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
+
+  @lazyproperty
+  def K_evecs(self):
+    return self.K_evalsvecs[1]
   
-  @property
-  def J_haeberlen(self):
-    """
-      The principal components of J by Haeberlen convention
-    """
-    return self.haeberlen_pcs(self.J)
+  @lazyproperty
+  def K_evals(self):
+    return self.K_evalsvecs[0]
+
+  @lazyproperty
+  def J_evalsvecs(self):
+    evals, evecs = numpy.linalg.eig(self.J)
+
+    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x-self.J_iso)))
+
+    return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
+
+  @lazyproperty
+  def J_evecs(self):
+    return self.J_evalsvecs[1]
+  
+  @lazyproperty
+  def J_evals(self):
+    return self.J_evalsvecs[0]
 
   @property
   def K_aniso(self):
     """
       The K anisotropy.
     """
-    jx = self.K_haeberlen
+    jx = self.K_evals
     return jx[2] - (jx[0] + jx[1])/2.0
   
   @property
@@ -173,7 +181,7 @@ class MagresAtomIsc(object):
     """
       The J anisotropy.
     """
-    jx = self.J_haeberlen
+    jx = self.J_evals
     return jx[2] - (jx[0] + jx[1])/2.0
 
   @property
@@ -181,7 +189,7 @@ class MagresAtomIsc(object):
     """
       The K principal component asymmetry.
     """
-    jx = self.K_haeberlen
+    jx = self.K_evals
     return (jx[1] - jx[0]) / (jx[2] - sum(jx)/3.0)
   
   @property
@@ -189,7 +197,7 @@ class MagresAtomIsc(object):
     """
       The K principal component asymmetry.
     """
-    jx = self.J_haeberlen
+    jx = self.J_evals
     return (jx[1] - jx[0]) / (jx[2] - sum(jx)/3.0)
 
 class MagresAtomMs(object):
@@ -467,6 +475,16 @@ class MagresAtomsView(object):
           atoms.append(atom)
 
     return MagresAtomsView(atoms, self.lattice)
+
+  #def transform(self, M):
+  #  """
+  #    Apply matrix M to positions of all atoms and return them.
+  #
+  #    TODO: Is this useful? What about rotating the tensors?
+  #    Active vs. passive rotations? What about the lattice?
+  #  """
+
+  #  return [MagresAtomImage(numpy.dot(M, atom.position.T).T, atom) for atom in self.atoms]
 
   def least_mirror(self, a, b):
     """

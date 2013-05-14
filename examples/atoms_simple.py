@@ -4,7 +4,7 @@ atoms = MagresAtoms.load_magres('samples/simple.magres')
 
 print atoms[0].position
 
-Catoms = atoms
+Catoms = atoms.species('C')
 
 print "1"
 for atom in Catoms.within(atoms[0], 1.0):

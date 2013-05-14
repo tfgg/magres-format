@@ -1,6 +1,66 @@
+import math
+import numpy
 import unittest
+import os
 from magres.format import MagresFile
 from magres.atoms import MagresAtoms
+
+DATA_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data")
+
+class MagresTest(unittest.TestCase):
+  def test_isc(self):
+    atoms = MagresAtoms.load_magres(os.path.join(DATA_DIR, "ethanol-isc.magres"))
+
+    self.assertTrue(hasattr(atoms, "isc"))
+    self.assertTrue(hasattr(atoms, "isc_orbital_p"))
+    self.assertTrue(hasattr(atoms, "isc_orbital_d"))
+    self.assertTrue(hasattr(atoms, "isc_spin"))
+    self.assertTrue(hasattr(atoms, "isc_fc"))
+
+    self.assertEqual(len(atoms.isc), len(atoms))
+
+    perturb_atom = atoms.get_species('C', 2)
+
+    for isc in atoms.isc:
+      self.assertEqual(isc.atom1, perturb_atom)
+    
+    # Check that the principal components are ordered by the Haeberlen convention
+    for isc in atoms.isc:
+      self.assertTrue(abs(isc.K_evals[2] - isc.K_iso) >= abs(isc.K_evals[0] - isc.K_iso))
+      self.assertTrue(abs(isc.K_evals[0] - isc.K_iso) >= abs(isc.K_evals[1] - isc.K_iso))
+
+  def test_full_isc(self):
+    magres_files = [MagresFile(open(os.path.join(DATA_DIR, "ethanol", f))) for f in os.listdir(os.path.join(DATA_DIR, "ethanol")) if f.startswith('ethanol-jc')]
+
+    self.assertEqual(len(magres_files), 9)
+
+    atoms = MagresAtoms.load_magres(magres_files)
+
+    self.assertTrue(hasattr(atoms, "isc"))
+    self.assertEqual(len(atoms.isc), len(atoms)**2)
+
+    # Check every atom has couplings to every other atom
+    for atom in atoms:
+      self.assertEqual(len(atom.isc), len(atoms))
+
+  def test_nmr(self):
+    atoms = MagresAtoms.load_magres(os.path.join(DATA_DIR, "ethanol/ethanol-nmr.magres"))
+    
+    self.assertTrue(hasattr(atoms, "ms"))
+    self.assertTrue(hasattr(atoms, "efg"))
+
+    self.assertEqual(len(atoms.efg), 9)
+    self.assertEqual(len(atoms.ms), 9)
+
+    # Check that the EFGs are traceless
+    for efg in atoms.efg:
+      self.assertTrue(numpy.trace(efg.V)/3.0 < 1e-12)
+
+    # Check that the principal components are ordered by the Haeberlen convention
+    # |Vzz| >= |Vxx| >= |Vyy|
+    for efg in atoms.efg:
+      self.assertTrue(abs(efg.evals[2]) >= abs(efg.evals[0]))
+      self.assertTrue(abs(efg.evals[0]) >= abs(efg.evals[1]))
 
 class AtomsTest(unittest.TestCase):
   cubic = MagresFile.load_json('{"atoms": {"units": [["atom", "Angstrom"], ["lattice", "Angstrom"]], "lattice": [[[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]], "atom": [{"index": 1, "position": [0.0, 0.0, 0.0], "species": "H", "label": "H"}]}}')

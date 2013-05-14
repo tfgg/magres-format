@@ -181,7 +181,7 @@ class MagresAtomIsc(object):
 
   @lazyproperty
   def K_evalsvecs(self):
-    evals, evecs = numpy.linalg.eig(self.K)
+    evals, evecs = numpy.linalg.eig(self.K_sym)
 
     se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x-self.K_iso)))
 
@@ -197,7 +197,7 @@ class MagresAtomIsc(object):
 
   @lazyproperty
   def J_evalsvecs(self):
-    evals, evecs = numpy.linalg.eig(self.J)
+    evals, evecs = numpy.linalg.eig(self.J_sym)
 
     se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x-self.J_iso)))
 

@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting started &mdash; Magres format 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Magres format 0.9 documentation" href="index.html" />
+    <link rel="up" title="Python modules" href="tutorials.html" />
+    <link rel="next" title="magres.atoms" href="atoms.html" />
+    <link rel="prev" title="Python modules" href="tutorials.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="atoms.html" title="magres.atoms"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tutorials.html" title="Python modules"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Magres format 0.9 documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" accesskey="U">Python modules</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installing">
+<h2>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h2>
+<p>You can either use git to clone the latest version of the repository or download the repository as a .zip.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">tfgg</span><span class="o">/</span><span class="n">magres</span><span class="o">-</span><span class="n">format</span><span class="o">.</span><span class="n">git</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="n">magres</span><span class="o">-</span><span class="n">format</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">tfgg</span><span class="o">/</span><span class="n">magres</span><span class="o">-</span><span class="n">format</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">master</span><span class="o">.</span><span class="n">zip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unzip</span> <span class="n">master</span><span class="o">.</span><span class="n">zip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="n">magres</span><span class="o">-</span><span class="n">format</span><span class="o">-</span><span class="n">master</span>
+</pre></div>
+</div>
+<p>Now you run setup.py to install the module and associated scripts. If you want to install it system wide, run</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sudo</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>If you want to install it locally (e.g. if you don&#8217;t have sudo), run</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>
+</pre></div>
+</div>
+<p>and it should now be available to you.</p>
+</div>
+<div class="section" id="python-module">
+<h2>Python module<a class="headerlink" href="#python-module" title="Permalink to this headline">¶</a></h2>
+<p>The package comes with a number of Python modules, documented separately.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="atoms.html">magres.atoms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format.html">magres.format</a></li>
+</ul>
+</div>
+<p>Import the modules into your code with the standard import commands</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">magres.atoms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">magres.format</span>
+</pre></div>
+</div>
+<p>or just import individual components</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">magres.atoms</span> <span class="kn">import</span> <span class="n">MagresAtoms</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="helper-scripts">
+<h2>Helper scripts<a class="headerlink" href="#helper-scripts" title="Permalink to this headline">¶</a></h2>
+<p>The package comes with a number of helper scripts that can be run from the command line.</p>
+<div class="section" id="dump-json-magresjson-py">
+<h3>Dump JSON: magresjson.py<a class="headerlink" href="#dump-json-magresjson-py" title="Permalink to this headline">¶</a></h3>
+<p>This will give you a JSON dump of a given .magres text file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">magresjson</span><span class="o">.</span><span class="n">py</span> <span class="n">sample</span><span class="o">.</span><span class="n">magres</span> <span class="o">&gt;</span> <span class="n">sample</span><span class="o">.</span><span class="n">magres</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="merge-magres-files-magresmerge-py">
+<h3>Merge .magres files: magresmerge.py<a class="headerlink" href="#merge-magres-files-magresmerge-py" title="Permalink to this headline">¶</a></h3>
+<p>This will merge together several given .magres (e.g. different perturbing atoms in an indirect spin-spin coupling calculation) and output the result.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">magresmerge</span><span class="o">.</span><span class="n">py</span> <span class="o">*/*.</span><span class="n">magres</span> <span class="o">&gt;</span> <span class="n">ethanol</span><span class="o">-</span><span class="n">jc</span><span class="o">.</span><span class="n">magres</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="quickly-analyse-j-couplings-extract-all-jc-compare-py">
+<h3>Quickly analyse J-couplings: extract-all-jc-compare.py<a class="headerlink" href="#quickly-analyse-j-couplings-extract-all-jc-compare-py" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">extract</span><span class="o">-</span><span class="nb">all</span><span class="o">-</span><span class="n">jc</span><span class="o">-</span><span class="n">compare</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="n">directory</span><span class="p">]</span> <span class="p">[</span><span class="n">species</span><span class="p">]</span> <span class="p">[</span><span class="n">index</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This will find all two-way indirect spin-spin coupling calculations below [directory] between atom [species] [index] and other atoms and print them out for analysis.</p>
+</div>
+</div>
+<div class="section" id="samples-and-example-scripts">
+<h2>Samples and example scripts<a class="headerlink" href="#samples-and-example-scripts" title="Permalink to this headline">¶</a></h2>
+<p>There are some sample .magres files in the samples/ directory and some example Python processing scripts in the examples/ directory. Run the example scripts from the package root, like</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">examples</span><span class="o">/</span><span class="n">atoms_ms</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>or they will not find the correct .magres files.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting started</a><ul>
+<li><a class="reference internal" href="#installing">Installing</a></li>
+<li><a class="reference internal" href="#python-module">Python module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#helper-scripts">Helper scripts</a><ul>
+<li><a class="reference internal" href="#dump-json-magresjson-py">Dump JSON: magresjson.py</a></li>
+<li><a class="reference internal" href="#merge-magres-files-magresmerge-py">Merge .magres files: magresmerge.py</a></li>
+<li><a class="reference internal" href="#quickly-analyse-j-couplings-extract-all-jc-compare-py">Quickly analyse J-couplings: extract-all-jc-compare.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#samples-and-example-scripts">Samples and example scripts</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tutorials.html"
+                        title="previous chapter">Python modules</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="atoms.html"
+                        title="next chapter">magres.atoms</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/tutorial_getting_started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="atoms.html" title="magres.atoms"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tutorials.html" title="Python modules"
+             >previous</a> |</li>
+        <li><a href="index.html">Magres format 0.9 documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" >Python modules</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tim Green.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>

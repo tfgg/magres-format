@@ -54,9 +54,11 @@ class MagresAtomEfg(object):
       
       where
 
-        V_XX = evals[0]
-        V_YY = evals[1]
-        V_ZZ = evals[2]
+        :math:`V_{XX}` = evals[0]
+
+        :math:`V_{YY}` = evals[1]
+
+        :math:`V_{ZZ}` = evals[2]
     """
     evals, evecs = numpy.linalg.eig(self.magres_efg['V'])
 
@@ -73,9 +75,11 @@ class MagresAtomEfg(object):
       
       where
 
-        V_XX = evals[0]
-        V_YY = evals[1]
-        V_ZZ = evals[2]
+        :math:`V_{XX}` = evals[0]
+
+        :math:`V_{YY}` = evals[1]
+
+        :math:`V_{ZZ}` = evals[2]
     """
     return self.evalsvecs[1]
   
@@ -88,9 +92,11 @@ class MagresAtomEfg(object):
       
       where
 
-        V_XX = evals[0]
-        V_YY = evals[1]
-        V_ZZ = evals[2]
+        :math:`V_{XX}` = evals[0]
+
+        :math:`V_{YY}` = evals[1]
+
+        :math:`V_{ZZ}` = evals[2]
     """
     return self.evalsvecs[0]
 
@@ -259,25 +265,25 @@ class MagresAtomMs(object):
     """
       The symmetric part of sigma.
       
-      :math:`\sigma_{sym} = (\sigma + \sigma^T)/2.0`
+      :math:`\sigma_{sym} = (\sigma + \sigma^T)/2`
     """
-    return (sigma + sigma.T)/2.0
+    return (self.sigma + self.sigma.T)/2.0
   
   @lazyproperty
   def asym(self):
     """
       The asymmetric part of sigma.
 
-      :math:`\sigma_{asym} = (\sigma - \sigma^T)/2.0`
+      :math:`\sigma_{asym} = (\sigma - \sigma^T)/2`
     """
-    return (sigma - sigma.T)/2.0
+    return (self.sigma - self.sigma.T)/2.0
 
   @lazyproperty
   def iso(self):
     """
       The isotropic part of sigma. Defined by
 
-      :math:`\sigma_{iso} = (\sigma_{XX} + \sigma_{YY} + \sigma_{ZZ})/3.0`
+      :math:`\sigma_{iso} = (\sigma_{XX} + \sigma_{YY} + \sigma_{ZZ})/3`
 
     """
     return numpy.trace(self.sigma)/3.0
@@ -287,7 +293,7 @@ class MagresAtomMs(object):
     """
       The shielding anisotropy. Defined by
 
-      :math:`\Delta \sigma = \sigma_{ZZ} - (\sigma_{XX} + \sigma_{YY})/2.0`
+      :math:`\Delta \sigma = \sigma_{ZZ} - (\sigma_{XX} + \sigma_{YY})/2`
     """
     ev = self.evals
     return ev[2] - (ev[0] + ev[1])/2.0
@@ -313,18 +319,18 @@ class MagresAtomMs(object):
   @lazyproperty
   def evalsvecs(self):
     """
-      The eigenvalues and eigenvectors of sigma, ordered according to the Haeberlen convention:
+      The eigenvalues and eigenvectors of the symmetric part of sigma, ordered according to the Haeberlen convention:
 
       :math:`|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|`
       
       where
 
-        sigma_xx = evals[0]
-        sigma_yy = evals[1]
-        sigma_zz = evals[2]
+        sigma_XX = evals[0]
+        sigma_YY = evals[1]
+        sigma_ZZ = evals[2]
     """
 
-    evals, evecs = numpy.linalg.eig(self.sigma)
+    evals, evecs = numpy.linalg.eig(self.sym)
 
     se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x - self.iso)))
 
@@ -339,9 +345,9 @@ class MagresAtomMs(object):
 
       where
 
-        sigma_xx = evals[0]
-        sigma_yy = evals[1]
-        sigma_zz = evals[2]
+        sigma_XX = evals[0]
+        sigma_YY = evals[1]
+        sigma_ZZ = evals[2]
     """
     return self.evalsvecs[1]
   
@@ -354,21 +360,21 @@ class MagresAtomMs(object):
 
       where
 
-        sigma_xx = evals[0]
-        sigma_yy = evals[1]
-        sigma_zz = evals[2]
+        sigma_XX = evals[0]
+        sigma_YY = evals[1]
+        sigma_ZZ = evals[2]
     """
     return self.evalsvecs[0]
 
   @lazyproperty
   def evalsvecs_mehring(self):
     """
-      The eigenvalues and eigenvectors of sigma ordered according to the Mehring notation:
+      The eigenvalues and eigenvectors of the symmetric part of sigma ordered according to the Mehring notation:
 
       :math:`\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}`
     """
  
-    evals, evecs = numpy.linalg.eig(self.sigma)
+    evals, evecs = numpy.linalg.eig(self.sym)
 
     se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): x))
 
@@ -421,6 +427,10 @@ class MagresAtom(object):
       return "%d%s%d" % (self.isotope, self.species, self.index)
 
   def dist(self, r):
+    """
+      Calculate distance from this atom to another position or atom.
+    """
+
     if hasattr(r, 'position'):
       r = r.position
     dr = self.position - r
@@ -428,6 +438,9 @@ class MagresAtom(object):
 
   @property
   def label(self):
+    """
+      This atom's label.
+    """
     return self.magres_atom['label']
   
   @label.setter
@@ -436,6 +449,9 @@ class MagresAtom(object):
 
   @property
   def species(self):
+    """
+      This atom's species.
+    """
     return self.magres_atom['species']
  
   @species.setter
@@ -444,14 +460,23 @@ class MagresAtom(object):
 
   @property
   def index(self):
+    """
+      This atom's label index.
+    """
     return self.magres_atom['index']
   
   @property
   def position(self):
+    """
+      This atom's position in cartesian coordinates. Units are Angstroms.
+    """
     return numpy.array(self.magres_atom['position'])
 
   @property
   def isotope(self):
+    """
+      The isotope of this atom. Assumed to be most common NMR-active nucleus unless specified otherwise.
+    """
     if hasattr(self, '_isotope'):
       return self._isotope
     else:
@@ -469,6 +494,9 @@ class MagresAtom(object):
 
   @property
   def gamma(self):
+    """
+      The gyromagnetic ratio constant of this atom's species and isotope.
+    """
     if self.isotope in constants.gamma:
       return constants.gamma[self.isotope]
     else:
@@ -476,12 +504,19 @@ class MagresAtom(object):
   
   @property
   def Q(self):
+    """
+      The quadrupole moment of this atom's species and isotope.
+    """
     if self.isotope in constants.Q:
       return constants.Q[self.isotope]
     else:
       return 0.0
 
 class MagresAtomImage(object):
+  """
+    A periodic image of a particular atom. Exactly like the underlying atom except for its position.
+  """
+
   def __init__(self, atom, position):
     object.__setattr__(self, "position", position)
     object.__setattr__(self, "atom", atom)
@@ -527,6 +562,10 @@ class AtomNotFound(Exception):
   pass
 
 class MagresAtomsView(object):
+  """
+    A container for a collection of atoms with an optional lattice.
+  """
+
   def __init__(self, atoms=None, lattice=None):
     if atoms is not None:
       self.atoms = atoms
@@ -541,7 +580,7 @@ class MagresAtomsView(object):
     self.label_index = {}
     self.species_index = {}
 
-    self.build_index()
+    self._build_index()
 
   def add(self, atoms):
     """
@@ -554,9 +593,9 @@ class MagresAtomsView(object):
       for atom in atoms:
         self.atoms.append(atom)
 
-    self.build_index()
+    self._build_index()
 
-  def build_index(self):
+  def _build_index(self):
     self.label_index.clear()
     self.species_index.clear()
 
@@ -573,10 +612,9 @@ class MagresAtomsView(object):
 
   def get_label(self, label, index=None):
     """
-      Get all atoms of a particular label or a single atom of a particular label and index.
+      Get a single atom of a particular label and index.
 
-      >>> atoms.get_label("Al2")
-      >>> atoms.get_label("Al2", 10)
+      >>> atoms.get_label("C1", 2)
     """
 
     if label not in self.label_index:
@@ -591,7 +629,9 @@ class MagresAtomsView(object):
 
   def label(self, label):
     """
-      test version of get_label that returns the list of atoms as a magresatoms object, to make chaining easy.
+      Return a MagresAtomsView containing only atoms of the specified label.
+
+      >>> atoms.label("C1")
     """
     if type(label) != list:
       label = [label]
@@ -604,10 +644,9 @@ class MagresAtomsView(object):
 
   def get_species(self, species, index=None):
     """
-      Get all atoms of a particular species or a single atom of a particular species and index.
+      Get a single atom of a particular species and index.
       
-      >>> atoms.get_species("Al")
-      >>> atoms.get_species("Al", 10)
+      >>> atoms.get_species('C', 2)
     """
 
     if species not in self.species_index:
@@ -622,7 +661,9 @@ class MagresAtomsView(object):
 
   def species(self, species):
     """
-      test version of get_species that returns the list of atoms as a magresatoms object, to make chaining easy.
+      Return a MagresAtomsView containing only atoms of the specified species.
+
+      >>> atoms.species('C')
     """
     if type(species) != list:
       species = [species]
@@ -635,7 +676,9 @@ class MagresAtomsView(object):
 
   def within(self, pos, max_dr):
     """
-      Gives you all atoms within max_dr angstroms of pos, including all images.
+      Return all atoms within max_dr Angstroms of pos, including all images.
+
+      >>> atoms.within(p, 5.0)
     """
 
     if type(pos) is MagresAtom:
@@ -645,7 +688,7 @@ class MagresAtomsView(object):
 
     for atom in self.atoms:
       if type(atom) == MagresAtom:
-        images = self.all_images_within(atom.position, pos, max_dr)
+        images = self._all_images_within(atom.position, pos, max_dr)
 
         for image_dist, image_pos in images:
           if image_dist <= max_dr:
@@ -666,7 +709,7 @@ class MagresAtomsView(object):
 
   #  return [MagresAtomImage(numpy.dot(M, atom.position.T).T, atom) for atom in self.atoms]
 
-  def least_mirror(self, a, b):
+  def _least_mirror(self, a, b):
     """
       Give the closest periodic image of a to b given the current lattice.
     """
@@ -686,7 +729,7 @@ class MagresAtomsView(object):
 
     return (math.sqrt(min), min_p)
 
-  def all_images_within(self, a, b, r):
+  def _all_images_within(self, a, b, r):
     """
       Give all images of a to b within distance r.
     """

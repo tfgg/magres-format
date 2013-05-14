@@ -6,6 +6,9 @@ magres.atoms
 .. autoclass:: magres.atoms.MagresAtoms
   :members:
 
+.. autoclass:: magres.atoms.MagresAtomsView
+  :members:
+
 .. autoclass:: magres.atoms.MagresAtom
   :members:
 

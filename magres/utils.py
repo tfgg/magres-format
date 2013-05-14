@@ -41,7 +41,6 @@ class lazyproperty(object):
       self.__doc__ = fget.__doc__
 
     self.__name__ = fget.__name__
-    self.cache = None
 
   def __get__(self,obj,cls):
     # When the property on the owner instance is first accessed we 
@@ -51,8 +50,5 @@ class lazyproperty(object):
     if obj is None:
       return self
 
-    if self.cache is None:
-      self.cache = self.fget(obj)
-
-    return self.cache
+    return self.fget(obj)
 

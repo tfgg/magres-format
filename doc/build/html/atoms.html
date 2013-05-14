@@ -58,52 +58,8 @@ calculate a variety of properties from the underlying tensors, according to
 a variety of conventions.</p>
 <dl class="class">
 <dt id="magres.atoms.MagresAtoms">
-<em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtoms</tt><big>(</big><em>atoms=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtoms</tt><big>(</big><em>atoms=None</em>, <em>lattice=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collection of atoms, including lattice parameters, and (if available) lists of NMR parameters.</p>
-<dl class="method">
-<dt id="magres.atoms.MagresAtoms.add">
-<tt class="descname">add</tt><big>(</big><em>atoms</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.add" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add an extra atom or list of atoms.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="magres.atoms.MagresAtoms.all_images_within">
-<tt class="descname">all_images_within</tt><big>(</big><em>a</em>, <em>b</em>, <em>r</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.all_images_within" title="Permalink to this definition">¶</a></dt>
-<dd><p>Give all images of a to b within distance r.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="magres.atoms.MagresAtoms.from_magres">
-<tt class="descname">from_magres</tt><big>(</big><em>magres_file</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.from_magres" title="Permalink to this definition">¶</a></dt>
-<dd><p>Take a MagresFile and create the MagresAtoms structure.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="magres.atoms.MagresAtoms.get_label">
-<tt class="descname">get_label</tt><big>(</big><em>label</em>, <em>index=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.get_label" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all atoms of a particular label or a single atom of a particular label and index.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s">&quot;Al2&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s">&quot;Al2&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="magres.atoms.MagresAtoms.get_species">
-<tt class="descname">get_species</tt><big>(</big><em>species</em>, <em>index=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.get_species" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all atoms of a particular species or a single atom of a particular species and index.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&quot;Al&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&quot;Al&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="magres.atoms.MagresAtoms.least_mirror">
-<tt class="descname">least_mirror</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.least_mirror" title="Permalink to this definition">¶</a></dt>
-<dd><p>Give the closest periodic image of a to b given the current lattice.</p>
-</dd></dl>
-
 <dl class="classmethod">
 <dt id="magres.atoms.MagresAtoms.load_magres">
 <em class="property">classmethod </em><tt class="descname">load_magres</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.load_magres" title="Permalink to this definition">¶</a></dt>
@@ -117,12 +73,6 @@ a variety of conventions.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="magres.atoms.MagresAtoms.within">
-<tt class="descname">within</tt><big>(</big><em>pos</em>, <em>max_dr</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtoms.within" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gives you all atoms within max_dr angstroms of pos, including all images</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -134,18 +84,6 @@ a variety of conventions.</p>
 <dt id="magres.atoms.MagresAtomMs">
 <em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtomMs</tt><big>(</big><em>atom</em>, <em>magres_ms</em>, <em>reference=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomMs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Representation of the magnetic shielding of a particular atom.</p>
-<dl class="attribute">
-<dt id="magres.atoms.MagresAtomMs.iso">
-<tt class="descname">iso</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.iso" title="Permalink to this definition">¶</a></dt>
-<dd><p>The referenced isotropic component of the sigma tensor.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="magres.atoms.MagresAtomMs.sigma">
-<tt class="descname">sigma</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.sigma" title="Permalink to this definition">¶</a></dt>
-<dd><p>The sigma tensor.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -180,12 +118,6 @@ a variety of conventions.</p>
 <dt id="magres.atoms.MagresAtomIsc.J_eta">
 <tt class="descname">J_eta</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.J_eta" title="Permalink to this definition">¶</a></dt>
 <dd><p>The K principal component asymmetry.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="magres.atoms.MagresAtomIsc.J_haeberlen">
-<tt class="descname">J_haeberlen</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.J_haeberlen" title="Permalink to this definition">¶</a></dt>
-<dd><p>The principal components of J by Haeberlen convention</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -225,12 +157,6 @@ a variety of conventions.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="magres.atoms.MagresAtomIsc.K_haeberlen">
-<tt class="descname">K_haeberlen</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.K_haeberlen" title="Permalink to this definition">¶</a></dt>
-<dd><p>The principal components of K by Haeberlen convention</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="magres.atoms.MagresAtomIsc.K_iso">
 <tt class="descname">K_iso</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.K_iso" title="Permalink to this definition">¶</a></dt>
 <dd><p>The isotropic component of the reduced indirect spin-spin coupling tensor.</p>
@@ -246,12 +172,6 @@ a variety of conventions.</p>
 <dt id="magres.atoms.MagresAtomIsc.dist">
 <tt class="descname">dist</tt><a class="headerlink" href="#magres.atoms.MagresAtomIsc.dist" title="Permalink to this definition">¶</a></dt>
 <dd><p>The distance between the two atoms involved.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="magres.atoms.MagresAtomIsc.haeberlen_pcs">
-<tt class="descname">haeberlen_pcs</tt><big>(</big><em>tensor</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomIsc.haeberlen_pcs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the principal components of tensor according to Haeberlen convention.</p>
 </dd></dl>
 
 <dl class="attribute">

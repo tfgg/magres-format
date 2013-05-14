@@ -210,25 +210,114 @@ class MagresAtomMs(object):
     self.magres_ms = magres_ms
     self.reference = reference
 
-  @property
+  @lazyproperty
   def sigma(self):
     """
-      The sigma tensor.
+      The sigma tensor, i.e. the magnetic shielding.
     """
-    return self.magres_ms['sigma']
+    return numpy.array(self.magres_ms['sigma'])
 
-  @property
+  @lazyproperty
+  def sym(self):
+    """
+      The symmetric part of sigma.
+    """
+    return (sigma + sigma.T)/2.0
+  
+  @lazyproperty
+  def asym(self):
+    """
+      The asymmetric part of sigma.
+    """
+    return (sigma - sigma.T)/2.0
+
+  @lazyproperty
   def iso(self):
     """
-      The referenced isotropic component of the sigma tensor.
+      The isotropic part of sigma. Defined by
+
+        sigma_iso = (sigma_xx + sigma_yy + sigma_zz)/3.0
+
+    """
+    return numpy.trace(self.sigma)/3.0
+
+  @lazyproperty
+  def aniso(self):
+    """
+      The shielding anisotropy. Defined by
+
+        delta sigma = sigma_zz - (sigma_xx + sigma_yy)/2.0
+    """
+    ev = self.evals
+    return ev[2] - (ev[0] + ev[1])/2.0
+
+  @lazyproperty
+  def zeta(self):
+    """
+      The shielding anisotropy (alternative). Defined by
+
+        zeta = sigma_zz - sigma_iso
+    """
+    return self.evals[2] - self.iso
+
+  @lazyproperty
+  def eta(self):
+    """
+      The shielding asymmetry. Defined by
+
+        eta = (sigma_yy - sigma_xx) / zeta
+    """
+    return (self.evals[1] - self.evals[0]) / self.zeta
+
+  @lazyproperty
+  def evalsvecs(self):
+    """
+      The eigenvalues and eigenvectors of sigma, ordered according to the Haeberlen convention:
+
+        |sigma_zz - sigma_iso| >= |sigma_xx - sigma_iso| >= |sigma_yy - sigma_iso|
+      
+      where
+
+        sigma_xx = evals[0]
+        sigma_yy = evals[1]
+        sigma_zz = evals[2]
     """
 
-    if self.reference is None:
-      reference = 0.0
-    else:
-      reference = self.reference
+    evals, evecs = numpy.linalg.eig(self.sigma)
 
-    return reference - numpy.trace(self.sigma)/3.0
+    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x - self.iso)))
+
+    return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
+
+  @lazyproperty
+  def evecs(self):
+    """
+      The eigenvectors of sigma, ordered according to the Haeberlen convention:
+
+        |sigma_zz - sigma_iso| >= |sigma_xx - sigma_iso| >= |sigma_yy - sigma_iso|
+
+      where
+
+        sigma_xx = evals[0]
+        sigma_yy = evals[1]
+        sigma_zz = evals[2]
+    """
+    return self.evalsvecs[1]
+  
+  @lazyproperty
+  def evals(self):
+    """
+      The eigenvalues of sigma, ordered according to the Haeberlen convention:
+
+        |sigma_zz - sigma_iso| >= |sigma_xx - sigma_iso| >= |sigma_yy - sigma_iso|
+
+      where
+
+        sigma_xx = evals[0]
+        sigma_yy = evals[1]
+        sigma_zz = evals[2]
+    """
+    return self.evalsvecs[0]
 
 class MagresAtom(object):
   def __init__(self, magres_atom):
@@ -650,6 +739,10 @@ class MagresAtoms(MagresAtomsView):
           getattr(atom1, isc_type)[atom2] = magres_atom_isc
 
     return (atoms, lattice)
+
+  def set_reference(self, species, reference):
+    for atom in self.species(species):
+      atom.reference = reference
 
   @classmethod
   def load_magres(self, f):

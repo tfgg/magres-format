@@ -3,6 +3,8 @@ magres-format
 
 Code for parsing the CCP-NC ab-initio magnetic resonance file format as used in the latest version of Castep. See more at http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat
 
+Documentation for the Python API is [available here](http://tfgg.github.io/magres-format/build/html/).
+
 Installing
 ----------
 
@@ -30,6 +32,8 @@ and optionally with the associated job's .castep file, to capture the lattice in
 
 Python module usage
 -------------------
+
+More documentation is [available here](http://tfgg.github.io/magres-format/build/html/)
 
 From inside Python you can import the magres.format module and use the MagresFile class.
 

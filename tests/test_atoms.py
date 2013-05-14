@@ -23,6 +23,7 @@ class MagresTest(unittest.TestCase):
 
     for isc in atoms.isc:
       self.assertEqual(isc.atom1, perturb_atom)
+      self.assertEqual(isc.K_iso, numpy.trace(isc.K)/3.0)
     
     # Check that the principal components are ordered by the Haeberlen convention
     for isc in atoms.isc:

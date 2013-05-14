@@ -1,35 +1,52 @@
 import unittest
 
-import magres.format as format
+from magres.format import MagresFile, BadVersion
+
+import math
+import numpy
+import unittest
+import os
+from magres.format import MagresFile
+from magres.atoms import MagresAtoms
+
+DATA_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data")
 
 class FormatTest(unittest.TestCase):
-  magres1_path = "test_data/ethanol/ethanol.atoms"
+  def test_nmr(self):
+    f = MagresFile(open(os.path.join(DATA_DIR, "ethanol", "ethanol-nmr.magres")))
 
-  def test_load(self):
-    magres = format.load_magres(open(self.magres1_path).read())
+    self.assertTrue("calculation" in f.data_dict)
+    self.assertTrue("atoms" in f.data_dict)
+    self.assertTrue("magres" in f.data_dict)
+    
+    self.assertTrue("lattice" in f.data_dict["atoms"])
+    self.assertTrue("units" in f.data_dict["atoms"])
+    self.assertTrue("atom" in f.data_dict["atoms"])
+    
+    self.assertTrue("units" in f.data_dict["magres"])
+    self.assertTrue("efg" in f.data_dict["magres"])
+    self.assertTrue("ms" in f.data_dict["magres"])
 
-    self.assertIn('lattice', magres, "Lattice not found") 
-    self.assertIn('atom', magres, "Atoms not found")
-    self.assertIn('ms', magres, "Magnetic shielding not found")
+    num_atoms = len(f.data_dict['atoms']['atom'])
 
-  def test_dump(self):
-    c = calc.CastepCalc(self.calc1_path[0], self.calc1_path[1])
-    c.load()
+    self.assertTrue(len(f.data_dict['magres']['efg']), num_atoms)
+    self.assertTrue(len(f.data_dict['magres']['ms']), num_atoms)
 
-    magres_text = format.write_cell(c.cell)
+  def test_badversion(self):
+    with self.assertRaises(BadVersion):
+      f = MagresFile(open(os.path.join(DATA_DIR, "noversion.magres")))
+    
+    with self.assertRaises(BadVersion):
+      f = MagresFile(open(os.path.join(DATA_DIR, "badversion.magres")))
 
-    self.assertIn('lattice', magres_text, "Lattice not dumped")
-    self.assertIn('atom', magres_text, "Atoms not dumped")
-    self.assertIn('ms', magres_text, "Magnetic shielding not dumped")
-    self.assertIn('bond', magres_text, "Bonds not dumped")
+  def test_json(self):
+    f1 = MagresFile(open(os.path.join(DATA_DIR, "ethanol", "ethanol-nmr.magres")))
 
-    magres = format.load_magres(magres_text)
-    ions = format.load_into_ions(magres)
+    json = f1.as_json()
 
-    self.assertEqual(len(ions), len(c.cell.ions), "Number of ions read back in does not match")
+    f2 = MagresFile.load_json(json)
 
-    # Bonds not loaded from magres yet
-    # self.assertEqual(len(ions.bonds), len(c.cell.ions.bonds), "Number of bonds read back in does not match")
+    self.assertEqual(f1.data_dict, f2.data_dict)
 
 if __name__ == "__main__":
   unittest.main()

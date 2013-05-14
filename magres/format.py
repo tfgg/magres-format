@@ -322,7 +322,8 @@ class MagresFile(object):
     version = get_version(file_contents)
 
     if version is None:
-      pass # Emit a warning?
+      #pass # Emit a warning?
+      raise BadVersion("Version string not present. Possibly not magres file.")
     else:
       if version[0] != self.version[0]: # this is a major version 1 parser
         raise BadVersion("Version %d.%d not recognised. This is a version 1.x parser" % version)

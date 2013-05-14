@@ -72,7 +72,7 @@ Quickly analyse J-couplings: extract-all-jc-compare.py
 
 This will find all two-way indirect spin-spin coupling calculations below [directory] between atom [species] [index] and other atoms and print them out for analysis. For example, extracting all couplings to the C1 atom in ethanol:
 
-.. code:
+.. code::
 
   >>> extract-all-jc-compare.py . C 1
   #atm1 atm2  isc isc_fc  isc_spin  isc_orbital_p isc_orbital_d   r

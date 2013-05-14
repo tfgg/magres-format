@@ -78,24 +78,18 @@ a variety of conventions.</p>
 <dl class="class">
 <dt id="magres.atoms.MagresAtomsView">
 <em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtomsView</tt><big>(</big><em>atoms=None</em>, <em>lattice=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomsView" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>A container for a collection of atoms with an optional lattice.</p>
+<dl class="method">
 <dt id="magres.atoms.MagresAtomsView.add">
 <tt class="descname">add</tt><big>(</big><em>atoms</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomsView.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an extra atom or list of atoms.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="magres.atoms.MagresAtomsView.all_images_within">
-<tt class="descname">all_images_within</tt><big>(</big><em>a</em>, <em>b</em>, <em>r</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomsView.all_images_within" title="Permalink to this definition">¶</a></dt>
-<dd><p>Give all images of a to b within distance r.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="magres.atoms.MagresAtomsView.get_label">
 <tt class="descname">get_label</tt><big>(</big><em>label</em>, <em>index=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomsView.get_label" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all atoms of a particular label or a single atom of a particular label and index.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s">&quot;Al2&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s">&quot;Al2&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<dd><p>Get a single atom of a particular label and index.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s">&quot;C1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -103,9 +97,8 @@ a variety of conventions.</p>
 <dl class="method">
 <dt id="magres.atoms.MagresAtomsView.get_species">
 <tt class="descname">get_species</tt><big>(</big><em>species</em>, <em>index=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomsView.get_species" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all atoms of a particular species or a single atom of a particular species and index.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&quot;Al&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&quot;Al&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<dd><p>Get a single atom of a particular species and index.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -113,25 +106,28 @@ a variety of conventions.</p>
 <dl class="method">
 <dt id="magres.atoms.MagresAtomsView.label">
 <tt class="descname">label</tt><big>(</big><em>label</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomsView.label" title="Permalink to this definition">¶</a></dt>
-<dd><p>test version of get_label that returns the list of atoms as a magresatoms object, to make chaining easy.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="magres.atoms.MagresAtomsView.least_mirror">
-<tt class="descname">least_mirror</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomsView.least_mirror" title="Permalink to this definition">¶</a></dt>
-<dd><p>Give the closest periodic image of a to b given the current lattice.</p>
+<dd><p>Return a MagresAtomsView containing only atoms of the specified label.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="s">&quot;C1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="magres.atoms.MagresAtomsView.species">
 <tt class="descname">species</tt><big>(</big><em>species</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomsView.species" title="Permalink to this definition">¶</a></dt>
-<dd><p>test version of get_species that returns the list of atoms as a magresatoms object, to make chaining easy.</p>
+<dd><p>Return a MagresAtomsView containing only atoms of the specified species.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="magres.atoms.MagresAtomsView.within">
 <tt class="descname">within</tt><big>(</big><em>pos</em>, <em>max_dr</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomsView.within" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gives you all atoms within max_dr angstroms of pos, including all images.</p>
+<dd><p>Return all atoms within max_dr Angstroms of pos, including all images.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -139,18 +135,238 @@ a variety of conventions.</p>
 <dl class="class">
 <dt id="magres.atoms.MagresAtom">
 <em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtom</tt><big>(</big><em>magres_atom</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtom" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="attribute">
+<dt id="magres.atoms.MagresAtom.Q">
+<tt class="descname">Q</tt><a class="headerlink" href="#magres.atoms.MagresAtom.Q" title="Permalink to this definition">¶</a></dt>
+<dd><p>The quadrupole moment of this atom&#8217;s species and isotope.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="magres.atoms.MagresAtom.dist">
+<tt class="descname">dist</tt><big>(</big><em>r</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtom.dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate distance from this atom to another position or atom.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtom.gamma">
+<tt class="descname">gamma</tt><a class="headerlink" href="#magres.atoms.MagresAtom.gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>The gyromagnetic ratio constant of this atom&#8217;s species and isotope.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtom.index">
+<tt class="descname">index</tt><a class="headerlink" href="#magres.atoms.MagresAtom.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>This atom&#8217;s label index.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtom.isotope">
+<tt class="descname">isotope</tt><a class="headerlink" href="#magres.atoms.MagresAtom.isotope" title="Permalink to this definition">¶</a></dt>
+<dd><p>The isotope of this atom. Assumed to be most common NMR-active nucleus unless specified otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtom.label">
+<tt class="descname">label</tt><a class="headerlink" href="#magres.atoms.MagresAtom.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>This atom&#8217;s label.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtom.position">
+<tt class="descname">position</tt><a class="headerlink" href="#magres.atoms.MagresAtom.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>This atom&#8217;s position in cartesian coordinates. Units are Angstroms.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtom.species">
+<tt class="descname">species</tt><a class="headerlink" href="#magres.atoms.MagresAtom.species" title="Permalink to this definition">¶</a></dt>
+<dd><p>This atom&#8217;s species.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="magres.atoms.MagresAtomMs">
 <em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtomMs</tt><big>(</big><em>atom</em>, <em>magres_ms</em>, <em>reference=None</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomMs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Representation of the magnetic shielding of a particular atom.</p>
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.aniso">
+<tt class="descname">aniso</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.aniso" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shielding anisotropy. Defined by</p>
+<p><img class="math" src="_images/math/c370cf1e653841ae2e5355d2e864f9e2bf5d40ff.png" alt="\Delta \sigma = \sigma_{ZZ} - (\sigma_{XX} + \sigma_{YY})/2"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.asym">
+<tt class="descname">asym</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.asym" title="Permalink to this definition">¶</a></dt>
+<dd><p>The asymmetric part of sigma.</p>
+<p><img class="math" src="_images/math/7272b825fc18731828780000feac4dec568df828.png" alt="\sigma_{asym} = (\sigma - \sigma^T)/2"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.eta">
+<tt class="descname">eta</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.eta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shielding asymmetry. Defined by</p>
+<p><img class="math" src="_images/math/d7b2b70272badb81aab88726006454cc9f99c2ff.png" alt="\eta = (\sigma_{YY} - \sigma_{XX}) / \zeta"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evals">
+<tt class="descname">evals</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evals" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues of sigma, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/fa64ed1a2c2473a3c463ff35a4adffcc11d5e7cc.png" alt="|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|"/></p>
+<p>where</p>
+<blockquote>
+<div>sigma_XX = evals[0]
+sigma_YY = evals[1]
+sigma_ZZ = evals[2]</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evals_mehring">
+<tt class="descname">evals_mehring</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evals_mehring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues of sigma ordered according to the Mehring notation:</p>
+<p><img class="math" src="_images/math/559442d02157db31e09ec4d45ebdd86c9e9c60ba.png" alt="\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evalsvecs">
+<tt class="descname">evalsvecs</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evalsvecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues and eigenvectors of the symmetric part of sigma, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/fa64ed1a2c2473a3c463ff35a4adffcc11d5e7cc.png" alt="|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|"/></p>
+<p>where</p>
+<blockquote>
+<div>sigma_XX = evals[0]
+sigma_YY = evals[1]
+sigma_ZZ = evals[2]</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evalsvecs_mehring">
+<tt class="descname">evalsvecs_mehring</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evalsvecs_mehring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues and eigenvectors of the symmetric part of sigma ordered according to the Mehring notation:</p>
+<p><img class="math" src="_images/math/559442d02157db31e09ec4d45ebdd86c9e9c60ba.png" alt="\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evecs">
+<tt class="descname">evecs</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvectors of sigma, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/fa64ed1a2c2473a3c463ff35a4adffcc11d5e7cc.png" alt="|\sigma_{ZZ} - \sigma_{iso}| \geq |\sigma_{XX} - \sigma_{iso}| \geq |\sigma_{YY} - \sigma_{iso}|"/></p>
+<p>where</p>
+<blockquote>
+<div>sigma_XX = evals[0]
+sigma_YY = evals[1]
+sigma_ZZ = evals[2]</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.evecs_mehring">
+<tt class="descname">evecs_mehring</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.evecs_mehring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvectors of sigma ordered according to the Mehring notation:</p>
+<p><img class="math" src="_images/math/559442d02157db31e09ec4d45ebdd86c9e9c60ba.png" alt="\sigma_{11} \leq \sigma_{22} \leq \sigma_{33}"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.iso">
+<tt class="descname">iso</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.iso" title="Permalink to this definition">¶</a></dt>
+<dd><p>The isotropic part of sigma. Defined by</p>
+<p><img class="math" src="_images/math/52c89043761b178660fe26fd92d032f463358b02.png" alt="\sigma_{iso} = (\sigma_{XX} + \sigma_{YY} + \sigma_{ZZ})/3"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.sigma">
+<tt class="descname">sigma</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.sigma" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sigma tensor, i.e. the magnetic shielding.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.skew">
+<tt class="descname">skew</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.skew" title="Permalink to this definition">¶</a></dt>
+<dd><p>The skew of sigma. Defined by</p>
+<p><img class="math" src="_images/math/6a008dc193bb0447e83a6fa261859391f1cdb7cd.png" alt="\kappa = 3(\sigma_{iso} - \sigma_{22}) / \Omega"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.span">
+<tt class="descname">span</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.span" title="Permalink to this definition">¶</a></dt>
+<dd><p>The span of sigma. Defined by</p>
+<p><img class="math" src="_images/math/8a9da62f2671ae8e23b387adaaca107c43d5ddc0.png" alt="\Omega = \sigma_{33} - \sigma_{11}"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.sym">
+<tt class="descname">sym</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.sym" title="Permalink to this definition">¶</a></dt>
+<dd><p>The symmetric part of sigma.</p>
+<p><img class="math" src="_images/math/a8ac7bb7e204d351b7ddc82ec26b4a98a35da79c.png" alt="\sigma_{sym} = (\sigma + \sigma^T)/2"/></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomMs.zeta">
+<tt class="descname">zeta</tt><a class="headerlink" href="#magres.atoms.MagresAtomMs.zeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shielding anisotropy (alternative). Defined by</p>
+<p><img class="math" src="_images/math/5e65db6262f6fb759db598c5cf559b03813f8bb5.png" alt="\zeta = \sigma_{ZZ} - \sigma_{iso}"/></p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="magres.atoms.MagresAtomEfg">
 <em class="property">class </em><tt class="descclassname">magres.atoms.</tt><tt class="descname">MagresAtomEfg</tt><big>(</big><em>atom</em>, <em>magres_efg</em><big>)</big><a class="headerlink" href="#magres.atoms.MagresAtomEfg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Representation of the electric field gradient on a particular atom.</p>
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.Cq">
+<tt class="descname">Cq</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.Cq" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Cq of the V tensor.</p>
+<p><img class="math" src="_images/math/0698d5ef5e4eb8fa4d7aca15cb2fddad9b4e4bf2.png" alt="C_q = eV_{ZZ} Q / h"/></p>
+<p>Where Q is the quadrupole moment of this particular species, e is the electron charge and h is Planck&#8217;s constant.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.V">
+<tt class="descname">V</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.V" title="Permalink to this definition">¶</a></dt>
+<dd><p>The EFG V tensor in atomic units.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.evals">
+<tt class="descname">evals</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.evals" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues of V, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/343cb9d58ca020accfed329330e05d0fdd6a575d.png" alt="|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|"/></p>
+<p>where</p>
+<blockquote>
+<div><p><img class="math" src="_images/math/17b78128d9d2db76a6a2fcfde9a27ebfa23227d0.png" alt="V_{XX}"/> = evals[0]</p>
+<p><img class="math" src="_images/math/a6081319a422124fb19dda4cd67968c1e19a45f9.png" alt="V_{YY}"/> = evals[1]</p>
+<p><img class="math" src="_images/math/6401fed0b1092433f9d3d22a939573b6029b9522.png" alt="V_{ZZ}"/> = evals[2]</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.evalsvecs">
+<tt class="descname">evalsvecs</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.evalsvecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvalues and eigenvectors of V, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/343cb9d58ca020accfed329330e05d0fdd6a575d.png" alt="|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|"/></p>
+<p>where</p>
+<blockquote>
+<div><p><img class="math" src="_images/math/17b78128d9d2db76a6a2fcfde9a27ebfa23227d0.png" alt="V_{XX}"/> = evals[0]</p>
+<p><img class="math" src="_images/math/a6081319a422124fb19dda4cd67968c1e19a45f9.png" alt="V_{YY}"/> = evals[1]</p>
+<p><img class="math" src="_images/math/6401fed0b1092433f9d3d22a939573b6029b9522.png" alt="V_{ZZ}"/> = evals[2]</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="magres.atoms.MagresAtomEfg.evecs">
+<tt class="descname">evecs</tt><a class="headerlink" href="#magres.atoms.MagresAtomEfg.evecs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The eigenvectors of V, ordered according to the Haeberlen convention:</p>
+<p><img class="math" src="_images/math/343cb9d58ca020accfed329330e05d0fdd6a575d.png" alt="|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|"/></p>
+<p>where</p>
+<blockquote>
+<div><p><img class="math" src="_images/math/17b78128d9d2db76a6a2fcfde9a27ebfa23227d0.png" alt="V_{XX}"/> = evals[0]</p>
+<p><img class="math" src="_images/math/a6081319a422124fb19dda4cd67968c1e19a45f9.png" alt="V_{YY}"/> = evals[1]</p>
+<p><img class="math" src="_images/math/6401fed0b1092433f9d3d22a939573b6029b9522.png" alt="V_{ZZ}"/> = evals[2]</p>
+</div></blockquote>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">

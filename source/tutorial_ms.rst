@@ -98,13 +98,13 @@ You can also directly access the tensor, eigenvectors and eigenvaleus via the :p
   >>> atom = atoms.get_species('C', 1)
   >>> print atom
   13C1
-  >>> print atom.ms.evals
+  >>> print atom.ms.sigma
   [[  1.49986280e+02  -1.01990710e+01  -8.47368708e-02]
    [  2.33629565e-01   1.60596382e+02   2.31693486e+01]
    [  7.55640027e+00   1.58783805e+01   1.57786084e+02]]
   >>> print atom.ms.evecs
   [array([-0.42141732, -0.9060046 , -0.03953616]), array([-0.62585978,  0.25900804,  0.73567273]), array([ 0.65628269, -0.33476933,  0.67618232])]
-  >>> print atom.ms.sigma
+  >>> print atom.ms.evals
   [136.76839422482036, 152.79112991538537, 178.809221909744]
 
 Note that we're using numpy for array support.

@@ -45,9 +45,8 @@ We can load this into an :py:class:`magres.atoms.MagresAtoms` object using the :
 
 .. code:: python
 
-  from magres.atoms import MagresAtoms
-
-  atoms = MagresAtoms.load_magres('ethanol.magres')
+  >>> from magres.atoms import MagresAtoms
+  >>> atoms = MagresAtoms.load_magres('ethanol.magres')
 
 If we run this code, *atoms* now contains a list of all the atoms in the system, plus a bunch of helpful functions as documented in :py:class:`magres.atoms.MagresAtomsView`. Each atom will have a *ms* attribute, corresponding to a :py:class:`magres.atoms.MagresAtomMs` object. This object contains lots of different ways to process the sigma tensor, including a number of different conventions.
 
@@ -55,13 +54,8 @@ For example, supposing that we want to iterate over each atom and print its name
 
 .. code:: python
 
-  for atom in atoms:
-    print atom, atom.ms.iso
-
-this will output
-
-.. code::
-
+  >>> for atom in atoms:
+  >>>   print atom, atom.ms.iso
   1H1 29.5599376391
   1H2 30.2261866485
   1H3 30.0722544561
@@ -76,13 +70,8 @@ Maybe we want to print out the spans and skews for all the protons. To do this w
 
 .. code:: python
 
-  for atom in atoms.species('H'):
-    print atom, atom.ms.span, atom.ms.skew
-
-this will output
-
-.. code::
-
+  >>> for atom in atoms.species('H'):
+  >>>   print atom, atom.ms.span, atom.ms.skew
   1H1 9.38562488256 0.818487161614
   1H2 8.72896735943 0.7449106712
   1H3 7.36075836882 0.925944171311
@@ -94,39 +83,28 @@ Or perhaps we want to print out all isotropic and anisotropic shieldings for all
 
 .. code:: python
 
-  for atom in atoms.within(atoms.get_species('C', 1), 2.0):
-    print atom, atom.ms.iso, atom.ms.aniso
-
-this will output
-
-.. code::
-
+  >>> for atom in atoms.within(atoms.get_species('C', 1), 2.0):
+  >>>   print atom, atom.ms.iso, atom.ms.aniso
   1H1 29.5599376391 8.95972202944
   1H2 30.2261866485 8.17230075322
   1H3 30.0722544561 7.22448160362
   13C1 156.12291535 34.0294598396
   13C2 109.357530445 70.540995898
 
-You can also directly access the tensor, eigenvectors and eigenvaleus via the :py:attr:`~magres.atoms.MagresAtomMs.sigma`, :py:attr:`~magres.atoms.MagresAtomMs.evecs` and :py:attr:`~magres.atoms.MagresAtomMs.evals`. The eigenvectors and eigenvalues are by default ordered according to the Haeberlen convention. Let's print out these for the C1 atom:
+You can also directly access the tensor, eigenvectors and eigenvaleus via the :py:attr:`~magres.atoms.MagresAtomMs.sigma`, :py:attr:`~magres.atoms.MagresAtomMs.evecs` and :py:attr:`~magres.atoms.MagresAtomMs.evals` attributes. The eigenvectors and eigenvalues are by default ordered according to the Haeberlen convention. Let's print out these for the C1 atom:
 
 .. code:: python
 
-  atom = atoms.get_species('C', 1)
-
-  print atom
-  print atom.ms.sigma
-  print atom.ms.evecs
-  print atom.ms.evals
-
-outputting
-
-.. code::
-
+  >>> atom = atoms.get_species('C', 1)
+  >>> print atom
   13C1
+  >>> print atom.ms.evals
   [[  1.49986280e+02  -1.01990710e+01  -8.47368708e-02]
    [  2.33629565e-01   1.60596382e+02   2.31693486e+01]
    [  7.55640027e+00   1.58783805e+01   1.57786084e+02]]
+  >>> print atom.ms.evecs
   [array([-0.42141732, -0.9060046 , -0.03953616]), array([-0.62585978,  0.25900804,  0.73567273]), array([ 0.65628269, -0.33476933,  0.67618232])]
+  >>> print atom.ms.sigma
   [136.76839422482036, 152.79112991538537, 178.809221909744]
 
 Note that we're using numpy for array support.

@@ -92,69 +92,59 @@ ms O                  1          2.4574869953866229E+02          4.8677155199684
 <h2>Playing with ethanol.magres<a class="headerlink" href="#playing-with-ethanol-magres" title="Permalink to this headline">¶</a></h2>
 <p>You can run all these Python commands from the interpreter, supposing that you have saved the above data into a file called <em>ethanol.magres</em> in the same directory.</p>
 <p>We can load this into an <a class="reference internal" href="atoms.html#magres.atoms.MagresAtoms" title="magres.atoms.MagresAtoms"><tt class="xref py py-class docutils literal"><span class="pre">magres.atoms.MagresAtoms</span></tt></a> object using the <a class="reference internal" href="atoms.html#magres.atoms.MagresAtoms.load_magres" title="magres.atoms.MagresAtoms.load_magres"><tt class="xref py py-meth docutils literal"><span class="pre">load_magres()</span></tt></a> method.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">magres.atoms</span> <span class="kn">import</span> <span class="n">MagresAtoms</span>
-
-<span class="n">atoms</span> <span class="o">=</span> <span class="n">MagresAtoms</span><span class="o">.</span><span class="n">load_magres</span><span class="p">(</span><span class="s">&#39;ethanol.magres&#39;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">magres.atoms</span> <span class="kn">import</span> <span class="n">MagresAtoms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atoms</span> <span class="o">=</span> <span class="n">MagresAtoms</span><span class="o">.</span><span class="n">load_magres</span><span class="p">(</span><span class="s">&#39;ethanol.magres&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If we run this code, <em>atoms</em> now contains a list of all the atoms in the system, plus a bunch of helpful functions as documented in <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomsView" title="magres.atoms.MagresAtomsView"><tt class="xref py py-class docutils literal"><span class="pre">magres.atoms.MagresAtomsView</span></tt></a>. Each atom will have a <em>ms</em> attribute, corresponding to a <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs" title="magres.atoms.MagresAtomMs"><tt class="xref py py-class docutils literal"><span class="pre">magres.atoms.MagresAtomMs</span></tt></a> object. This object contains lots of different ways to process the sigma tensor, including a number of different conventions.</p>
 <p>For example, supposing that we want to iterate over each atom and print its name and isotropic shielding (<a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs.iso" title="magres.atoms.MagresAtomMs.iso"><tt class="xref py py-attr docutils literal"><span class="pre">iso</span></tt></a>) we can simply do</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
-  <span class="k">print</span> <span class="n">atom</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">iso</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">atom</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">iso</span>
+<span class="go">1H1 29.5599376391</span>
+<span class="go">1H2 30.2261866485</span>
+<span class="go">1H3 30.0722544561</span>
+<span class="go">1H4 26.9539908188</span>
+<span class="go">1H5 27.3739467591</span>
+<span class="go">1H6 31.8881193712</span>
+<span class="go">13C1 156.12291535</span>
+<span class="go">13C2 109.357530445</span>
+<span class="go">17O1 267.012276599</span>
 </pre></div>
-</div>
-<p>this will output</p>
-<div class="code highlight-python"><pre>1H1 29.5599376391
-1H2 30.2261866485
-1H3 30.0722544561
-1H4 26.9539908188
-1H5 27.3739467591
-1H6 31.8881193712
-13C1 156.12291535
-13C2 109.357530445
-17O1 267.012276599</pre>
 </div>
 <p>Maybe we want to print out the spans and skews for all the protons. To do this we select all atoms with the &#8216;H&#8217; species with <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomsView.species" title="magres.atoms.MagresAtomsView.species"><tt class="xref py py-meth docutils literal"><span class="pre">species()</span></tt></a> and then access the <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs.span" title="magres.atoms.MagresAtomMs.span"><tt class="xref py py-attr docutils literal"><span class="pre">span</span></tt></a> and <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs.skew" title="magres.atoms.MagresAtomMs.skew"><tt class="xref py py-attr docutils literal"><span class="pre">skew</span></tt></a> attributes.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">species</span><span class="p">(</span><span class="s">&#39;H&#39;</span><span class="p">):</span>
-  <span class="k">print</span> <span class="n">atom</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">span</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">skew</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">species</span><span class="p">(</span><span class="s">&#39;H&#39;</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">atom</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">span</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">skew</span>
+<span class="go">1H1 9.38562488256 0.818487161614</span>
+<span class="go">1H2 8.72896735943 0.7449106712</span>
+<span class="go">1H3 7.36075836882 0.925944171311</span>
+<span class="go">1H4 10.6945028349 0.0495013823109</span>
+<span class="go">1H5 9.32371700876 -0.0606983834955</span>
+<span class="go">1H6 16.2585008574 0.471974409294</span>
 </pre></div>
-</div>
-<p>this will output</p>
-<div class="code highlight-python"><pre>1H1 9.38562488256 0.818487161614
-1H2 8.72896735943 0.7449106712
-1H3 7.36075836882 0.925944171311
-1H4 10.6945028349 0.0495013823109
-1H5 9.32371700876 -0.0606983834955
-1H6 16.2585008574 0.471974409294</pre>
 </div>
 <p>Or perhaps we want to print out all isotropic and anisotropic shieldings for all atoms within 2 Angstrom of the C1 atom.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">):</span>
-  <span class="k">print</span> <span class="n">atom</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">iso</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">aniso</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">atom</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">iso</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">aniso</span>
+<span class="go">1H1 29.5599376391 8.95972202944</span>
+<span class="go">1H2 30.2261866485 8.17230075322</span>
+<span class="go">1H3 30.0722544561 7.22448160362</span>
+<span class="go">13C1 156.12291535 34.0294598396</span>
+<span class="go">13C2 109.357530445 70.540995898</span>
 </pre></div>
 </div>
-<p>this will output</p>
-<div class="code highlight-python"><pre>1H1 29.5599376391 8.95972202944
-1H2 30.2261866485 8.17230075322
-1H3 30.0722544561 7.22448160362
-13C1 156.12291535 34.0294598396
-13C2 109.357530445 70.540995898</pre>
-</div>
-<p>You can also directly access the tensor, eigenvectors and eigenvaleus via the <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs.sigma" title="magres.atoms.MagresAtomMs.sigma"><tt class="xref py py-attr docutils literal"><span class="pre">sigma</span></tt></a>, <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs.evecs" title="magres.atoms.MagresAtomMs.evecs"><tt class="xref py py-attr docutils literal"><span class="pre">evecs</span></tt></a> and <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs.evals" title="magres.atoms.MagresAtomMs.evals"><tt class="xref py py-attr docutils literal"><span class="pre">evals</span></tt></a>. The eigenvectors and eigenvalues are by default ordered according to the Haeberlen convention. Let&#8217;s print out these for the C1 atom:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">atom</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="k">print</span> <span class="n">atom</span>
-<span class="k">print</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">sigma</span>
-<span class="k">print</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">evecs</span>
-<span class="k">print</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">evals</span>
+<p>You can also directly access the tensor, eigenvectors and eigenvaleus via the <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs.sigma" title="magres.atoms.MagresAtomMs.sigma"><tt class="xref py py-attr docutils literal"><span class="pre">sigma</span></tt></a>, <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs.evecs" title="magres.atoms.MagresAtomMs.evecs"><tt class="xref py py-attr docutils literal"><span class="pre">evecs</span></tt></a> and <a class="reference internal" href="atoms.html#magres.atoms.MagresAtomMs.evals" title="magres.atoms.MagresAtomMs.evals"><tt class="xref py py-attr docutils literal"><span class="pre">evals</span></tt></a> attributes. The eigenvectors and eigenvalues are by default ordered according to the Haeberlen convention. Let&#8217;s print out these for the C1 atom:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">atom</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_species</span><span class="p">(</span><span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">atom</span>
+<span class="go">13C1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">evals</span>
+<span class="go">[[  1.49986280e+02  -1.01990710e+01  -8.47368708e-02]</span>
+<span class="go"> [  2.33629565e-01   1.60596382e+02   2.31693486e+01]</span>
+<span class="go"> [  7.55640027e+00   1.58783805e+01   1.57786084e+02]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">evecs</span>
+<span class="go">[array([-0.42141732, -0.9060046 , -0.03953616]), array([-0.62585978,  0.25900804,  0.73567273]), array([ 0.65628269, -0.33476933,  0.67618232])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">atom</span><span class="o">.</span><span class="n">ms</span><span class="o">.</span><span class="n">sigma</span>
+<span class="go">[136.76839422482036, 152.79112991538537, 178.809221909744]</span>
 </pre></div>
-</div>
-<p>outputting</p>
-<div class="code highlight-python"><pre>13C1
-[[  1.49986280e+02  -1.01990710e+01  -8.47368708e-02]
- [  2.33629565e-01   1.60596382e+02   2.31693486e+01]
- [  7.55640027e+00   1.58783805e+01   1.57786084e+02]]
-[array([-0.42141732, -0.9060046 , -0.03953616]), array([-0.62585978,  0.25900804,  0.73567273]), array([ 0.65628269, -0.33476933,  0.67618232])]
-[136.76839422482036, 152.79112991538537, 178.809221909744]</pre>
 </div>
 <p>Note that we&#8217;re using numpy for array support.</p>
 </div>

@@ -7,16 +7,25 @@
 import os
 import sys
 
+from magres.format import BadVersion
 from magres.atoms import MagresAtoms
-from magres.utils import find_all_magres
+from magres.utils import load_all_magres
 
-cwd = ["."]
+cwd = "."
 
 if len(sys.argv)>1:
     cwd = str(sys.argv[1])
 
-magres_files = find_all_magres(cwd)
-magres_atoms = [MagresAtoms.load_magres(magres_file) for magres_file in magres_files]
+#magres_files = find_all_magres(cwd)
+#magres_atoms = []
+
+#for magres_file in magres_files:
+#  try:
+#    magres_atoms.append(MagresAtoms.load_magres(magres_file))
+#  except BadVersion:
+#    print "Couldn't load %s" % magres_file
+
+magres_atoms = load_all_magres(cwd)
 
 if len(sys.argv) >= 4:
   find_s = str(sys.argv[2])

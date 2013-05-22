@@ -10,7 +10,6 @@ import math
 import constants
 import numpy
 
-import utils
 from decorators import lazyproperty
 
 from format import MagresFile
@@ -511,8 +510,8 @@ class MagresAtom(object):
     """
       The gyromagnetic ratio constant of this atom's species and isotope.
     """
-    if self.isotope in constants.gamma:
-      return constants.gamma[self.isotope]
+    if (self.species, self.isotope) in constants.gamma:
+      return constants.gamma[(self.species, self.isotope)]
     else:
       return 0.0
   
@@ -521,8 +520,8 @@ class MagresAtom(object):
     """
       The quadrupole moment of this atom's species and isotope.
     """
-    if self.isotope in constants.Q:
-      return constants.Q[self.isotope]
+    if (self.species, self.isotope) in constants.Q:
+      return constants.Q[(self.species, self.isotope)]
     else:
       return 0.0
 
@@ -906,6 +905,7 @@ class MagresAtoms(MagresAtomsView):
 
     if type(f) == str:
       magres_file = MagresFile(open(f))
+      magres_file.path = f
     elif type(f) == MagresFile:
       magres_file = f
     elif type(f) == list:

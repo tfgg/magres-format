@@ -1,6 +1,6 @@
 import os
 from format import BadVersion
-import atoms
+from atoms import MagresAtoms
 
 def find_all_magres(dir):
   calcs = []

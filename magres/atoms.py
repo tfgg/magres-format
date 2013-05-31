@@ -865,7 +865,13 @@ class MagresAtoms(MagresAtomsView):
           magres_atom_efg = MagresAtomEfg(atom, magres_efg)
           getattr(self, efg_type).append(magres_atom_efg)
           setattr(atom, efg_type, magres_atom_efg)
-      
+     
+      #magres_file.data_dict['magres']['isc_spin_total'] = []
+      #for magres_isc_fc in magres_file.data_dict['magres']['isc_fc']:
+      #  for magres_isc_spin in magres_file.data_dict['magres']['isc_spin']:
+      #    if magres_isc_fc['atom1'] == magres_isc_spin['atom1'] and magres_isc_fc['atom2'] == magres_isc_spin['atom2']:
+      #      new = 
+
       for tag in magres_file.data_dict['magres']:
         if not (tag.startswith("isc_") or tag == "isc"):
           continue

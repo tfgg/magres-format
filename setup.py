@@ -8,5 +8,5 @@ setup(name='Magres format',
       author_email='timothy.green@gmail.com',
       url='http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat',
       packages=['magres', 'magres.schema'],
-      scripts=['scripts/convertoldmagres.py', 'scripts/magresjson.py', 'scripts/extract-all-jc-compare.py', 'scripts/compisc.py', 'scripts/magresmerge.py', 'scripts/extract-all-jc.py'],
+      scripts=['scripts/convertoldmagres.py', 'scripts/magresjson.py', 'scripts/extract-all-jc-compare.py', 'scripts/compisc.py', 'scripts/magresmerge.py', 'scripts/extract-all-jc.py', 'scripts/absiscdev.py'],
       )

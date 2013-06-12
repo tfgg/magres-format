@@ -64,15 +64,16 @@ schema = {
               },
               "magres": {
                 "type": "object",
-                "additionalProperties": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
+                #"additionalProperties": {
+                #  "type": "array",
+                #  "items": {
+                #    "type": "array",
+                #    "items": {
+                #      "type": "string"
+                #    }
+                #  }
+                #},
+                "additionalProperties": True,
                 "patternProperties": {
                   "units": {
                     "$ref": "#/definitions/units"

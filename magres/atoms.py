@@ -525,6 +525,13 @@ class MagresAtom(object):
     else:
       return 0.0
 
+  @property
+  def spin(self):
+    if (self.species, self.isotope) in constants.iso_spin:
+      return constants.iso_spin[(self.species, self.isotope)]
+    else:
+      return None # We don't even know what spin this isotope is.
+
 class MagresAtomImage(object):
   """
     A periodic image of a particular atom. Exactly like the underlying atom except for its position.

@@ -18,6 +18,16 @@ to install it globally, or
     
 to install it just for your user account ([read more here](http://docs.python.org/2/install/#alternate-installation)), and the Python module and associated scripts should now be installed.
 
+If you have installed it locally with --user, you may have to add ~/.local/bin to your PATH. You can do this by adding
+
+    export PATH=$HOME/.local/bin:$PATH
+    
+to your ~/.bashrc and restarting your session or running "source ~/.bashrc". If you use tcsh you do
+
+    setenv PATH $HOME/.local/bin:$PATH
+    
+and then restart your session.
+
 Conversion script usage
 -----------------------
 

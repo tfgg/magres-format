@@ -38,19 +38,23 @@ for atoms in atomss:
     if atom.species == s:
       if first:
         print "Using %d%s Q=%f mb" % (atom.isotope, atom.species, atom.Q)
+        print "Using %d%s S=%.1f" % (atom.isotope, atom.species, atom.spin)
         first = False
 
       ms = [m for m in frange(-atom.spin, atom.spin+1, 1) if m >= 0.0]
 
       for m in ms[:-1]:
         Vzz = atom.efg.evals[2]
-        eta = (abs(atom.efg.evals[1]) - abs(atom.efg.evals[0]))/atom.efg.evals[2]
+        vec_zz = atom.efg.evecs[2]
+
+        eta = (abs(atom.efg.evals[0]) - abs(atom.efg.evals[1]))/atom.efg.evals[2]
 
         A = Vzz * (atom.Q * units.millibarn) / (4.0 * atom.spin * (2.0*atom.spin - 1.0))
         fq = 3*A * (2.0*abs(m) + 1.0) * math.sqrt(1.0 + eta**2/3)
 
         vals.append(fq)
         print atom, "m=%.1f-->%.1f" % (m,m+1.0), "Vzz=%f a.u." % Vzz, "eta=%f" % eta, "f=%f MHz" % (fq / units.megahertz)
+        print "    ", vec_zz
      
   print "mean=%f MHz" % (sum(vals)/len(vals) / units.megahertz)
 

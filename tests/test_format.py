@@ -32,6 +32,26 @@ class FormatTest(unittest.TestCase):
     self.assertTrue(len(f.data_dict['magres']['efg']), num_atoms)
     self.assertTrue(len(f.data_dict['magres']['ms']), num_atoms)
 
+  def test_nmr_new(self):
+    f = MagresFile(open(os.path.join(DATA_DIR, "ethanol", "ethanol-nmr-new.magres")))
+
+    self.assertTrue("calculation" in f.data_dict)
+    self.assertTrue("atoms" in f.data_dict)
+    self.assertTrue("magres" in f.data_dict)
+    
+    self.assertTrue("lattice" in f.data_dict["atoms"])
+    self.assertTrue("units" in f.data_dict["atoms"])
+    self.assertTrue("atom" in f.data_dict["atoms"])
+    
+    self.assertTrue("units" in f.data_dict["magres"])
+    self.assertTrue("efg" in f.data_dict["magres"])
+    self.assertTrue("ms" in f.data_dict["magres"])
+
+    num_atoms = len(f.data_dict['atoms']['atom'])
+
+    self.assertTrue(len(f.data_dict['magres']['efg']), num_atoms)
+    self.assertTrue(len(f.data_dict['magres']['ms']), num_atoms)
+
   def test_badversion(self):
     with self.assertRaises(BadVersion):
       f = MagresFile(open(os.path.join(DATA_DIR, "noversion.magres")))

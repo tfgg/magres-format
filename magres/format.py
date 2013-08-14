@@ -9,7 +9,7 @@ except:
 
 import sys
 
-blocks_re = re.compile(r"<(?P<block_name>.*?)>(.*?)\</(?P=block_name)>", re.M | re.S)
+blocks_re = re.compile(r"[\[<](?P<block_name>.*?)[>\]](.*?)[<\[]/(?P=block_name)[\]>]", re.M | re.S)
 
 if numpy is not None:
   def tensor33(x):

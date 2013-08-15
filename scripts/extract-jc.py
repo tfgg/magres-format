@@ -35,13 +35,14 @@ all_Js = {}
 
 tensors = ['isc', 'isc_fc', 'isc_spin', 'isc_orbital_p', 'isc_orbital_d']
 
+print "# Number\tPath\tAtom1\tAtom2\t" + "\t".join(tensors)
+
 lines = []
 
 def get_numeric(s):
   return "".join([c for c in s if ord("0") <= ord(c) <= ord("9")])
 
 for atoms in magres_atoms:
-  print atoms.magres_file.path
   num = get_numeric(atoms.magres_file.path)
 
   if num != '':

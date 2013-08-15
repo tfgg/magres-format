@@ -2,6 +2,17 @@ import os
 from format import BadVersion
 from atoms import MagresAtoms
 
+def find_all(dir, suffix=".cell"):
+  calcs = []
+  for f in os.listdir(dir):
+    path = os.path.join(dir, f)
+    if f.endswith(suffix):
+      calcs.append(path)
+    elif os.path.isdir(path):
+      calcs += find_all(path, suffix)
+  
+  return calcs
+
 def find_all_magres(dir):
   calcs = []
   for f in os.listdir(dir):

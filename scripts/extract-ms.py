@@ -1,9 +1,5 @@
 #!python
 
-"""
-  Only show couplings where the coupling in the opposite direction exists in another calculation.
-"""
-
 import os
 import sys
 

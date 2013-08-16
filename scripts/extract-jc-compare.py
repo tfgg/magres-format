@@ -1,4 +1,4 @@
-#!/home/green/bin/python
+#!python
 
 """
   Only show couplings where the coupling in the opposite direction exists in another calculation.

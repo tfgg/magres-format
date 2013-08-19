@@ -44,13 +44,4 @@ for site in Al_Cqs:
   for num_si in Al_Cqs[site]:
     print "Al%s, n_si=%d, Cq=%.2f +- %.2f" % (site, num_si, numpy.mean(Al_Cqs[site][num_si]), numpy.std(Al_Cqs[site][num_si]))
 
-sys.exit(1)
-
-plt.hist(Al_Cqs['T1'][0], bins=20)
-plt.hist(Al_Cqs['T1'][1], bins=20)
-plt.hist(Al_Cqs['T1'][2], bins=20)
-plt.hist(Al_Cqs['T1'][3], bins=20)
-plt.hist(Al_Cqs['T1'][4], bins=20)
-plt.show()
-
 

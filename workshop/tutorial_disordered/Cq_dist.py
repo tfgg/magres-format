@@ -1,6 +1,5 @@
 import numpy
 import sys, os
-from matplotlib import pyplot as plt
 
 from magres.utils import find_all
 from magres.atoms import MagresAtoms

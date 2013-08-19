@@ -1,7 +1,6 @@
 import numpy
 import sys, os
 
-from matplotlib import pyplot as plt
 from numpy import tan, dot, arccos, sqrt
 from magres.utils import find_all
 from magres.atoms import MagresAtoms
@@ -31,7 +30,11 @@ for atoms in all_atoms:
       cqs.append(abs(Al_atom.efg.Cq))
 
       # Get the oxygen neighbours
-      Os = atoms.species('O').within(Al_atom, 3.5)
+      Os = atoms.species('O').within(Al_atom, 2.5)
+
+      if len(Os) != 4:
+        print "Too many oxygen neighbours"
+        sys.exit(1)
 
       # Get the displacement vectors to the oxygens
       r1 = Os[0].position - Al_atom.position
@@ -58,6 +61,6 @@ for atoms in all_atoms:
 
       print abs(Al_atom.efg.Cq), distort
 
-plt.plot(ghose, cqs, 'x')
-plt.show()
+#plt.plot(ghose, cqs, 'x')
+#plt.show()
 

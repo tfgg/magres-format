@@ -98,59 +98,6 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="helper-scripts">
-<h2>Helper scripts<a class="headerlink" href="#helper-scripts" title="Permalink to this headline">¶</a></h2>
-<p>The package comes with a number of helper scripts that can be run from the command line.</p>
-<div class="section" id="dump-json-magresjson-py">
-<h3>Dump JSON: magresjson.py<a class="headerlink" href="#dump-json-magresjson-py" title="Permalink to this headline">¶</a></h3>
-<p>This will give you a JSON dump of a given .magres text file.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">magresjson</span><span class="o">.</span><span class="n">py</span> <span class="n">sample</span><span class="o">.</span><span class="n">magres</span> <span class="o">&gt;</span> <span class="n">sample</span><span class="o">.</span><span class="n">magres</span><span class="o">.</span><span class="n">json</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="merge-magres-files-magresmerge-py">
-<h3>Merge .magres files: magresmerge.py<a class="headerlink" href="#merge-magres-files-magresmerge-py" title="Permalink to this headline">¶</a></h3>
-<p>This will merge together several given .magres (e.g. different perturbing atoms in an indirect spin-spin coupling calculation) and output the result.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">magresmerge</span><span class="o">.</span><span class="n">py</span> <span class="o">*/*.</span><span class="n">magres</span> <span class="o">&gt;</span> <span class="n">ethanol</span><span class="o">-</span><span class="n">jc</span><span class="o">.</span><span class="n">magres</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="quickly-analyse-j-couplings-extract-all-jc-compare-py">
-<h3>Quickly analyse J-couplings: extract-all-jc-compare.py<a class="headerlink" href="#quickly-analyse-j-couplings-extract-all-jc-compare-py" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">extract</span><span class="o">-</span><span class="nb">all</span><span class="o">-</span><span class="n">jc</span><span class="o">-</span><span class="n">compare</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="n">directory</span><span class="p">]</span> <span class="p">[</span><span class="n">species</span><span class="p">]</span> <span class="p">[</span><span class="n">index</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>This will find all two-way indirect spin-spin coupling calculations below [directory] between atom [species] [index] and other atoms and print them out for analysis. For example, extracting all couplings to the C1 atom in ethanol:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">extract</span><span class="o">-</span><span class="nb">all</span><span class="o">-</span><span class="n">jc</span><span class="o">-</span><span class="n">compare</span><span class="o">.</span><span class="n">py</span> <span class="o">.</span> <span class="n">C</span> <span class="mi">1</span>
-<span class="go">#atm1 atm2  isc isc_fc  isc_spin  isc_orbital_p isc_orbital_d   r</span>
-<span class="go">13C1  13C2  41.06 40.66 1.21  -0.96 0.16  1.51993253781</span>
-<span class="go">13C2  13C1  41.12 40.68 1.22  -0.93 0.15  1.51993253781</span>
-<span class="go">1H1 13C1  34.49 33.80 0.14  0.39  0.15  1.09435820235</span>
-<span class="go">13C1  1H1 34.62 33.87 0.07  0.59  0.09  1.09435820235</span>
-<span class="go">1H2 13C1  35.33 34.68 0.14  0.39  0.12  1.09508258166</span>
-<span class="go">13C1  1H2 35.50 34.75 0.07  0.58  0.10  1.09508258166</span>
-<span class="go">13C1  1H3 35.96 35.23 0.07  0.56  0.10  1.09218503188</span>
-<span class="go">1H3 13C1  35.80 35.16 0.14  0.37  0.14  1.09218503188</span>
-<span class="go">13C1  1H4 1.05  1.06  0.01  0.06  -0.09 2.1653422802</span>
-<span class="go">1H4 13C1  1.04  1.09  0.02  -0.01 -0.05 2.1653422802</span>
-<span class="go">1H5 13C1  0.18  0.25  0.02  -0.03 -0.05 2.16077342428</span>
-<span class="go">13C1  1H5 0.23  0.23  0.02  0.07  -0.09 2.16077342428</span>
-<span class="go">1H6 13C1  0.22  0.24  -0.01 0.02  -0.04 2.62546755589</span>
-<span class="go">13C1  1H6 0.30  0.24  -0.00 0.13  -0.07 2.62546755589</span>
-<span class="go">17O1  13C1  0.95  2.51  -0.06 -1.45 -0.06 2.44843140426</span>
-<span class="go">13C1  17O1  0.96  2.54  -0.03 -1.51 -0.04 2.44843140426</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="samples-and-example-scripts">
-<h2>Samples and example scripts<a class="headerlink" href="#samples-and-example-scripts" title="Permalink to this headline">¶</a></h2>
-<p>There are some sample .magres files in the samples/ directory and some example Python processing scripts in the examples/ directory. Run the example scripts from the package root, like</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">examples</span><span class="o">/</span><span class="n">atoms_ms</span><span class="o">.</span><span class="n">py</span>
-</pre></div>
-</div>
-<p>or they will not find the correct .magres files.</p>
-</div>
 </div>
 
 
@@ -166,13 +113,6 @@
 <li><a class="reference internal" href="#python-package">Python package</a><ul>
 </ul>
 </li>
-<li><a class="reference internal" href="#helper-scripts">Helper scripts</a><ul>
-<li><a class="reference internal" href="#dump-json-magresjson-py">Dump JSON: magresjson.py</a></li>
-<li><a class="reference internal" href="#merge-magres-files-magresmerge-py">Merge .magres files: magresmerge.py</a></li>
-<li><a class="reference internal" href="#quickly-analyse-j-couplings-extract-all-jc-compare-py">Quickly analyse J-couplings: extract-all-jc-compare.py</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#samples-and-example-scripts">Samples and example scripts</a></li>
 </ul>
 </li>
 </ul>

@@ -21,14 +21,14 @@ if len(sys.argv) >= 4:
 else:
   find_i = None
 
-tensors = ['efg', 'efg_local', 'efg_nonlocal']
+tensors = ['ms']
 
 lines = []
 
 def get_numeric(s):
   return "".join([c for c in s if ord("0") <= ord(c) <= ord("9")])
 
-print "# Number\tPath\tAtom\tCq\tCq_local\tCq_nonlocal\tEta\tEta_local\tEta_nonlocal"
+print "# Number\tPath\tAtom\tIso\tAniso\tAsym"
 
 for atoms in magres_atoms:
   num = get_numeric(atoms.magres_file.path)
@@ -40,7 +40,7 @@ for atoms in magres_atoms:
 
   for atom in atoms: 
     if atom.species == find_s and (find_i is None or atom.index == find_i) and hasattr(atom, 'efg'):
-      lines.append((idx, atoms.magres_file.path, str(atom) + "\t" + "\t".join(["%.2f" % getattr(atom, tensor).Cq for tensor in tensors]) + "\t" + "\t".join(["%.2f" % getattr(atom, tensor).eta for tensor in tensors])))
+      lines.append((idx, atoms.magres_file.path, str(atom) + "\t" + atom.ms.iso + "\t" + atom.ms.aniso + "\t" + atom.ms.asym)))
 
 lines = sorted(lines, key=lambda (x,y,z): x)
 

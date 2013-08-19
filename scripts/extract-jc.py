@@ -56,7 +56,7 @@ for atoms in magres_atoms:
         if (find_s2 is None or atom2.species == find_s2) and (find_i2 is None or atom2.index == find_i2) and (atom1 != atom2):
           lines.append((idx, atoms.magres_file.path, str(atom1) + "\t" + str(atom2) + "\t" + "\t".join(["%.2f" % getattr(atom1, tensor)[atom2].K_iso for tensor in tensors]) + "\t%.2F" % atom1.dist(atom2)))
 
-lines = sorted(lines, key=lambda (x,y,z): x)
+lines = sorted(lines, key=lambda (x,y,z): (x,y,z))
 
 for idx, path, line in lines:
   print idx, path, line

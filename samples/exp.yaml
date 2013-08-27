@@ -1,0 +1,101 @@
+---
+datasets:
+  moncho_scalar_ZORA_PBE: &moncho_scalar_ZORA_PBE
+    name: Moncho scalar ZORA PBE
+    comment: Couplings in supplementary information
+    reference:
+      doi: 10.1021/ct900535d
+
+  experiment: &experiment
+    name: Experimental coulpings
+    comment: Couplings in supplementary information
+    reference:
+      doi: 10.1021/ct900535d
+
+structures:
+  Tl(CN)3:
+    couplings:
+      - index1: Tl1
+        index2: [C1, C2, C3]
+        expr: isc.K_iso
+        values:
+          - value: 4488.5
+            dataset: *experiment
+          - value: 2802.2
+            dataset: *moncho_scalar_ZORA_PBE
+
+  TlCl:
+    couplings:
+      - index1: Tl1
+        index2: Cl1
+        expr: isc.K_iso
+        values:
+          - value: -2240.0
+            dataset: *experiment
+          - value: -817.4
+            dataset: *moncho_scalar_ZORA_PBE
+
+  TlBr:
+    couplings:
+      - index1: Tl1
+        index2: Br1
+        expr: isc.K_iso
+        values:
+          - value: -3610.0 
+            dataset: *experiment
+          - value: -825.9
+            dataset: *moncho_scalar_ZORA_PBE
+  TlI:
+    couplings:
+      - index1: Tl1
+        index2: I1
+        expr: isc.K_iso
+        values:
+          - value: -4740.0
+            dataset: *experiment
+          - value: -652.2
+            dataset: *moncho_scalar_ZORA_PBE
+  TlF:
+    couplings:
+      - index1: Tl1
+        index2: F1
+        expr: isc.K_iso
+        values:
+          - value: -2020.0
+            dataset: *experiment
+          - value: -1096.7
+            dataset: *moncho_scalar_ZORA_PBE
+
+  Tl(CN)2Cl:
+    couplings:
+      - index1: Tl1
+        index2: [C1, C2]
+        expr: isc.K_iso
+        values:
+          - value: 5991.8
+            dataset: *experiment
+          - value: 2822.9
+            dataset: *moncho_scalar_ZORA_PBE
+
+  Tl(CN)Cl2:
+    couplings:
+      - index1: Tl1
+        index2: C1 
+        expr: isc.K_iso
+        values:
+          - value: 5975.5
+            dataset: *experiment
+          - value: 2424.9
+            dataset: *moncho_scalar_ZORA_PBE
+
+  Tl4(OCH3)4:
+    couplings:
+      - index1: [Tl1, Tl2, Tl3, Tl4]
+        index2: [Tl1, Tl2, Tl3, Tl4]
+        expr: isc.K_iso
+        values:
+          - value: 549.8
+            dataset: *experiment
+          - value: -365.3
+            dataset: *moncho_scalar_ZORA_PBE
+

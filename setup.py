@@ -15,7 +15,7 @@ setup(name='Magres format',
       author_email='timothy.green@gmail.com',
       url='http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat',
       packages=['magres', 'magres.schema'],
-      scripts=['scripts/convertoldmagres.py', 'scripts/magresjson.py', 'scripts/extract-jc-compare.py', 'scripts/compisc.py', 'scripts/magresmerge.py', 'scripts/extract-jc.py', 'scripts/extract-efg.py', 'scripts/absiscdev.py', 'scripts/nqr.py'],
+      scripts=['scripts/convertoldmagres.py', 'scripts/magresjson.py', 'scripts/extract-jc-compare.py', 'scripts/compisc.py', 'scripts/magresmerge.py', 'scripts/extract-jc.py', 'scripts/extract-efg.py', 'scripts/absiscdev.py', 'scripts/nqr.py', 'scripts/magres-yaml.py', 'scripts/yaml-errors.py'],
       )
 
 if not bin_on_path() and "--user" in sys.argv[1:]:

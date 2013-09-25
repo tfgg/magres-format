@@ -267,10 +267,9 @@ class MagresAtomMs(object):
     Representation of the magnetic shielding of a particular atom.
   """
 
-  def __init__(self, atom, magres_ms, reference=None):
+  def __init__(self, atom, magres_ms):
     self.atom = atom
     self.magres_ms = magres_ms
-    self.reference = reference
 
   @lazyproperty
   def sigma(self):
@@ -306,6 +305,14 @@ class MagresAtomMs(object):
 
     """
     return numpy.trace(self.sigma)/3.0
+
+  @lazyproperty
+  def cs(self):
+    """
+      The chemical shift, referenced.
+    """
+
+    return self.atom.reference - self.iso
 
   @lazyproperty
   def aniso(self):
@@ -700,6 +707,10 @@ class MagresAtomsView(object):
         rtn_atoms += self.species_index[s]
     return MagresAtomsView(rtn_atoms, self.lattice)
 
+  def set_reference(self, reference):
+    for atom in self.atoms:
+      atom.reference = reference
+
   def within(self, pos, max_dr):
     """
       Return all atoms within max_dr Angstroms of pos, including all images.
@@ -899,10 +910,6 @@ class MagresAtoms(MagresAtomsView):
           getattr(atom1, isc_type)[atom2] = magres_atom_isc
 
     return (atoms, lattice)
-
-  def set_reference(self, species, reference):
-    for atom in self.species(species):
-      atom.reference = reference
 
   @classmethod
   def load_magres(self, f):

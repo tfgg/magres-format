@@ -445,6 +445,7 @@ class MagresAtomMs(object):
 class MagresAtom(object):
   def __init__(self, magres_atom):
     self.magres_atom = magres_atom
+    self.reference = 0.0
 
   def __str__(self):
     if self.species != self.label:
@@ -594,6 +595,28 @@ class SpeciesNotFound(Exception):
 class AtomNotFound(Exception):
   pass
 
+class MagresAtomPropertyView(object):
+  """
+    A single atom property opened up on a sequence of atoms.
+
+    e.g. atoms.species('H').ms
+
+    allows you to query across all atoms
+
+      atoms.species('H').ms.iso
+  """
+
+  def __init__(self, atoms, property):
+    self.atoms = atoms
+    self.property = property
+
+  def __getattr__(self, name):
+    for atom in self.atoms:
+      try:
+        yield getattr(getattr(atom, self.property), name)
+      except AttributeError:
+        yield None
+
 class MagresAtomsView(object):
   """
     A container for a collection of atoms with an optional lattice.
@@ -709,7 +732,7 @@ class MagresAtomsView(object):
 
   def set_reference(self, reference):
     for atom in self.atoms:
-      atom.reference = reference
+      atom.reference = float(reference)
 
   def within(self, pos, max_dr):
     """
@@ -806,6 +829,9 @@ class MagresAtomsView(object):
     images = sorted(images, key=lambda (d,p): d)
 
     return images
+
+  def __getattr__(self, name):
+    return MagresAtomPropertyView(self, name) 
 
   def __getitem__(self, idx):
     if type(idx) == tuple:

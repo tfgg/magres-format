@@ -611,11 +611,15 @@ class MagresAtomPropertyView(object):
     self.property = property
 
   def __getattr__(self, name):
+    props = []
+
     for atom in self.atoms:
       try:
-        yield getattr(getattr(atom, self.property), name)
+        props.append(getattr(getattr(atom, self.property), name))
       except AttributeError:
-        yield None
+        props.append(None)
+
+    return props
 
 class MagresAtomsView(object):
   """

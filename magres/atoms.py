@@ -442,6 +442,30 @@ class MagresAtomMs(object):
     """
     return 3.0*(self.iso - self.evals_mehring[1]) / self.span
 
+class MagresAtomBond(object):
+  """
+    Representation of a bond between two atoms.
+  """
+  def __init__(self, atom1, atom2, atom2_pos, population):
+    self.atom1 = atom1
+    self.atom2 = atom2
+    self.atom2_pos = atom2_pos
+    self.population = population
+
+  @property
+  def symbol(self):
+    """
+      A textual symbol representing this bond.
+    """
+    return "%s -- %s" % (self.atom1, self.atom2)
+
+  @property
+  def dist(self):
+    """
+      The distance between the two atoms involved.
+    """
+    return self.atom1.dist(self.atom2_pos)
+
 class MagresAtom(object):
   def __init__(self, magres_atom):
     self.magres_atom = magres_atom
@@ -834,8 +858,11 @@ class MagresAtomsView(object):
 
     return images
 
-  def __getattr__(self, name):
-    return MagresAtomPropertyView(self, name) 
+  def __getattribute__(self, name):
+    try:
+      return object.__getattribute__(self, name)
+    except AttributeError:
+      return MagresAtomPropertyView(self, name) 
 
   def __getitem__(self, idx):
     if type(idx) == tuple:
@@ -870,6 +897,8 @@ class MagresAtoms(MagresAtomsView):
       atoms = []
 
     super(MagresAtoms, self).__init__(atoms, lattice)
+      
+    self.calculate_bonds()
 
   def _from_magres(self, magres_file):
     """
@@ -940,6 +969,16 @@ class MagresAtoms(MagresAtomsView):
           getattr(atom1, isc_type)[atom2] = magres_atom_isc
 
     return (atoms, lattice)
+
+  def calculate_bonds(self, tol=2.0):
+    for atom1 in self.atoms:
+      bonded_atoms = []
+
+      for atom2 in self.within(atom1, tol):
+        if (atom1.position != atom2.position).any():
+          bonded_atoms.append(atom2)
+
+      atom1.bonded = MagresAtomsView(bonded_atoms, self.lattice)
 
   @classmethod
   def load_magres(self, f):

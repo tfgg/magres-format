@@ -267,10 +267,9 @@ class MagresAtomMs(object):
     Representation of the magnetic shielding of a particular atom.
   """
 
-  def __init__(self, atom, magres_ms, reference=None):
+  def __init__(self, atom, magres_ms):
     self.atom = atom
     self.magres_ms = magres_ms
-    self.reference = reference
 
   @lazyproperty
   def sigma(self):
@@ -306,6 +305,14 @@ class MagresAtomMs(object):
 
     """
     return numpy.trace(self.sigma)/3.0
+
+  @lazyproperty
+  def cs(self):
+    """
+      The chemical shift, referenced.
+    """
+
+    return self.atom.reference - self.iso
 
   @lazyproperty
   def aniso(self):
@@ -435,9 +442,34 @@ class MagresAtomMs(object):
     """
     return 3.0*(self.iso - self.evals_mehring[1]) / self.span
 
+class MagresAtomBond(object):
+  """
+    Representation of a bond between two atoms.
+  """
+  def __init__(self, atom1, atom2, atom2_pos, population):
+    self.atom1 = atom1
+    self.atom2 = atom2
+    self.atom2_pos = atom2_pos
+    self.population = population
+
+  @property
+  def symbol(self):
+    """
+      A textual symbol representing this bond.
+    """
+    return "%s -- %s" % (self.atom1, self.atom2)
+
+  @property
+  def dist(self):
+    """
+      The distance between the two atoms involved.
+    """
+    return self.atom1.dist(self.atom2_pos)
+
 class MagresAtom(object):
   def __init__(self, magres_atom):
     self.magres_atom = magres_atom
+    self.reference = 0.0
 
   def __str__(self):
     if self.species != self.label:
@@ -587,6 +619,32 @@ class SpeciesNotFound(Exception):
 class AtomNotFound(Exception):
   pass
 
+class MagresAtomPropertyView(object):
+  """
+    A single atom property opened up on a sequence of atoms.
+
+    e.g. atoms.species('H').ms
+
+    allows you to query across all atoms
+
+      atoms.species('H').ms.iso
+  """
+
+  def __init__(self, atoms, property):
+    self.atoms = atoms
+    self.property = property
+
+  def __getattr__(self, name):
+    props = []
+
+    for atom in self.atoms:
+      try:
+        props.append(getattr(getattr(atom, self.property), name))
+      except AttributeError:
+        props.append(None)
+
+    return props
+
 class MagresAtomsView(object):
   """
     A container for a collection of atoms with an optional lattice.
@@ -703,6 +761,10 @@ class MagresAtomsView(object):
         rtn_atoms += self.species_index[s]
     return MagresAtomsView(rtn_atoms, self.lattice)
 
+  def set_reference(self, reference):
+    for atom in self.atoms:
+      atom.reference = float(reference)
+
   def within(self, pos, max_dr):
     """
       Return all atoms within max_dr Angstroms of pos, including all images.
@@ -799,6 +861,12 @@ class MagresAtomsView(object):
 
     return images
 
+  def __getattribute__(self, name):
+    try:
+      return object.__getattribute__(self, name)
+    except AttributeError:
+      return MagresAtomPropertyView(self, name) 
+
   def __getitem__(self, idx):
     if type(idx) == tuple:
       s, i = idx
@@ -832,6 +900,8 @@ class MagresAtoms(MagresAtomsView):
       atoms = []
 
     super(MagresAtoms, self).__init__(atoms, lattice)
+      
+    self.calculate_bonds()
 
   def _from_magres(self, magres_file):
     """
@@ -903,9 +973,15 @@ class MagresAtoms(MagresAtomsView):
 
     return (atoms, lattice)
 
-  def set_reference(self, species, reference):
-    for atom in self.species(species):
-      atom.reference = reference
+  def calculate_bonds(self, tol=2.0):
+    for atom1 in self.atoms:
+      bonded_atoms = []
+
+      for atom2 in self.within(atom1, tol):
+        if (atom1.position != atom2.position).any():
+          bonded_atoms.append(atom2)
+
+      atom1.bonded = MagresAtomsView(bonded_atoms, self.lattice)
 
   @classmethod
   def load_magres(self, f):

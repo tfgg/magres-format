@@ -1,6 +1,7 @@
 #!python
 import sys
 import yaml
+from magres.constants import K_to_J
 
 # Expression and dataset to compare against
 expr = sys.argv[2]
@@ -36,7 +37,6 @@ for name, structure in data['structures'].items():
     elif coupling['expr'] != expr:
       expr_idx = None
 
-  
     if type(coupling['index1']) is list:
       indices1 = coupling['index1']
     else:
@@ -46,9 +46,21 @@ for name, structure in data['structures'].items():
       indices2 = coupling['index2']
     else:
       indices2 = [coupling['index2']]
-    
-    print "#  " + ",".join(indices1) + " --> " + ",".join(indices2)
-    
+
+    bond_symbol = ",".join(indices1) + "-->" + ",".join(indices2)
+
+    print "#  " + bond_symbol
+ 
+    convert_K_to_J = False
+    # Ok, so we don't have J_iso, but what about K_iso?
+    # If we do, we can convert it to J_iso.
+    #if quantity == "J_iso" and expr_idx is None:
+    #  try:
+    #    expr_idx = coupling['expr'].index("%s.%s" % (tensor, "K_iso"))
+    #    convert_J_to_K = True
+    #  except:
+    #    expr_idx = None
+
     if expr_idx is None:
       print "# %s not present" % expr
       break
@@ -63,6 +75,10 @@ for name, structure in data['structures'].items():
         values[value['dataset']['slug']] = vals[expr_idx]
       else:
         values[value['dataset']['slug']] = vals[0]
+
+      #if convert_J_to_K:
+      #  values[value['dataset']['slug']] = K_to_J(vals[expr_idx], s1, s2)
+        
 
     vals = []
     abs_errors = []
@@ -94,4 +110,4 @@ for name, structure in data['structures'].items():
         abs_errors.append("%6s" % "?")
         rel_errors.append("%6s" % "?")
 
-    print "    ", "%6s" % "%.3f" % compare, "\t", "\t".join(vals), "\t".join(abs_errors), "\t", "\t".join(rel_errors), name
+    print "    ", "%6s" % "%.3f" % compare, "\t", "\t".join(vals), "\t".join(abs_errors), "\t", "\t".join(rel_errors), name, bond_symbol

@@ -676,7 +676,10 @@ class MagresAtomsView(object):
     """
 
     if species not in self.species_index:
-      return []
+      if index is None:
+        return []
+      else:
+        return None
     else:
       if index is None:
         return self.species_index[species]

@@ -10,8 +10,9 @@ import math
 import constants
 import numpy
 
-from decorators import lazyproperty
+import html_repr
 
+from decorators import lazyproperty
 from format import MagresFile
 
 def insideout():
@@ -119,18 +120,9 @@ class MagresAtomEfg(object):
     """
     return self.evalsvecs[0]
 
+
   def _repr_html_(self):
-    html = ["<h1>EFG on " + str(self.atom) + "</h1>"]
-
-    html.append("<table>")
-
-    html.append("<tr><td>Isotope</td><td>{}</td></tr>".format(self.atom.isotope))
-    html.append("<tr><td>Q</td><td>{}</td></tr>".format(self.atom.Q))
-    html.append("<tr><td>Cq</td><td>{:.3f} MHz</td></tr>".format(self.Cq))
-
-    html.append("</table>")
-
-    return "\n".join(html)
+    return html_repr.efg(self)
 
 class MagresAtomIsc(object):
   """
@@ -274,6 +266,9 @@ class MagresAtomIsc(object):
     """
     jx = self.J_evals
     return (jx[1] - jx[0]) / (jx[2] - sum(jx)/3.0)
+
+  def _repr_html_(self):
+    return html_repr.isc(self)
 
 class MagresAtomMs(object):
   """
@@ -813,7 +808,7 @@ class MagresAtomsView(object):
 
   #  return [MagresAtomImage(numpy.dot(M, atom.position.T).T, atom) for atom in self.atoms]
 
-  def _least_mirror(self, a, b):
+  def least_mirror(self, a, b):
     """
       Give the closest periodic image of a to b given the current lattice.
     """
@@ -892,6 +887,105 @@ class MagresAtomsView(object):
 
   def __len__(self):
     return len(self.atoms)
+
+  def _repr_png_(self):
+    import pydot
+
+    dist_graph = pydot.Dot(graph_type='graph', size="100", prog='neato', dim=2)
+
+    element_colours = {'H': ("#EEEEEE", "#000000"),
+                       'C': ("#999999", "#000000"),
+                       'O': ("#FF0000", "#FFFFFF"),
+                       'N': ("#0000FF", "#FFFFFF"),}
+
+    min_dist = 1.0
+    max_dist = 2.0
+
+    try:
+      object.__getattribute__(self, 'isc')
+      has_isc = True
+    except:
+      has_isc = False
+
+    def lm_dist(atom1, atom2):
+        return self.least_mirror(atom1.position, atom2.position)[0]
+
+    def strength_color(dist):
+        x = min(max((abs(dist) - min_dist) / (max_dist - min_dist),0.0),1.0)
+        y = (1.0-x)*255
+                
+        return "#000000%02X" % y
+
+    for atom in self:
+        fillcolor, fontcolor = element_colours.get(atom.species, "#CCCCCC")
+            
+        node = pydot.Node(str(atom),
+                          style="filled",
+                          size="0.01",
+                          fillcolor=fillcolor,
+                          fontcolor=fontcolor,
+                          fontsize=10)
+
+        dist_graph.add_node(node)
+
+    bonds_done = set()
+
+    for atom1 in self:
+      for atom2 in self:
+        dist = lm_dist(atom1, atom2)
+
+        if dist < 0.1: continue
+
+        idx1 = (str(atom2), str(atom1))
+        idx2 = (str(atom1), str(atom2))
+
+        if dist < max_dist and idx1 not in bonds_done and idx2 not in bonds_done:
+          bonds_done.add(idx2)
+
+          # Hide bonds if we have ISC, but keep for structure
+          if has_isc:
+            color = "#00000000"
+          else:
+            color = strength_color(dist)
+
+          edge = pydot.Edge(str(atom1),
+                            str(atom2),
+                            color=color,
+                            len=dist,
+                            fontsize=8)
+
+          dist_graph.add_edge(edge)
+
+    if has_isc:
+      isc_done = set()
+
+      min_isc = min([abs(isc.K_iso) for isc in self.isc if isc.atom1 is not isc.atom2])
+      max_isc = max([abs(isc.K_iso) for isc in self.isc if isc.atom1 is not isc.atom2])
+
+      def strength_color_K(K_iso):
+          x = min(max((abs(K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
+          y = x*255
+
+          if K_iso > 0.0:
+            return "#FF0000%02X" % y
+          else:
+            return "#0000FF%02X" % y
+
+      for isc in self.isc:
+        if abs(isc.K_iso) > 1.0 and isc.atom1 is not isc.atom2 and (str(isc.atom2), str(isc.atom1)) not in isc_done:
+          isc_done.add((str(isc.atom1), str(isc.atom2)))
+
+          edge = pydot.Edge(str(isc.atom1),
+                            str(isc.atom2),
+                            fontsize=8,
+                            color=strength_color_K(isc.K_iso),
+                            fontcolor=strength_color_K(isc.K_iso),
+                            label="{:.3f}".format(isc.K_iso),
+                            len=lm_dist(isc.atom1, isc.atom2))
+
+          dist_graph.add_edge(edge)
+
+    return dist_graph.create_png(prog='neato')
 
 class MagresAtoms(MagresAtomsView):
   """

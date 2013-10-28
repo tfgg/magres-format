@@ -119,6 +119,19 @@ class MagresAtomEfg(object):
     """
     return self.evalsvecs[0]
 
+  def _repr_html_(self):
+    html = ["<h1>EFG on " + str(self.atom) + "</h1>"]
+
+    html.append("<table>")
+
+    html.append("<tr><td>Isotope</td><td>{}</td></tr>".format(self.atom.isotope))
+    html.append("<tr><td>Q</td><td>{}</td></tr>".format(self.atom.Q))
+    html.append("<tr><td>Cq</td><td>{:.3f} MHz</td></tr>".format(self.Cq))
+
+    html.append("</table>")
+
+    return "\n".join(html)
+
 class MagresAtomIsc(object):
   """
     Representation of the indirect spin coupling between two atoms.

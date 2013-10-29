@@ -653,6 +653,23 @@ class MagresAtomPropertyView(object):
 
     return props
 
+  def __iter__(self):
+    for atom in self.atoms:
+      try:
+        thing = getattr(atom, self.property)
+
+        if type(thing) is dict:
+          for value in thing.values():
+            yield value
+        else:
+          yield thing
+
+      except AttributeError:
+        pass
+
+  def __len__(self):
+    return len(self.atoms)
+
 class MagresAtomsView(object):
   """
     A container for a collection of atoms with an optional lattice.
@@ -701,6 +718,15 @@ class MagresAtomsView(object):
         self.species_index[atom.species].append(atom)
       else:
         self.species_index[atom.species] = [atom]
+
+      # This is a bit hacky. Need some way to transfer through arbitrary properties?
+      # Possibly improve PropertyView so it's an arbitrary sequence of objects, and queries
+      # on its properties will return a sequence.
+      #if hasattr(atom, 'isc'):
+      #  if not hasattr(self, 'isc'):
+      #    self.isc = []
+      #
+      #  self.isc.append(atom.isc)
 
   def get_label(self, label, index=None):
     """
@@ -888,6 +914,12 @@ class MagresAtomsView(object):
   def __len__(self):
     return len(self.atoms)
 
+  def __add__(self, b):
+    if type(b) is MagresAtomsView and (self.lattice == b.lattice).all():
+      new_atoms = set(self.atoms).union(set(b.atoms))
+
+      return MagresAtomsView(new_atoms, self.lattice)
+
   def _repr_png_(self):
     import pydot
 
@@ -901,11 +933,8 @@ class MagresAtomsView(object):
     min_dist = 1.0
     max_dist = 2.0
 
-    try:
-      object.__getattribute__(self, 'isc')
-      has_isc = True
-    except:
-      has_isc = False
+    has_isc = numpy.array([hasattr(atom, 'isc') for atom in self.atoms]).any()
+    has_ms = numpy.array([hasattr(atom, 'ms') for atom in self.atoms]).any()
 
     def lm_dist(atom1, atom2):
         return self.least_mirror(atom1.position, atom2.position)[0]
@@ -918,8 +947,14 @@ class MagresAtomsView(object):
 
     for atom in self:
         fillcolor, fontcolor = element_colours.get(atom.species, "#CCCCCC")
-            
+         
+        if has_ms:
+          label = "{}\n{:.3f}".format(str(atom), atom.ms.iso)
+        else:
+          label = str(atom)#"{}\n{:.3f}".format(str(atom), 3.0)
+
         node = pydot.Node(str(atom),
+                          label=label,
                           style="filled",
                           size="0.01",
                           fillcolor=fillcolor,
@@ -958,6 +993,7 @@ class MagresAtomsView(object):
 
     if has_isc:
       isc_done = set()
+      atom_set = {str(atom) for atom in self.atoms}
 
       min_isc = min([abs(isc.K_iso) for isc in self.isc if isc.atom1 is not isc.atom2])
       max_isc = max([abs(isc.K_iso) for isc in self.isc if isc.atom1 is not isc.atom2])
@@ -972,7 +1008,12 @@ class MagresAtomsView(object):
             return "#0000FF%02X" % y
 
       for isc in self.isc:
-        if abs(isc.K_iso) > 1.0 and isc.atom1 is not isc.atom2 and (str(isc.atom2), str(isc.atom1)) not in isc_done:
+        if abs(isc.K_iso) > 1.0 and \
+           isc.atom1 is not isc.atom2 and \
+           (str(isc.atom2), str(isc.atom1)) not in isc_done and \
+           str(isc.atom1) in atom_set and \
+           str(isc.atom2) in atom_set:
+
           isc_done.add((str(isc.atom1), str(isc.atom2)))
 
           edge = pydot.Edge(str(isc.atom1),

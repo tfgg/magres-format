@@ -15,6 +15,14 @@ import html_repr
 from decorators import lazyproperty
 from format import MagresFile
 
+element_colours = {'H': ("#EEEEEE", "#000000"),
+                   'C': ("#999999", "#000000"),
+                   'O': ("#FF0000", "#FFFFFF"),
+                   'N': ("#0000FF", "#FFFFFF"),}
+
+min_dist = 1.0
+max_dist = 2.0
+
 def insideout():
   """
     Count up in positive numbers and down in negative numbers
@@ -918,20 +926,23 @@ class MagresAtomsView(object):
     if type(b) is MagresAtomsView and (self.lattice == b.lattice).all():
       new_atoms = set(self.atoms).union(set(b.atoms))
 
-      return MagresAtomsView(new_atoms, self.lattice)
+      return MagresAtomsView(list(new_atoms), self.lattice)
+
+    elif type(b) is MagresAtom:
+      new_atoms = set(self.atoms + [b])
+      
+      return MagresAtomsView(list(new_atoms), self.lattice)
+
+  def __radd__(self, b):
+    if type(b) is MagresAtom:
+      new_atoms = set(self.atoms + [b])
+      
+      return MagresAtomsView(list(new_atoms), self.lattice)
 
   def _repr_png_(self):
     import pydot
 
     dist_graph = pydot.Dot(graph_type='graph', size="100", prog='neato', dim=2)
-
-    element_colours = {'H': ("#EEEEEE", "#000000"),
-                       'C': ("#999999", "#000000"),
-                       'O': ("#FF0000", "#FFFFFF"),
-                       'N': ("#0000FF", "#FFFFFF"),}
-
-    min_dist = 1.0
-    max_dist = 2.0
 
     has_isc = numpy.array([hasattr(atom, 'isc') for atom in self.atoms]).any()
     has_ms = numpy.array([hasattr(atom, 'ms') for atom in self.atoms]).any()
@@ -942,11 +953,11 @@ class MagresAtomsView(object):
     def strength_color(dist):
         x = min(max((abs(dist) - min_dist) / (max_dist - min_dist),0.0),1.0)
         y = (1.0-x)*255
-                
-        return "#000000%02X" % y
+        
+        return "#000000{:02x}".format(int(y))
 
     for atom in self:
-        fillcolor, fontcolor = element_colours.get(atom.species, "#CCCCCC")
+        fillcolor, fontcolor = element_colours.get(atom.species, ("#CCCCCC","#000000"))
          
         if has_ms:
           label = "{}\n{:.3f}".format(str(atom), atom.ms.iso)
@@ -967,7 +978,7 @@ class MagresAtomsView(object):
 
     for atom1 in self:
       for atom2 in self:
-        dist = lm_dist(atom1, atom2)
+        dist = atom1.dist(atom2)#lm_dist(atom1, atom2)
 
         if dist < 0.1: continue
 
@@ -982,7 +993,7 @@ class MagresAtomsView(object):
             color = "#00000000"
           else:
             color = strength_color(dist)
-
+            
           edge = pydot.Edge(str(atom1),
                             str(atom2),
                             color=color,
@@ -1048,8 +1059,9 @@ class MagresAtoms(MagresAtomsView):
       atoms = []
 
     super(MagresAtoms, self).__init__(atoms, lattice)
-      
-    self.calculate_bonds()
+    
+    if len(self) < 20:
+      self.calculate_bonds()
 
   def _from_magres(self, magres_file):
     """
@@ -1121,6 +1133,30 @@ class MagresAtoms(MagresAtomsView):
 
     return (atoms, lattice)
 
+  def load_bonds(self, castep_file, pop_tol=0.2):
+    from castepy.output.bonds import parse_bonds
+    from collections import Counter
+
+    bonds = parse_bonds(castep_file)
+
+    bonded_dict = {(atom.species,atom.index): [] for atom in self}
+
+    for idx1, idx2, pop, length in bonds:
+      if pop > 0.2:
+        bonded_dict[idx1].append(idx2)
+        bonded_dict[idx2].append(idx1)
+
+    for idx1, idx2s in bonded_dict.items():
+      atom1 = self.get_species(*idx1)
+
+      bonded_atoms = []
+
+      for idx2 in idx2s:
+        atom2 = self.get_species(*idx2)
+        bonded_atoms.append(atom2)
+
+      atom1.bonded = MagresAtomsView(list(bonded_atoms), self.lattice)
+
   def calculate_bonds(self, tol=2.0):
     for atom1 in self.atoms:
       bonded_atoms = []
@@ -1129,7 +1165,7 @@ class MagresAtoms(MagresAtomsView):
         if (atom1.position != atom2.position).any():
           bonded_atoms.append(atom2)
 
-      atom1.bonded = MagresAtomsView(bonded_atoms, self.lattice)
+      atom1.bonded = MagresAtomsView(list(bonded_atoms), self.lattice)
 
   @classmethod
   def load_magres(self, f):

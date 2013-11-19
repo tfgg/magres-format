@@ -1,9 +1,14 @@
 magres-format
 =============
 
-Code for parsing the CCP-NC ab-initio magnetic resonance file format as used in the latest version of Castep. See more at http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat
+Code for parsing the CCP-NC ab-initio magnetic resonance file format as used in the latest version of [CASTEP](http://www.castep.org), coming soon to other codes such as [Quantum ESPRESSO](http://www.quantum-espresso.org). See [more on this page](http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat)
 
 Documentation for the Python API is [available here](http://tfgg.github.io/magres-format/build/html/).
+
+A few IPython notebooks have been written using the library as examples:
+
+ * [Plotting bonding networks](http://nbviewer.ipython.org/7203658)
+ * [Plotting glycine chemical shifts](http://nbviewer.ipython.org/6699984)
 
 Installing
 ----------

@@ -10,9 +10,18 @@ import math
 import constants
 import numpy
 
-from decorators import lazyproperty
+import html_repr
 
+from decorators import lazyproperty
 from format import MagresFile
+
+element_colours = {'H': ("#EEEEEE", "#000000"),
+                   'C': ("#999999", "#000000"),
+                   'O': ("#FF0000", "#FFFFFF"),
+                   'N': ("#0000FF", "#FFFFFF"),}
+
+min_dist = 1.0
+max_dist = 2.0
 
 def insideout():
   """
@@ -119,18 +128,9 @@ class MagresAtomEfg(object):
     """
     return self.evalsvecs[0]
 
+
   def _repr_html_(self):
-    html = ["<h1>EFG on " + str(self.atom) + "</h1>"]
-
-    html.append("<table>")
-
-    html.append("<tr><td>Isotope</td><td>{}</td></tr>".format(self.atom.isotope))
-    html.append("<tr><td>Q</td><td>{}</td></tr>".format(self.atom.Q))
-    html.append("<tr><td>Cq</td><td>{:.3f} MHz</td></tr>".format(self.Cq))
-
-    html.append("</table>")
-
-    return "\n".join(html)
+    return html_repr.efg(self)
 
 class MagresAtomIsc(object):
   """
@@ -274,6 +274,9 @@ class MagresAtomIsc(object):
     """
     jx = self.J_evals
     return (jx[1] - jx[0]) / (jx[2] - sum(jx)/3.0)
+
+  def _repr_html_(self):
+    return html_repr.isc(self)
 
 class MagresAtomMs(object):
   """
@@ -658,6 +661,23 @@ class MagresAtomPropertyView(object):
 
     return props
 
+  def __iter__(self):
+    for atom in self.atoms:
+      try:
+        thing = getattr(atom, self.property)
+
+        if type(thing) is dict:
+          for value in thing.values():
+            yield value
+        else:
+          yield thing
+
+      except AttributeError:
+        pass
+
+  def __len__(self):
+    return len(self.atoms)
+
 class MagresAtomsView(object):
   """
     A container for a collection of atoms with an optional lattice.
@@ -706,6 +726,15 @@ class MagresAtomsView(object):
         self.species_index[atom.species].append(atom)
       else:
         self.species_index[atom.species] = [atom]
+
+      # This is a bit hacky. Need some way to transfer through arbitrary properties?
+      # Possibly improve PropertyView so it's an arbitrary sequence of objects, and queries
+      # on its properties will return a sequence.
+      #if hasattr(atom, 'isc'):
+      #  if not hasattr(self, 'isc'):
+      #    self.isc = []
+      #
+      #  self.isc.append(atom.isc)
 
   def get_label(self, label, index=None):
     """
@@ -813,7 +842,7 @@ class MagresAtomsView(object):
 
   #  return [MagresAtomImage(numpy.dot(M, atom.position.T).T, atom) for atom in self.atoms]
 
-  def _least_mirror(self, a, b):
+  def least_mirror(self, a, b):
     """
       Give the closest periodic image of a to b given the current lattice.
     """
@@ -893,6 +922,123 @@ class MagresAtomsView(object):
   def __len__(self):
     return len(self.atoms)
 
+  def __add__(self, b):
+    if type(b) is MagresAtomsView and (self.lattice == b.lattice).all():
+      new_atoms = set(self.atoms).union(set(b.atoms))
+
+      return MagresAtomsView(list(new_atoms), self.lattice)
+
+    elif type(b) is MagresAtom:
+      new_atoms = set(self.atoms + [b])
+      
+      return MagresAtomsView(list(new_atoms), self.lattice)
+
+  def __radd__(self, b):
+    if type(b) is MagresAtom:
+      new_atoms = set(self.atoms + [b])
+      
+      return MagresAtomsView(list(new_atoms), self.lattice)
+
+  def _repr_png_(self):
+    import pydot
+
+    dist_graph = pydot.Dot(graph_type='graph', size="100", prog='neato', dim=2)
+
+    has_isc = numpy.array([hasattr(atom, 'isc') for atom in self.atoms]).any()
+    has_ms = numpy.array([hasattr(atom, 'ms') for atom in self.atoms]).any()
+
+    def lm_dist(atom1, atom2):
+        return self.least_mirror(atom1.position, atom2.position)[0]
+
+    def strength_color(dist):
+        x = min(max((abs(dist) - min_dist) / (max_dist - min_dist),0.0),1.0)
+        y = (1.0-x)*255
+        
+        return "#000000{:02x}".format(int(y))
+
+    for atom in self:
+        fillcolor, fontcolor = element_colours.get(atom.species, ("#CCCCCC","#000000"))
+         
+        if has_ms:
+          label = "{}\n{:.3f}".format(str(atom), atom.ms.iso)
+        else:
+          label = str(atom)#"{}\n{:.3f}".format(str(atom), 3.0)
+
+        node = pydot.Node(str(atom),
+                          label=label,
+                          style="filled",
+                          size="0.01",
+                          fillcolor=fillcolor,
+                          fontcolor=fontcolor,
+                          fontsize=10)
+
+        dist_graph.add_node(node)
+
+    bonds_done = set()
+
+    for atom1 in self:
+      for atom2 in self:
+        dist = atom1.dist(atom2)#lm_dist(atom1, atom2)
+
+        if dist < 0.1: continue
+
+        idx1 = (str(atom2), str(atom1))
+        idx2 = (str(atom1), str(atom2))
+
+        if dist < max_dist and idx1 not in bonds_done and idx2 not in bonds_done:
+          bonds_done.add(idx2)
+
+          # Hide bonds if we have ISC, but keep for structure
+          if has_isc:
+            color = "#00000000"
+          else:
+            color = strength_color(dist)
+            
+          edge = pydot.Edge(str(atom1),
+                            str(atom2),
+                            color=color,
+                            len=dist,
+                            fontsize=8)
+
+          dist_graph.add_edge(edge)
+
+    if has_isc:
+      isc_done = set()
+      atom_set = {str(atom) for atom in self.atoms}
+
+      min_isc = min([abs(isc.K_iso) for isc in self.isc if isc.atom1 is not isc.atom2])
+      max_isc = max([abs(isc.K_iso) for isc in self.isc if isc.atom1 is not isc.atom2])
+
+      def strength_color_K(K_iso):
+          x = min(max((abs(K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
+          y = x*255
+
+          if K_iso > 0.0:
+            return "#FF0000%02X" % y
+          else:
+            return "#0000FF%02X" % y
+
+      for isc in self.isc:
+        if abs(isc.K_iso) > 1.0 and \
+           isc.atom1 is not isc.atom2 and \
+           (str(isc.atom2), str(isc.atom1)) not in isc_done and \
+           str(isc.atom1) in atom_set and \
+           str(isc.atom2) in atom_set:
+
+          isc_done.add((str(isc.atom1), str(isc.atom2)))
+
+          edge = pydot.Edge(str(isc.atom1),
+                            str(isc.atom2),
+                            fontsize=8,
+                            color=strength_color_K(isc.K_iso),
+                            fontcolor=strength_color_K(isc.K_iso),
+                            label="{:.3f}".format(isc.K_iso),
+                            len=lm_dist(isc.atom1, isc.atom2))
+
+          dist_graph.add_edge(edge)
+
+    return dist_graph.create_png(prog='neato')
+
 class MagresAtoms(MagresAtomsView):
   """
     A collection of atoms, including lattice parameters, and (if available) lists of NMR parameters.
@@ -913,8 +1059,9 @@ class MagresAtoms(MagresAtomsView):
       atoms = []
 
     super(MagresAtoms, self).__init__(atoms, lattice)
-      
-    self.calculate_bonds()
+    
+    if len(self) < 20:
+      self.calculate_bonds()
 
   def _from_magres(self, magres_file):
     """
@@ -986,6 +1133,30 @@ class MagresAtoms(MagresAtomsView):
 
     return (atoms, lattice)
 
+  def load_bonds(self, castep_file, pop_tol=0.2):
+    from castepy.output.bonds import parse_bonds
+    from collections import Counter
+
+    bonds = parse_bonds(castep_file)
+
+    bonded_dict = {(atom.species,atom.index): [] for atom in self}
+
+    for idx1, idx2, pop, length in bonds:
+      if pop > 0.2:
+        bonded_dict[idx1].append(idx2)
+        bonded_dict[idx2].append(idx1)
+
+    for idx1, idx2s in bonded_dict.items():
+      atom1 = self.get_species(*idx1)
+
+      bonded_atoms = []
+
+      for idx2 in idx2s:
+        atom2 = self.get_species(*idx2)
+        bonded_atoms.append(atom2)
+
+      atom1.bonded = MagresAtomsView(list(bonded_atoms), self.lattice)
+
   def calculate_bonds(self, tol=2.0):
     for atom1 in self.atoms:
       bonded_atoms = []
@@ -994,7 +1165,7 @@ class MagresAtoms(MagresAtomsView):
         if (atom1.position != atom2.position).any():
           bonded_atoms.append(atom2)
 
-      atom1.bonded = MagresAtomsView(bonded_atoms, self.lattice)
+      atom1.bonded = MagresAtomsView(list(bonded_atoms), self.lattice)
 
   @classmethod
   def load_magres(self, f):

@@ -11,6 +11,8 @@ A few IPython notebooks have been written using the library as examples:
  * [Plotting glycine chemical shifts](http://nbviewer.ipython.org/6699984)
  * [Calculating NQR frequencies from EFG calculations](http://nbviewer.ipython.org/7548650)
 
+IPython is an enhanced interpreter for Python and offers an excellent in-browser workbook experience, similar to Matlab or Mathematica. You can install it using easy_install or pip.
+
 Installing
 ----------
 

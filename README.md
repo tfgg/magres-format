@@ -9,6 +9,7 @@ A few IPython notebooks have been written using the library as examples:
 
  * [Plotting bonding networks](http://nbviewer.ipython.org/7203658)
  * [Plotting glycine chemical shifts](http://nbviewer.ipython.org/6699984)
+ * [Calculating NQR frequencies from EFG calculations](http://nbviewer.ipython.org/7548650)
 
 Installing
 ----------

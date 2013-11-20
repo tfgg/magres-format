@@ -12,7 +12,9 @@ A few IPython notebooks have been written using the library as examples:
  * [Calculating NQR frequencies from EFG calculations](http://nbviewer.ipython.org/7548650)
  * [Plotting bonding networks](http://nbviewer.ipython.org/7203658)
 
-IPython is an enhanced interpreter for Python and offers an excellent in-browser workbook experience, similar to Matlab or Mathematica. This is particularly useful when developing code using this library to process your magnetic resonance calculations. You can install it using easy_install or pip.
+IPython is an enhanced interpreter for Python and offers an excellent in-browser workbook experience,
+similar to Matlab or Mathematica. This is particularly useful when developing code using this library
+to process your magnetic resonance calculations. You can [read instructions for installing it here](http://ipython.org/install.html).
 
 Installing
 ----------

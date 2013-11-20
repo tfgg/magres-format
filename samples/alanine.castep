@@ -1,0 +1,3059 @@
+ +-------------------------------------------------+
+ |                                                 |
+ |      CCC   AA    SSS  TTTTT  EEEEE  PPPP        |
+ |     C     A  A  S       T    E      P   P       |
+ |     C     AAAA   SS     T    EEE    PPPP        |
+ |     C     A  A     S    T    E      P           |
+ |      CCC  A  A  SSS     T    EEEEE  P           |
+ |                                                 |
+ +-------------------------------------------------+
+ |                                                 |
+ | Welcome to Academic Release CASTEP version 7.0  |
+ | Ab Initio Total Energy Program                  |
+ |                                                 |
+ | Authors:                                        |
+ | M. Segall, M. Probert, C. Pickard, P. Hasnip,   |
+ | S. Clark, K. Refson, J. R. Yates, M. Payne      |
+ |                                                 |
+ | Contributors:                                   |
+ | P. Lindan, P. Haynes, J. White, V. Milman,      |
+ | N. Govind, M. Gibson, P. Tulip, V. Cocula,      |
+ | B. Montanari, D. Quigley, M. Glover,            |
+ | L. Bernasconi, A. Perlov, M. Plummer,           |
+ | E. McNellis, J. Meyer, J. Gale, D. Jochym       |
+ | J. Aarons, B. Walker, R. Gillen                 |
+ |                                                 |
+ | Copyright (c) 2000 - 2013                       |
+ |                                                 |
+ |     Distributed under the terms of an           |
+ |     Agreement between the United Kingdom        |
+ |     Car-Parrinello (UKCP) Consortium,           |
+ |     Daresbury Laboratory and Accelrys, Inc.     |
+ |                                                 |
+ | Please cite                                     |
+ |                                                 |
+ |     "First principles methods using CASTEP"     |
+ |                                                 |
+ |         Zeitschrift fuer Kristallographie       |
+ |           220(5-6) pp. 567-570 (2005)           |
+ |                                                 |
+ | S. J. Clark, M. D. Segall, C. J. Pickard,       |
+ | P. J. Hasnip, M. J. Probert, K. Refson,         |
+ | M. C. Payne                                     |
+ |                                                 |
+ |       in all publications arising from          |
+ |              your use of CASTEP                 |
+ |                                                 |
+ +-------------------------------------------------+
+ 
+ 
+ Compiled for linux_x86_64_ifort12 on Thu Aug  8 18:16:08 2013
+ from source code version 0aa11acfb795+ magres-jcoupling 2013-08-07
+ Compiler: ; Optimisation: debug
+ MATHLIBS: Intel MKL(10.3.9) (LAPACK version 3.3.1)
+ FFT Lib : default
+ +-------------------------------------------------+
+ |                                                 |
+ |           N   N    M   M    RRRR                |
+ |           NN  N    MM MM    R   R               |
+ |           N N N    M M M    RRRR                |
+ |           N  NN    M   M    R  R                |
+ |           N   N    M   M    R   R               |
+ |                                                 |
+ +-------------------------------------------------+
+ |                                                 |
+ | Welcome to Materials Studio CASTEP-NMR          |
+ |                                                 |
+ | Authors:                                        |
+ | J. R. Yates, C. J. Pickard, F. Mauri            |
+ |                                                 |
+ | Copyright (c) 2004 - 2013                       |
+ |                                                 |
+ | Please cite the appropriate publications in all |
+ | work arising from your use of CASTEP NMR.       |
+ |                                                 |
+ | For NMR Shielding Tensors cite:                 |
+ |    "All-electron magnetic response with         |
+ |    pseudopotentials: NMR chemical shifts",      |
+ |    C. J. Pickard, F. Mauri;                     |
+ |    Physical Review B63 245101 (2001), and       |
+ |                                                 |
+ |    "Calculation of NMR Chemical Shifts          |
+ |    for extended systems using                   |
+ |    Ultrasoft Pseudopotentials",                 |
+ |    J. R. Yates, C. J. Pickard and F. Mauri      |
+ |    Physical Review B76 024401 (2007)            |
+ |                                                 |
+ | For Electric Field Gradients cite:              |
+ |  "Accurate First Principles Prediction of 17O   |
+ |   NMR Parameters in SiO2: Assignment of the     |
+ |   Zeolite Ferrierite Spectrum"                  |
+ |  M. Profeta, F. Mauri and C. J. Pickard         |
+ |  J. Amer. Chem. Soc. 125 541 (2003)             |
+ |                                                 |
+ +-------------------------------------------------+
+ 
+ H        NCP IS REL?  F
+ C        NCP IS REL?  F
+ N        NCP IS REL?  F
+ O        NCP IS REL?  F
+ 
+ Pseudo atomic calculation performed for H 1s1
+ 
+ Converged in 18 iterations to a total energy of -12.4932 eV
+ 
+ 
+ Pseudo atomic calculation performed for C 2s2 2p2
+ 
+ Converged in 22 iterations to a total energy of -146.0014 eV
+ 
+ 
+ Pseudo atomic calculation performed for N 2s2 2p3
+ 
+ Converged in 30 iterations to a total energy of -262.4694 eV
+ 
+ 
+ Pseudo atomic calculation performed for O 2s2 2p4
+ 
+ Converged in 33 iterations to a total energy of -428.7222 eV
+ 
+ Calculation parallelised over 8 processes.
+ Data is distributed by G-vector(8-way)
+
+ ************************************ Title ************************************
+ 
+
+ ***************************** General Parameters ******************************
+  
+ output verbosity                               : normal  (1)
+ write checkpoint data to                       : alanine.check
+ type of calculation                            : Magnetic Resonance
+ stress calculation                             : off
+ density difference calculation                 : off
+ electron localisation func (ELF) calculation   : off
+ Hirshfeld analysis                             : off
+ unlimited duration calculation
+ timing information                             : on
+ memory usage estimate                          : on
+ write final potential to formatted file        : off
+ write final density to formatted file          : off
+ write BibTeX reference list                    : on
+  
+ output         length unit                     : A
+ output           mass unit                     : amu
+ output           time unit                     : ps
+ output         charge unit                     : e
+ output         energy unit                     : eV
+ output          force unit                     : eV/A
+ output       velocity unit                     : A/ps
+ output       pressure unit                     : GPa
+ output     inv_length unit                     : 1/A
+ output      frequency unit                     : cm-1
+ output force constant unit                     : eV/A**2
+ output         volume unit                     : A**3
+ output   IR intensity unit                     : (D/A)**2/amu
+ output         dipole unit                     : D
+ output         efield unit                     : eV/A/e
+ output        entropy unit                     : J/mol/K
+  
+ wavefunctions paging                           : none
+ data distribution                              : optimal for this architecture
+ optimization strategy                          : maximize speed(+++)
+
+ *********************** Exchange-Correlation Parameters ***********************
+  
+ using functional                               : Perdew Burke Ernzerhof
+ Divergence correction                          : off
+ DFT+D: Semi-empirical dispersion correction    : off
+
+ ************************* Pseudopotential Parameters **************************
+  
+ pseudopotential representation                 : reciprocal space
+ <beta|phi> representation                      : reciprocal space
+
+ **************************** Basis Set Parameters *****************************
+  
+ plane wave basis set cut-off                   :  1088.4554   eV
+ finite basis set correction                    : none
+
+ **************************** Electronic Parameters ****************************
+  
+ number of  electrons                           :  144.0    
+ net charge of system                           :  0.000    
+ net spin   of system                           :  0.000    
+ number of  up  spins                           :  72.00    
+ number of down spins                           :  72.00    
+ treating system as non-spin-polarized
+ number of bands                                :         92
+
+ ********************* Electronic Minimization Parameters **********************
+  
+ Method: Treating system as metallic with density mixing treatment of electrons,
+         and number of  SD  steps               :          1
+         and number of  CG  steps               :          4
+  
+ total energy / atom convergence tol.           : 0.1000E-07   eV
+ eigen-energy convergence tolerance             : 0.5652E-08   eV
+ max force / atom convergence tol.              : ignored
+ convergence tolerance window                   :          3   cycles
+ max. number of SCF cycles                      :         60
+ number of fixed-spin iterations                :         10
+ smearing scheme                                : Gaussian
+ smearing width                                 : 0.2000       eV
+ Fermi energy convergence tolerance             : 0.5652E-09   eV
+ periodic dipole correction                     : NONE
+
+ ************************** Density Mixing Parameters **************************
+  
+ density-mixing scheme                          : Broyden
+ max. length of mixing history                  :          7
+ charge density mixing amplitude                : 0.8000    
+ cut-off energy for mixing                      :  1088.       eV
+
+ *********************** Population Analysis Parameters ************************
+  
+ Population analysis with cutoff                :  3.000       A
+
+ ************************ Magnetic Resonance Parameters ************************
+  
+ Magnetic Resonance Property                    : J-Coupling
+ J-Coupling term                                : All terms
+ max. number of MagRes CG steps                 :        250
+ convergence tolerance window                   :          2   cycles
+ max. number of MagRes sc cycles                :         20
+ energy convergence tolerance                   : 0.1000E-11   eV
+ band convergence tolerance                     : 0.1000E-08   eV
+
+ *******************************************************************************
+  
+ 
+                           -------------------------------
+                                      Unit Cell
+                           -------------------------------
+        Real Lattice(A)                      Reciprocal Lattice(1/A)
+   6.0250000   0.0000000   0.0000000        1.0428523   0.0000000   0.0000000
+   0.0000000  12.3240000   0.0000000        0.0000000   0.5098333   0.0000000
+   0.0000000   0.0000000   5.7830000        0.0000000   0.0000000   1.0864924
+ 
+                       Lattice parameters(A)       Cell Angles
+                    a =    6.025000          alpha =   90.000000
+                    b =   12.324000          beta  =   90.000000
+                    c =    5.783000          gamma =   90.000000
+ 
+                       Current cell volume =  429.399894       A**3
+ 
+                           -------------------------------
+                                     Cell Contents
+                           -------------------------------
+                         Total number of ions in cell =   52
+                      Total number of species in cell =    4
+                        Max number of any one species =   28
+ 
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            x  Element    Atom        Fractional coordinates of atoms  x
+            x            Number           u          v          w      x
+            x----------------------------------------------------------x
+            x  H            1         0.710539   0.059234   0.200242   x
+            x  H            2         0.435519   0.247160   0.337368   x
+            x  H            3         0.318672   0.006654   0.305551   x
+            x  H            4         0.594523   0.148896   0.017638   x
+            x  H            5         0.145726   0.104917   0.429362   x
+            x  H            6         0.784066   0.191659   0.210963   x
+            x  H            7         0.209793   0.110516   0.132803   x
+            x  H            8        -0.210871  -0.059396   0.700242   x
+            x  H            9         0.064149  -0.247322   0.837368   x
+            x  H           10         0.180996  -0.006816   0.805551   x
+            x  H           11        -0.094855  -0.149059   0.517638   x
+            x  H           12         0.353942  -0.105080   0.929362   x
+            x  H           13        -0.284398  -0.191821   0.710963   x
+            x  H           14         0.289876  -0.110678   0.632803   x
+            x  H           15        -0.710871   0.559234   0.299412   x
+            x  H           16        -0.435851   0.747160   0.162286   x
+            x  H           17        -0.319004   0.506654   0.194103   x
+            x  H           18        -0.594855   0.648896   0.482016   x
+            x  H           19        -0.146058   0.604917   0.070292   x
+            x  H           20        -0.784398   0.691659   0.288691   x
+            x  H           21        -0.210124   0.610516   0.366851   x
+            x  H           22         1.210539   0.440604  -0.200588   x
+            x  H           23         0.935519   0.252678  -0.337714   x
+            x  H           24         0.818672   0.493184  -0.305897   x
+            x  H           25         1.094523   0.350941  -0.017984   x
+            x  H           26         0.645726   0.394920  -0.429708   x
+            x  H           27         1.284066   0.308179  -0.211309   x
+            x  H           28         0.709793   0.389322  -0.133149   x
+            x  C            1         0.560332   0.141350   0.601418   x
+            x  C            2         0.476515   0.161311   0.355179   x
+            x  C            3         0.274523   0.091529   0.302265   x
+            x  C            4        -0.060664  -0.141512   1.101418   x
+            x  C            5         0.023154  -0.161474   0.855179   x
+            x  C            6         0.225145  -0.091691   0.802265   x
+            x  C            7        -0.560664   0.641350  -0.101764   x
+            x  C            8        -0.476846   0.661311   0.144475   x
+            x  C            9        -0.274855   0.591529   0.197389   x
+            x  C           10         1.060332   0.358488  -0.601764   x
+            x  C           11         0.976515   0.338526  -0.355525   x
+            x  C           12         0.774523   0.408309  -0.302611   x
+            x  N            1         0.655436   0.137861   0.185544   x
+            x  N            2        -0.155768  -0.138023   0.685544   x
+            x  N            3        -0.655768   0.637861   0.314110   x
+            x  N            4         1.155436   0.361977  -0.185890   x
+            x  O            1         0.728133   0.084469   0.628048   x
+            x  O            2         0.449959   0.185005   0.760678   x
+            x  O            3        -0.228465  -0.084632   1.128048   x
+            x  O            4         0.049710  -0.185167   1.260678   x
+            x  O            5        -0.728465   0.584469  -0.128394   x
+            x  O            6        -0.450290   0.685005  -0.261024   x
+            x  O            7         1.228133   0.415368  -0.628394   x
+            x  O            8         0.949959   0.314833  -0.761024   x
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 
+ 
+                         No user defined ionic velocities
+ 
+                           -------------------------------
+                                   Details of Species
+                           -------------------------------
+ 
+                               Mass of species in AMU
+                                    H    1.0079400
+                                    C   12.0107000
+                                    N   14.0067400
+                                    O   15.9994000
+ 
+                          J-Coupling: Perturbing Site: C   1
+ 
+ 
+                          Files used for pseudopotentials:
+                                    H H_POT.ASC.DAT
+                                    C C_POT.ASC.DAT
+                                    N N_POT.ASC.DAT
+                                    O O_POT.ASC.DAT
+ 
+                           -------------------------------
+                              k-Points For BZ Sampling
+                           -------------------------------
+                       MP grid size for SCF calculation is  1  1  1
+                         Number of kpoints used =           1
+ 
+             +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+             +  Number       Fractional coordinates        Weight  +
+             +-----------------------------------------------------+
+             +     1   0.250000   0.250000   0.250000   1.0000000  +
+             +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+                           -------------------------------
+                               Symmetry and Constraints
+                           -------------------------------
+ 
+         There are no symmetry operations specified or generated for this cell
+                      Number of ionic constraints     =           3
+                      Maximum deviation from symmetry =  0.00000         ANG
+               Point group of crystal =     1: C1, 1, 1
+ 
+                          Centre of mass is constrained
+             Set iprint > 1 for details of linear ionic constraints
+ 
+                         Number of cell constraints= 0
+                         Cell constraints are:  1 2 3 4 5 6
+ 
+                         External pressure/stress (GPa)
+                          0.00000   0.00000   0.00000
+                                    0.00000   0.00000
+                                              0.00000
+  
++---------------- MEMORY AND SCRATCH DISK ESTIMATES PER PROCESS --------------+
+|                                                     Memory          Disk    |
+| Model and support data                               40.3 MB         0.0 MB |
+| Electronic energy minimisation requirements          24.6 MB         0.0 MB |
+|                                               ----------------------------- |
+| Approx. total storage required per process           64.9 MB         0.0 MB |
+|                                                                             |
+| Requirements will fluctuate during execution and may exceed these estimates |
++-----------------------------------------------------------------------------+
+------------------------------------------------------------------------ <-- SCF
+SCF loop      Energy           Fermi           Energy gain       Timer   <-- SCF
+                               energy          per atom          (sec)   <-- SCF
+------------------------------------------------------------------------ <-- SCF
+Initial  -4.31425024E+003  0.00000000E+000                        17.48  <-- SCF
+      1  -6.30928805E+003  4.81339206E+000   3.83661117E+001      24.34  <-- SCF
+      2  -6.87864479E+003  2.68501457E+000   1.09491682E+001      29.35  <-- SCF
+      3  -6.90630370E+003  2.74226950E+000   5.31902083E-001      35.31  <-- SCF
+      4  -6.88542021E+003  4.25171517E+000  -4.01605484E-001      41.62  <-- SCF
+      5  -6.88210407E+003  4.18144071E+000  -6.37720917E-002      48.01  <-- SCF
+      6  -6.88188276E+003  4.33604490E+000  -4.25588823E-003      54.42  <-- SCF
+      7  -6.88192468E+003  4.36742663E+000   8.06161891E-004      60.87  <-- SCF
+      8  -6.88193973E+003  4.39606988E+000   2.89371819E-004      67.18  <-- SCF
+      9  -6.88194320E+003  4.40984884E+000   6.67524077E-005      73.34  <-- SCF
+     10  -6.88194516E+003  4.41790478E+000   3.76675338E-005      79.54  <-- SCF
+     11  -6.88194552E+003  4.42142194E+000   6.91034798E-006      85.72  <-- SCF
+     12  -6.88194555E+003  4.42202096E+000   7.21949202E-007      92.42  <-- SCF
+     13  -6.88194556E+003  4.42220806E+000   8.86883994E-008      98.05  <-- SCF
+     14  -6.88194556E+003  4.42223910E+000   1.29500672E-008     103.10  <-- SCF
+     15  -6.88194556E+003  4.42223709E+000   5.44311769E-009     107.67  <-- SCF
+     16  -6.88194556E+003  4.42224024E+000   3.17731105E-010     112.02  <-- SCF
+------------------------------------------------------------------------ <-- SCF
+ 
+Final energy, E             =  -6881.945558985     eV
+Final free energy (E-TS)    =  -6881.945558985     eV
+(energies not corrected for finite basis set)
+ 
+NB est. 0K energy (E-0.5TS)      =  -6881.945558985     eV
+ 
+ 
+Writing model to alanine.check
+ 
+  =====================================================================
+  +               Calculation of NMR J-Coupling Tensors               +
+  + ================================================================= +
+ 
+  Starting Calculation of J-coupling Spin-dipole and Fermi-contact|<-- NMR
+  Starting k-point:   1 of   1 on this node                       |<-- NMR
+  Time for Diagonalize Hamiltonian                  2.97 sec   |<-- NMR
+  Dipole component: Step 1 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  2.69 sec   |<-- NMR
+  1st-order wvfn converged in   4 SCF cycles. Time:     38.21 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.86 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.02 sec   |<-- NMR
+  Dipole component: Step 2 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  2.43 sec   |<-- NMR
+  1st-order wvfn converged in   3 SCF cycles. Time:     22.10 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.87 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.02 sec   |<-- NMR
+  Dipole component: Step 3 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  2.43 sec   |<-- NMR
+  1st-order wvfn converged in   3 SCF cycles. Time:     21.35 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.87 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.02 sec   |<-- NMR
+  Dipole component: Step 4 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  2.42 sec   |<-- NMR
+  1st-order wvfn converged in   3 SCF cycles. Time:     22.15 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.86 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.02 sec   |<-- NMR
+  Dipole component: Step 5 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  2.54 sec   |<-- NMR
+  1st-order wvfn converged in   5 SCF cycles. Time:     42.93 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.87 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.02 sec   |<-- NMR
+  Dipole component: Step 6 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  2.42 sec   |<-- NMR
+  1st-order wvfn converged in   3 SCF cycles. Time:     21.51 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.87 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.02 sec   |<-- NMR
+  Dipole component: Step 7 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  2.42 sec   |<-- NMR
+  1st-order wvfn converged in   3 SCF cycles. Time:     21.33 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.86 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.02 sec   |<-- NMR
+  Dipole component: Step 8 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  2.42 sec   |<-- NMR
+  1st-order wvfn converged in   3 SCF cycles. Time:     21.50 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.87 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.02 sec   |<-- NMR
+  Dipole component: Step 9 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  2.54 sec   |<-- NMR
+  1st-order wvfn converged in   4 SCF cycles. Time:     37.64 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.87 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.02 sec   |<-- NMR
+ 
+H    1     FERMI           0.5185
+
+  FC       0.4839      0.0155      0.0367
+
+  FC       0.0155      0.4584     -0.0336
+
+  FC       0.0367     -0.0336      0.6131
+
+H    1      BARE          -0.0234
+
+BARE       0.0744     -0.0940      0.0430
+
+BARE      -0.0985      0.1031     -0.0218
+
+BARE       0.0532     -0.0292     -0.2478
+
+H    1   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    1    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    2     FERMI          -0.1247
+
+  FC       0.0209      0.0604      0.1880
+
+  FC       0.0604     -0.4233      0.3285
+
+  FC       0.1880      0.3285      0.0284
+
+H    2      BARE           0.0210
+
+BARE      -0.4116     -0.0806     -0.0758
+
+BARE      -0.0784      0.7628      0.4942
+
+BARE      -0.1031      0.5445     -0.2881
+
+H    2   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    2    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    3     FERMI           0.5157
+
+  FC       0.5202     -0.0022      0.0668
+
+  FC      -0.0022      0.4435     -0.0072
+
+  FC       0.0668     -0.0072      0.5834
+
+H    3      BARE          -0.0151
+
+BARE      -0.0034     -0.0423     -0.1205
+
+BARE      -0.0453      0.1173     -0.1304
+
+BARE      -0.1444     -0.1365     -0.1592
+
+H    3   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    3    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    4     FERMI           2.1435
+
+  FC       2.0559     -0.0238      0.0588
+
+  FC      -0.0238      2.0230     -0.0546
+
+  FC       0.0588     -0.0546      2.3517
+
+H    4      BARE          -0.0130
+
+BARE       0.2611     -0.1926      0.1442
+
+BARE      -0.2002     -0.0377     -0.1229
+
+BARE       0.1536     -0.1129     -0.2625
+
+H    4   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    4    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    5     FERMI           0.4354
+
+  FC       0.3895      0.0030      0.0541
+
+  FC       0.0030      0.4121      0.0162
+
+  FC       0.0541      0.0162      0.5048
+
+H    5      BARE          -0.0128
+
+BARE      -0.1226      0.0606     -0.2568
+
+BARE       0.0786      0.0292     -0.0347
+
+BARE      -0.2597     -0.0393      0.0550
+
+H    5   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    5    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    6     FERMI           0.2141
+
+  FC       0.1653     -0.0082      0.0129
+
+  FC      -0.0082      0.1971     -0.0075
+
+  FC       0.0129     -0.0075      0.2799
+
+H    6      BARE          -0.0189
+
+BARE       0.1997      0.0314      0.0596
+
+BARE       0.0407      0.0525      0.0020
+
+BARE       0.0732      0.0151     -0.3090
+
+H    6   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    6    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    7     FERMI           2.3488
+
+  FC       2.1824     -0.0515      0.0829
+
+  FC      -0.0515      2.2430     -0.1666
+
+  FC       0.0829     -0.1666      2.6210
+
+H    7      BARE           0.0088
+
+BARE       0.0291      0.0905      0.0276
+
+BARE       0.1148      0.0026     -0.0574
+
+BARE      -0.0201     -0.0880     -0.0053
+
+H    7   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    7    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    8     FERMI          -0.1362
+
+  FC      -0.1628      0.0069     -0.0052
+
+  FC       0.0069     -0.1408      0.0109
+
+  FC      -0.0052      0.0109     -0.1050
+
+H    8      BARE          -0.0248
+
+BARE      -0.3674      0.0645     -0.0395
+
+BARE       0.0672      0.4176     -0.1038
+
+BARE      -0.0349     -0.1225     -0.1246
+
+H    8   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    8    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    9     FERMI           0.0484
+
+  FC       0.0626      0.0047     -0.0004
+
+  FC       0.0047      0.0454     -0.0023
+
+  FC      -0.0004     -0.0023      0.0372
+
+H    9      BARE           0.0003
+
+BARE      -0.0056     -0.0082      0.0022
+
+BARE      -0.0096      0.0063      0.0011
+
+BARE       0.0044     -0.0004      0.0003
+
+H    9   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    9    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   10     FERMI           0.0546
+
+  FC       0.0399     -0.0122      0.0125
+
+  FC      -0.0122      0.0679      0.0039
+
+  FC       0.0125      0.0039      0.0559
+
+H   10      BARE           0.0120
+
+BARE      -0.0235     -0.0866      0.0978
+
+BARE      -0.0758      0.0453      0.0702
+
+BARE       0.1099      0.0625      0.0140
+
+H   10   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   10    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   11     FERMI          -0.0096
+
+  FC      -0.0152     -0.0013      0.0032
+
+  FC      -0.0013     -0.0037     -0.0076
+
+  FC       0.0032     -0.0076     -0.0098
+
+H   11      BARE          -0.0021
+
+BARE      -0.0533     -0.0112     -0.0131
+
+BARE      -0.0137      0.0357      0.0163
+
+BARE      -0.0192      0.0224      0.0114
+
+H   11   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   11    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   12     FERMI           0.0084
+
+  FC       0.0167      0.0046      0.0017
+
+  FC       0.0046      0.0079      0.0065
+
+  FC       0.0017      0.0065      0.0007
+
+H   12      BARE           0.0019
+
+BARE       0.0348     -0.0199      0.0159
+
+BARE      -0.0190     -0.0123      0.0454
+
+BARE       0.0143      0.0351     -0.0167
+
+H   12   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   12    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   13     FERMI           0.0304
+
+  FC       0.0358     -0.0103      0.0018
+
+  FC      -0.0103      0.0292     -0.0010
+
+  FC       0.0018     -0.0010      0.0261
+
+H   13      BARE           0.0048
+
+BARE       0.0109      0.0337     -0.0069
+
+BARE       0.0436      0.0130      0.0007
+
+BARE      -0.0107     -0.0016     -0.0094
+
+H   13   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   13    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   14     FERMI           0.0021
+
+  FC       0.0066     -0.0045     -0.0051
+
+  FC      -0.0045     -0.0094     -0.0079
+
+  FC      -0.0051     -0.0079      0.0093
+
+H   14      BARE           0.0021
+
+BARE       0.0327     -0.0610      0.0009
+
+BARE      -0.0681     -0.0685      0.0046
+
+BARE       0.0048      0.0123      0.0421
+
+H   14   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   14    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   15     FERMI           0.0000
+
+  FC       0.0002      0.0027     -0.0007
+
+  FC       0.0027     -0.0007      0.0030
+
+  FC      -0.0007      0.0030      0.0005
+
+H   15      BARE          -0.0003
+
+BARE      -0.0033      0.0008     -0.0008
+
+BARE       0.0001      0.0018      0.0041
+
+BARE      -0.0016      0.0046      0.0005
+
+H   15   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   15    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   16     FERMI           0.0002
+
+  FC       0.0018      0.0002      0.0001
+
+  FC       0.0002     -0.0010     -0.0053
+
+  FC       0.0001     -0.0053     -0.0001
+
+H   16      BARE          -0.0004
+
+BARE       0.0050      0.0044     -0.0001
+
+BARE       0.0043     -0.0031     -0.0014
+
+BARE      -0.0003     -0.0010     -0.0030
+
+H   16   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   16    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   17     FERMI           0.0005
+
+  FC       0.0026     -0.0011      0.0008
+
+  FC      -0.0011     -0.0014      0.0058
+
+  FC       0.0008      0.0058      0.0004
+
+H   17      BARE          -0.0005
+
+BARE       0.0071      0.0044      0.0012
+
+BARE       0.0029     -0.0006      0.0072
+
+BARE       0.0013      0.0090     -0.0080
+
+H   17   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   17    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   18     FERMI           0.0000
+
+  FC       0.0004     -0.0008      0.0003
+
+  FC      -0.0008     -0.0011     -0.0006
+
+  FC       0.0003     -0.0006      0.0007
+
+H   18      BARE           0.0003
+
+BARE       0.0027      0.0014     -0.0001
+
+BARE       0.0013     -0.0044      0.0001
+
+BARE       0.0000      0.0000      0.0025
+
+H   18   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   18    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   19     FERMI           0.0000
+
+  FC      -0.0011     -0.0007     -0.0010
+
+  FC      -0.0007      0.0020     -0.0037
+
+  FC      -0.0010     -0.0037     -0.0008
+
+H   19      BARE          -0.0005
+
+BARE       0.0007     -0.0012     -0.0003
+
+BARE      -0.0011      0.0007     -0.0004
+
+BARE       0.0001      0.0007     -0.0028
+
+H   19   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   19    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   20     FERMI           0.0000
+
+  FC      -0.0007     -0.0027     -0.0005
+
+  FC      -0.0027      0.0008     -0.0025
+
+  FC      -0.0005     -0.0025     -0.0001
+
+H   20      BARE          -0.0003
+
+BARE       0.0004     -0.0035     -0.0006
+
+BARE      -0.0040     -0.0012     -0.0003
+
+BARE      -0.0009     -0.0002     -0.0003
+
+H   20   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   20    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   21     FERMI           0.0000
+
+  FC      -0.0005     -0.0008      0.0001
+
+  FC      -0.0008     -0.0001      0.0004
+
+  FC       0.0001      0.0004      0.0006
+
+H   21      BARE          -0.0003
+
+BARE       0.0010      0.0002      0.0004
+
+BARE       0.0001     -0.0030      0.0021
+
+BARE       0.0000      0.0027      0.0012
+
+H   21   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   21    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   22     FERMI           0.0253
+
+  FC       0.0308     -0.0016     -0.0049
+
+  FC      -0.0016      0.0231      0.0049
+
+  FC      -0.0049      0.0049      0.0221
+
+H   22      BARE           0.0007
+
+BARE      -0.0180     -0.0035      0.0031
+
+BARE       0.0013      0.0387     -0.0185
+
+BARE       0.0095     -0.0204     -0.0186
+
+H   22   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   22    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   23     FERMI          -0.0041
+
+  FC      -0.0480     -0.0460     -0.0140
+
+  FC      -0.0460      0.0079     -0.0042
+
+  FC      -0.0140     -0.0042      0.0277
+
+H   23      BARE           0.0219
+
+BARE      -0.2011     -0.1230     -0.0427
+
+BARE      -0.0974      0.1537     -0.0358
+
+BARE      -0.0361     -0.0377      0.1131
+
+H   23   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   23    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   24     FERMI           0.0045
+
+  FC       0.0014      0.0080     -0.0003
+
+  FC       0.0080      0.0153      0.0064
+
+  FC      -0.0003      0.0064     -0.0031
+
+H   24      BARE           0.0005
+
+BARE       0.0096     -0.0088     -0.0018
+
+BARE      -0.0089     -0.0161     -0.0083
+
+BARE      -0.0015     -0.0100      0.0078
+
+H   24   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   24    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   25     FERMI          -0.0155
+
+  FC      -0.0158     -0.0052      0.0014
+
+  FC      -0.0052     -0.0066     -0.0001
+
+  FC       0.0014     -0.0001     -0.0241
+
+H   25      BARE           0.0070
+
+BARE       0.0092     -0.0518     -0.0301
+
+BARE      -0.0538      0.0225     -0.0024
+
+BARE      -0.0252     -0.0014     -0.0108
+
+H   25   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   25    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   26     FERMI           0.0183
+
+  FC       0.0303      0.0046     -0.0005
+
+  FC       0.0046     -0.0021      0.0106
+
+  FC      -0.0005      0.0106      0.0268
+
+H   26      BARE          -0.0009
+
+BARE       0.0606      0.0010     -0.0027
+
+BARE      -0.0001     -0.1358      0.0137
+
+BARE      -0.0106     -0.0044      0.0724
+
+H   26   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   26    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   27     FERMI          -0.1178
+
+  FC      -0.1149      0.0198      0.0269
+
+  FC       0.0198     -0.1184     -0.0115
+
+  FC       0.0269     -0.0115     -0.1203
+
+H   27      BARE          -0.0043
+
+BARE      -0.0798     -0.2689      0.0965
+
+BARE      -0.2976      0.2858     -0.1010
+
+BARE       0.1469     -0.1708     -0.2189
+
+H   27   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   27    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H   28     FERMI           0.0007
+
+  FC       0.0076      0.0055     -0.0039
+
+  FC       0.0055      0.0029     -0.0126
+
+  FC      -0.0039     -0.0126     -0.0085
+
+H   28      BARE           0.0066
+
+BARE       0.0554      0.0184     -0.0171
+
+BARE       0.0185     -0.0177     -0.0627
+
+BARE      -0.0116     -0.0562     -0.0178
+
+H   28   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H   28    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    1     FERMI       -2800.0643
+
+  FC   -2799.0529     -4.1235     -0.9973
+
+  FC      -4.1235  -2801.6965      1.1562
+
+  FC      -0.9973      1.1562  -2799.4434
+
+C    1      BARE         -29.3626
+
+BARE     -28.1500     -4.2973     -1.2344
+
+BARE      -4.2251    -31.0976      1.2818
+
+BARE      -1.2334      1.3047    -28.8403
+
+C    1   DPLE AUG        -18.0426
+
+ AUG     -17.6524     -0.5368     -0.4977
+
+ AUG      -0.5564    -18.0786      0.3765
+
+ AUG      -0.5019      0.3675    -18.3967
+
+C    1    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    2     FERMI          58.9540
+
+  FC      56.0228     -0.4412      4.0394
+
+  FC      -0.4412     54.9985     -1.8676
+
+  FC       4.0394     -1.8676     65.8408
+
+C    2      BARE           0.7026
+
+BARE      -2.3616     -1.5482      5.8616
+
+BARE      -1.5656     -4.1877     -3.2737
+
+BARE       5.5791     -3.1877      8.6570
+
+C    2   DPLE AUG          0.3475
+
+ AUG      -1.5858     -0.8452      3.3446
+
+ AUG      -0.8363     -2.6158     -1.8703
+
+ AUG       3.4861     -1.9137      5.2441
+
+C    2    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    3     FERMI           1.6887
+
+  FC       1.3475     -0.5172     -0.2684
+
+  FC      -0.5172      1.4985     -0.3919
+
+  FC      -0.2684     -0.3919      2.2200
+
+C    3      BARE          -0.0888
+
+BARE       0.0407      0.1017     -0.1527
+
+BARE       0.1906      0.0643      0.0255
+
+BARE      -0.2662     -0.0742     -0.3715
+
+C    3   DPLE AUG         -0.0383
+
+ AUG      -0.0190     -0.0297      0.0092
+
+ AUG      -0.0665     -0.0660      0.0188
+
+ AUG       0.0471      0.0616     -0.0300
+
+C    3    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    4     FERMI           0.0174
+
+  FC       0.0091      0.0230     -0.0047
+
+  FC       0.0230      0.0306      0.0170
+
+  FC      -0.0047      0.0170      0.0125
+
+C    4      BARE          -0.0041
+
+BARE      -0.0157      0.0018      0.0026
+
+BARE       0.0030      0.0054     -0.0012
+
+BARE       0.0021     -0.0070     -0.0022
+
+C    4   DPLE AUG         -0.0005
+
+ AUG       0.0008      0.0014      0.0003
+
+ AUG       0.0010     -0.0006     -0.0011
+
+ AUG       0.0001      0.0005     -0.0017
+
+C    4    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    5     FERMI           0.0122
+
+  FC      -0.0090      0.0415     -0.0201
+
+  FC       0.0415      0.0477     -0.0043
+
+  FC      -0.0201     -0.0043     -0.0021
+
+C    5      BARE           0.0052
+
+BARE      -0.0068     -0.0144      0.0080
+
+BARE      -0.0182      0.0183     -0.0038
+
+BARE       0.0168     -0.0122      0.0041
+
+C    5   DPLE AUG          0.0020
+
+ AUG       0.0027      0.0007     -0.0007
+
+ AUG       0.0011      0.0018     -0.0031
+
+ AUG      -0.0020     -0.0006      0.0014
+
+C    5    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    6     FERMI           0.1346
+
+  FC       0.1278      0.0061      0.0015
+
+  FC       0.0061      0.1630      0.0111
+
+  FC       0.0015      0.0111      0.1131
+
+C    6      BARE           0.0011
+
+BARE      -0.0114     -0.0756      0.0345
+
+BARE      -0.0642      0.0259      0.0289
+
+BARE       0.0384      0.0272     -0.0113
+
+C    6   DPLE AUG         -0.0014
+
+ AUG      -0.0123     -0.0033      0.0022
+
+ AUG      -0.0095      0.0188     -0.0022
+
+ AUG       0.0027     -0.0024     -0.0106
+
+C    6    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    7     FERMI           0.0048
+
+  FC       0.0035     -0.0083     -0.0002
+
+  FC      -0.0083      0.0102      0.0052
+
+  FC      -0.0002      0.0052      0.0009
+
+C    7      BARE           0.0009
+
+BARE       0.0036      0.0014      0.0000
+
+BARE       0.0021      0.0001     -0.0006
+
+BARE       0.0001     -0.0014     -0.0009
+
+C    7   DPLE AUG          0.0003
+
+ AUG       0.0005     -0.0001      0.0000
+
+ AUG      -0.0005      0.0001     -0.0003
+
+ AUG       0.0000      0.0000      0.0002
+
+C    7    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    8     FERMI           0.0001
+
+  FC      -0.0045      0.0000     -0.0022
+
+  FC       0.0000      0.0101     -0.0095
+
+  FC      -0.0022     -0.0095     -0.0054
+
+C    8      BARE          -0.0004
+
+BARE       0.0022      0.0027      0.0009
+
+BARE       0.0023     -0.0009      0.0019
+
+BARE      -0.0002      0.0010     -0.0025
+
+C    8   DPLE AUG          0.0001
+
+ AUG      -0.0002      0.0000     -0.0001
+
+ AUG       0.0001      0.0005      0.0002
+
+ AUG       0.0005      0.0008      0.0000
+
+C    8    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    9     FERMI           0.0015
+
+  FC      -0.0008     -0.0008      0.0027
+
+  FC      -0.0008      0.0073      0.0170
+
+  FC       0.0027      0.0170     -0.0019
+
+C    9      BARE           0.0000
+
+BARE       0.0030      0.0012     -0.0006
+
+BARE       0.0012      0.0000      0.0003
+
+BARE       0.0001      0.0030     -0.0028
+
+C    9   DPLE AUG          0.0002
+
+ AUG       0.0002      0.0000      0.0000
+
+ AUG      -0.0001      0.0007      0.0003
+
+ AUG      -0.0004     -0.0009     -0.0002
+
+C    9    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C   10     FERMI          -0.0072
+
+  FC      -0.0329      0.0636     -0.0239
+
+  FC       0.0636      0.0053      0.0095
+
+  FC      -0.0239      0.0095      0.0060
+
+C   10      BARE          -0.0049
+
+BARE      -0.0306     -0.0302      0.0088
+
+BARE      -0.0216     -0.0012      0.0236
+
+BARE      -0.0043      0.0258      0.0171
+
+C   10   DPLE AUG         -0.0014
+
+ AUG      -0.0014      0.0002     -0.0007
+
+ AUG      -0.0016     -0.0015      0.0016
+
+ AUG       0.0021      0.0004     -0.0014
+
+C   10    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C   11     FERMI           0.0681
+
+  FC       0.0741      0.0158     -0.0149
+
+  FC       0.0158      0.1533     -0.0226
+
+  FC      -0.0149     -0.0226     -0.0230
+
+C   11      BARE           0.0058
+
+BARE      -0.0441     -0.0682      0.0069
+
+BARE      -0.0300      0.0099     -0.0106
+
+BARE       0.0016     -0.0304      0.0515
+
+C   11   DPLE AUG          0.0026
+
+ AUG      -0.0035      0.0174     -0.0031
+
+ AUG      -0.0002      0.0099     -0.0042
+
+ AUG      -0.0001      0.0015      0.0014
+
+C   11    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C   12     FERMI           0.0757
+
+  FC       0.0936     -0.0190     -0.0411
+
+  FC      -0.0190      0.0489     -0.0245
+
+  FC      -0.0411     -0.0245      0.0846
+
+C   12      BARE          -0.0018
+
+BARE       0.0396     -0.0233     -0.0147
+
+BARE      -0.0326     -0.0752     -0.0275
+
+BARE      -0.0157     -0.0301      0.0301
+
+C   12   DPLE AUG         -0.0021
+
+ AUG       0.0012     -0.0031     -0.0011
+
+ AUG       0.0013     -0.0065      0.0029
+
+ AUG      -0.0020      0.0001     -0.0010
+
+C   12    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+N    1     FERMI           2.5183
+
+  FC       2.4913     -0.3475      0.2393
+
+  FC      -0.3475      2.2396     -0.0092
+
+  FC       0.2393     -0.0092      2.8241
+
+N    1      BARE          -0.0335
+
+BARE      -0.1002     -0.1025     -0.2816
+
+BARE      -0.0947     -0.2598     -0.0269
+
+BARE      -0.0905     -0.0221      0.2594
+
+N    1   DPLE AUG         -0.0082
+
+ AUG      -0.3003      0.0608      0.0110
+
+ AUG       0.0540     -0.1462     -0.0273
+
+ AUG      -0.0758     -0.0327      0.4218
+
+N    1    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+N    2     FERMI           1.4132
+
+  FC       1.9817      0.0627      0.1050
+
+  FC       0.0627      1.0979      0.0460
+
+  FC       0.1050      0.0460      1.1600
+
+N    2      BARE          -0.0253
+
+BARE      -0.2292     -0.0820     -0.0074
+
+BARE      -0.1133      0.2740     -0.0082
+
+BARE      -0.0090     -0.0025     -0.1208
+
+N    2   DPLE AUG         -0.0162
+
+ AUG      -0.1076     -0.0783     -0.0040
+
+ AUG      -0.0544      0.1295      0.0007
+
+ AUG      -0.0023     -0.0034     -0.0706
+
+N    2    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+N    3     FERMI          -0.0001
+
+  FC      -0.0031     -0.0025      0.0003
+
+  FC      -0.0025      0.0063     -0.0011
+
+  FC       0.0003     -0.0011     -0.0037
+
+N    3      BARE          -0.0010
+
+BARE       0.0001      0.0013     -0.0020
+
+BARE      -0.0015     -0.0030     -0.0006
+
+BARE      -0.0010      0.0016     -0.0001
+
+N    3   DPLE AUG         -0.0005
+
+ AUG      -0.0005     -0.0007     -0.0003
+
+ AUG       0.0006     -0.0008      0.0003
+
+ AUG      -0.0010     -0.0009     -0.0003
+
+N    3    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+N    4     FERMI           1.6708
+
+  FC       1.7236      0.0457     -0.3046
+
+  FC       0.0457      1.4550      0.0597
+
+  FC      -0.3046      0.0597      1.8338
+
+N    4      BARE           0.0110
+
+BARE       0.0860     -0.2305     -0.0313
+
+BARE      -0.2778      0.1055      0.0362
+
+BARE       0.0340     -0.0172     -0.1585
+
+N    4   DPLE AUG          0.0055
+
+ AUG       0.0654     -0.1444      0.0082
+
+ AUG      -0.1132      0.0421      0.0088
+
+ AUG      -0.0251      0.0385     -0.0910
+
+N    4    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+O    1     FERMI         -25.0578
+
+  FC     -24.6140      0.3857      1.5260
+
+  FC       0.3857    -24.5462     -1.1664
+
+  FC       1.5260     -1.1664    -26.0132
+
+O    1      BARE           0.6978
+
+BARE      15.3459    -17.1511      3.2687
+
+BARE     -17.5668      1.2944     -2.5533
+
+BARE       3.3008     -2.5081    -14.5469
+
+O    1   DPLE AUG          0.3886
+
+ AUG      11.5647    -13.7250      2.4623
+
+ AUG     -13.4460      0.7027     -1.8480
+
+ AUG       2.4779     -1.9010    -11.1016
+
+O    1    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+O    2     FERMI         -25.3405
+
+  FC     -26.6844      1.0974     -0.5828
+
+  FC       1.0974    -25.6698      0.3538
+
+  FC      -0.5828      0.3538    -23.6673
+
+O    2      BARE           0.5608
+
+BARE      -1.5768     -8.0481    -16.4120
+
+BARE      -8.2575     -4.3948     13.2970
+
+BARE     -16.3812     13.1507      7.6540
+
+O    2   DPLE AUG          0.3209
+
+ AUG      -1.1947     -6.4670    -12.3866
+
+ AUG      -6.3323     -3.5232      9.9327
+
+ AUG     -12.4435     10.0567      5.6807
+
+O    2    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+O    3     FERMI           0.2140
+
+  FC       0.1906     -0.0204      0.0214
+
+  FC      -0.0204      0.2054     -0.0711
+
+  FC       0.0214     -0.0711      0.2458
+
+O    3      BARE          -0.0046
+
+BARE      -0.0266      0.0218     -0.0119
+
+BARE       0.0322      0.0155      0.0000
+
+BARE      -0.0148      0.0086     -0.0026
+
+O    3   DPLE AUG          0.0012
+
+ AUG      -0.0086      0.0110     -0.0081
+
+ AUG       0.0053      0.0094      0.0096
+
+ AUG      -0.0074      0.0034      0.0028
+
+O    3    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+O    4     FERMI           0.0001
+
+  FC      -0.0172     -0.0095      0.0031
+
+  FC      -0.0095      0.0234     -0.0094
+
+  FC       0.0031     -0.0094     -0.0060
+
+O    4      BARE          -0.0061
+
+BARE      -0.0131     -0.0032     -0.0028
+
+BARE      -0.0086     -0.0019     -0.0053
+
+BARE      -0.0064     -0.0035     -0.0032
+
+O    4   DPLE AUG         -0.0027
+
+ AUG      -0.0019      0.0000     -0.0007
+
+ AUG       0.0026     -0.0037     -0.0021
+
+ AUG       0.0001     -0.0022     -0.0025
+
+O    4    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+O    5     FERMI           0.0102
+
+  FC       0.0190     -0.0011     -0.0082
+
+  FC      -0.0011      0.0091     -0.0057
+
+  FC      -0.0082     -0.0057      0.0024
+
+O    5      BARE          -0.0012
+
+BARE      -0.0066     -0.0002      0.0018
+
+BARE       0.0034      0.0067     -0.0025
+
+BARE       0.0004      0.0001     -0.0037
+
+O    5   DPLE AUG         -0.0009
+
+ AUG      -0.0025      0.0024     -0.0005
+
+ AUG      -0.0001      0.0009      0.0015
+
+ AUG       0.0006     -0.0003     -0.0011
+
+O    5    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+O    6     FERMI           0.0374
+
+  FC       0.0431     -0.0135      0.0033
+
+  FC      -0.0135      0.0438      0.0094
+
+  FC       0.0033      0.0094      0.0252
+
+O    6      BARE           0.0008
+
+BARE       0.0089      0.0071     -0.0007
+
+BARE       0.0064     -0.0041      0.0018
+
+BARE       0.0015     -0.0011     -0.0023
+
+O    6   DPLE AUG          0.0001
+
+ AUG       0.0027      0.0004      0.0012
+
+ AUG       0.0014     -0.0003     -0.0006
+
+ AUG      -0.0002      0.0010     -0.0021
+
+O    6    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+O    7     FERMI           0.0314
+
+  FC       0.0248      0.0614     -0.0012
+
+  FC       0.0614      0.0093      0.0197
+
+  FC      -0.0012      0.0197      0.0600
+
+O    7      BARE          -0.0118
+
+BARE      -0.0461      0.0123     -0.0176
+
+BARE       0.0061     -0.0130      0.0303
+
+BARE      -0.0176      0.0261      0.0237
+
+O    7   DPLE AUG         -0.0067
+
+ AUG      -0.0151      0.0041     -0.0029
+
+ AUG       0.0065     -0.0121      0.0030
+
+ AUG      -0.0054      0.0064      0.0072
+
+O    7    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+O    8     FERMI           0.0262
+
+  FC      -0.0119     -0.0806      0.0653
+
+  FC      -0.0806      0.0102      0.0462
+
+  FC       0.0653      0.0462      0.0803
+
+O    8      BARE           0.0089
+
+BARE       0.0318     -0.0441      0.0134
+
+BARE      -0.0331      0.0275      0.0168
+
+BARE       0.0124      0.0441     -0.0326
+
+O    8   DPLE AUG          0.0073
+
+ AUG       0.0093     -0.0032     -0.0015
+
+ AUG      -0.0094      0.0089      0.0066
+
+ AUG      -0.0033     -0.0071      0.0038
+
+O    8    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+  Total Time for J-coupling Spin terms           293.51 sec       |<-- NMR
+ 
+Writing model to alanine.check
+ 
+Writing model to alanine.check
+  Starting Calculation of J-coupling Orbital terms                |<-- NMR
+  Starting k-point:   1 of   1 on this node                       |<-- NMR
+  Total Time for step 1 of 3:                     37.88 sec       |<-- NMR
+  Total Time for step 2 of 3:                     37.86 sec       |<-- NMR
+  Total Time for step 3 of 3:                     37.61 sec       |<-- NMR
+  Total Time for k-point:   1 of   1             116.30 sec       |<-- NMR
+  Total Time for J-coupling orbital terms        123.97 sec       |<-- NMR
+ 
+Writing model to alanine.check
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600       -27125869.5450623     
+   67282068.9661600       -27125869.5450623     
+   67282068.9661600       -27125869.5450623     
+   67282068.9661600       -27125869.5450623     
+   67282068.9661600       -36280384.2368642     
+   67282068.9661600       -36280384.2368642     
+   67282068.9661600       -36280384.2368642     
+   67282068.9661600       -36280384.2368642     
+   67282068.9661600       -36280384.2368642     
+   67282068.9661600       -36280384.2368642     
+   67282068.9661600       -36280384.2368642     
+   67282068.9661600       -36280384.2368642     
+ H                  1   1555.40218795772     
+ H                  2   3064.41137293707     
+ H                  3   1385.96931574539     
+ H                  4   2137.98009923442     
+ H                  5   1491.16144330268     
+ H                  6   1531.65314193833     
+ H                  7   731.393411796181     
+ H                  8   1252.59940738051     
+ H                  9   154.125282467539     
+ H                 10   962.335933703930     
+ H                 11   417.663643093472     
+ H                 12   554.791827321886     
+ H                 13   391.154774187942     
+ H                 14   697.297916920117     
+ H                 15   165.007358554251     
+ H                 16   183.395814219162     
+ H                 17   223.411551849670     
+ H                 18   128.036109669203     
+ H                 19   106.692336629492     
+ H                 20   127.461912185930     
+ H                 21   133.232837462730     
+ H                 22   354.811097977898     
+ H                 23   1591.41447457397     
+ H                 24   302.805242235166     
+ H                 25   353.746606646591     
+ H                 26   946.404321352432     
+ H                 27   1293.51370943032     
+ H                 28   683.061078543282     
+ C                  1  0.000000000000000E+000
+ C                  2   2118.11152862141     
+ C                  3   476.493466888577     
+ C                  4   58.2241352690700     
+ C                  5   65.2031490733383     
+ C                  6   150.232558170243     
+ C                  7   28.4733862912117     
+ C                  8   27.8820507179326     
+ C                  9   33.4528472383209     
+ C                 10   102.755821065417     
+ C                 11   177.114561065659     
+ C                 12   165.961329485812     
+ N                  1  -202.614227965720     
+ N                  2  -52.6400341753597     
+ N                  3  -11.2951135524988     
+ N                  4  -53.4911707139678     
+ O                  1  -2149.59311113966     
+ O                  2  -2063.09585731719     
+ O                  3  -59.1315083657766     
+ O                  4  -26.5508573366547     
+ O                  5  -19.5416958456470     
+ O                  6  -22.3534383301402     
+ O                  7  -57.5533706516950     
+ O                  8  -74.3942447222966     
+ 
+  ===========================================================================
+  |                         Isotropic J-coupling                            |
+  |-------------------------------------------------------------------------|
+  |     Nucleus                        J-coupling values                    |
+  |  Species   Ion     FC           SD         PARA       DIA        TOT(K) |
+  |    H       1       0.52       -0.02       -0.09        0.02        0.42 |
+  |    H       2      -0.12        0.02       -0.04        0.05       -0.09 |
+  |    H       3       0.52       -0.02        0.01        0.03        0.55 |
+  |    H       4       2.14       -0.01       -0.10       -0.03        2.00 |
+  |    H       5       0.44       -0.01       -0.01        0.04        0.45 |
+  |    H       6       0.21       -0.02       -0.04        0.03        0.19 |
+  |    H       7       2.35        0.01        0.13       -0.09        2.40 |
+  |    H       8      -0.14       -0.02        0.10        0.01       -0.05 |
+  |    H       9       0.05        0.00        0.18       -0.13        0.10 |
+  |    H      10       0.05        0.01        0.03        0.03        0.13 |
+  |    H      11      -0.01        0.00        0.12       -0.07        0.04 |
+  |    H      12       0.01        0.00        0.07       -0.02        0.05 |
+  |    H      13       0.03        0.00        0.12       -0.07        0.09 |
+  |    H      14       0.00        0.00        0.05        0.01        0.06 |
+  |    H      15       0.00        0.00        0.14       -0.09        0.05 |
+  |    H      16       0.00        0.00        0.11       -0.07        0.04 |
+  |    H      17       0.00        0.00        0.10       -0.05        0.05 |
+  |    H      18       0.00        0.00        0.13       -0.09        0.04 |
+  |    H      19       0.00        0.00        0.16       -0.12        0.05 |
+  |    H      20       0.00        0.00        0.15       -0.10        0.05 |
+  |    H      21       0.00        0.00        0.14       -0.10        0.05 |
+  |    H      22       0.03        0.00        0.14       -0.09        0.07 |
+  |    H      23       0.00        0.02       -0.08        0.12        0.05 |
+  |    H      24       0.00        0.00        0.17       -0.11        0.06 |
+  |    H      25      -0.02        0.01        0.15       -0.11        0.04 |
+  |    H      26       0.02        0.00        0.01        0.05        0.07 |
+  |    H      27      -0.12        0.00        0.02        0.01       -0.09 |
+  |    H      28       0.00        0.01        0.07       -0.02        0.06 |
+  |**  C       1   -2800.06      -47.41     -144.34       40.76    -2951.05 |
+  |    C       2      58.95        1.05       -1.79        0.36       58.57 |
+  |    C       3       1.69       -0.13       -0.30        0.07        1.33 |
+  |    C       4       0.02        0.00        0.25       -0.13        0.13 |
+  |    C       5       0.01        0.01        0.25       -0.13        0.14 |
+  |    C       6       0.13        0.00        0.08       -0.02        0.20 |
+  |    C       7       0.00        0.00        0.27       -0.14        0.14 |
+  |    C       8       0.00        0.00        0.20       -0.12        0.08 |
+  |    C       9       0.00        0.00        0.14       -0.10        0.04 |
+  |    C      10      -0.01       -0.01        0.22       -0.07        0.13 |
+  |    C      11       0.07        0.01        0.07       -0.02        0.12 |
+  |    C      12       0.08        0.00        0.06       -0.01        0.12 |
+  |    N       1       2.52       -0.04       -0.36        0.04        2.15 |
+  |    N       2       1.41       -0.04        0.15       -0.06        1.46 |
+  |    N       3       0.00        0.00        0.31       -0.15        0.16 |
+  |    N       4       1.67        0.02        0.08       -0.07        1.70 |
+  |    O       1     -25.06        1.09      -28.97        0.38      -52.56 |
+  |    O       2     -25.34        0.88      -27.05        0.38      -51.13 |
+  |    O       3       0.21        0.00        0.32       -0.09        0.44 |
+  |    O       4       0.00       -0.01        0.40       -0.15        0.24 |
+  |    O       5       0.01        0.00        0.16       -0.10        0.07 |
+  |    O       6       0.04        0.00        0.14       -0.09        0.09 |
+  |    O       7       0.03       -0.02        0.15       -0.05        0.12 |
+  |    O       8       0.03        0.02       -0.03       -0.02       -0.01 |
+  |                                                                         |
+  |** Signifies Perturbing Nucleus A of coupling J_AB                       |
+  ===========================================================================
+ 
+  ===========================================================================
+  |                         Anisotropic J-coupling                          |
+  |-------------------------------------------------------------------------|
+  |     Nucleus                 Delta  J-coupling values                    |
+  |  Species   Ion     FC           SD         PARA       DIA        TOT(K) |
+  |    H       1       0.16       -0.35       -0.81        0.42        0.39 |
+  |    H       2      -0.71        1.45       -1.00        0.57        1.75 |
+  |    H       3       0.17       -0.40       -0.44        0.27        0.30 |
+  |    H       4       0.34        0.63       -1.43        0.78        0.64 |
+  |    H       5       0.14       -0.45       -0.82        0.50        0.40 |
+  |    H       6       0.10       -0.45       -0.70        0.42        0.36 |
+  |    H       7       0.53        0.19        0.52       -0.37        0.51 |
+  |    H       8      -0.04        0.71        0.36        0.19       -0.67 |
+  |    H       9       0.02        0.02        0.14       -0.10        0.05 |
+  |    H      10       0.03       -0.26        0.25        0.19        0.23 |
+  |    H      11      -0.01       -0.08        0.21       -0.13        0.10 |
+  |    H      12       0.02       -0.09        0.14       -0.09        0.12 |
+  |    H      13       0.02        0.07        0.15       -0.11        0.05 |
+  |    H      14      -0.02       -0.15        0.16        0.11        0.15 |
+  |    H      15      -0.01        0.01        0.12       -0.07        0.06 |
+  |    H      16      -0.01        0.01        0.11       -0.08        0.05 |
+  |    H      17      -0.01       -0.02        0.09       -0.07        0.04 |
+  |    H      18       0.00       -0.01        0.15       -0.10        0.05 |
+  |    H      19       0.01        0.00        0.12       -0.08        0.05 |
+  |    H      20      -0.01       -0.01        0.12       -0.07        0.05 |
+  |    H      21       0.00       -0.01        0.14       -0.09        0.06 |
+  |    H      22       0.01        0.07        0.17       -0.10        0.05 |
+  |    H      23      -0.11       -0.39       -0.64        0.34       -0.80 |
+  |    H      24       0.02       -0.03        0.17       -0.11        0.06 |
+  |    H      25      -0.01        0.10        0.15       -0.12        0.10 |
+  |    H      26       0.02       -0.20       -0.31        0.17        0.21 |
+  |    H      27      -0.06        0.73       -0.46        0.19       -0.43 |
+  |    H      28      -0.03       -0.13        0.12       -0.10        0.12 |
+  |**  C       1      -7.00       -7.81      -10.49        5.55      -11.64 |
+  |    C       2      12.94       26.90       -2.13        1.07       39.79 |
+  |    C       3       1.06       -0.52       -0.48        0.42        1.26 |
+  |    C       4       0.05       -0.02        0.13       -0.07        0.10 |
+  |    C       5       0.09        0.04        0.19       -0.09        0.10 |
+  |    C       6       0.05       -0.15        0.12       -0.06        0.18 |
+  |    C       7       0.02        0.01        0.23       -0.13        0.11 |
+  |    C       8       0.02        0.01        0.17       -0.12        0.05 |
+  |    C       9       0.03        0.01        0.12       -0.09        0.06 |
+  |    C      10      -0.12       -0.07        0.39       -0.15        0.33 |
+  |    C      11       0.14        0.09        0.27        0.21        0.21 |
+  |    C      12       0.08       -0.14        0.17        0.15        0.23 |
+  |    N       1       0.72        1.15       -1.09        0.72        1.53 |
+  |    N       2       0.88        0.72        0.35       -0.11        0.40 |
+  |    N       3       0.01        0.00        0.26       -0.12        0.14 |
+  |    N       4       0.63        0.78        0.28       -0.12        0.68 |
+  |    O       1      -3.63       71.15      -72.89        2.55     -117.08 |
+  |    O       2      -3.25       71.33      -65.99        2.45     -108.44 |
+  |    O       3       0.14       -0.09        0.36       -0.12        0.25 |
+  |    O       4       0.04       -0.02        0.28       -0.11        0.23 |
+  |    O       5       0.02       -0.01        0.25       -0.08        0.17 |
+  |    O       6       0.03        0.02        0.24       -0.10        0.16 |
+  |    O       7       0.08       -0.09        0.38       -0.09        0.43 |
+  |    O       8      -0.21        0.10       -0.25       -0.16       -0.40 |
+  |                                                                         |
+  |** Signifies Perturbing Nucleus A of coupling J_AB                       |
+  ===========================================================================
+ 
+  ===========================================================================
+  |                         Isotropic J-coupling                            |
+  |-------------------------------------------------------------------------|
+  |     Nucleus                        J-coupling values                    |
+  |  Species   Ion     FC           SD         PARA       DIA       TOT(Hz) |
+  |    H       1       1.57       -0.07       -0.28        0.06        1.28 |
+  |    H       2      -0.38        0.06       -0.12        0.16       -0.27 |
+  |    H       3       1.56       -0.05        0.03        0.10        1.65 |
+  |    H       4       6.48       -0.04       -0.30       -0.08        6.05 |
+  |    H       5       1.32       -0.04       -0.04        0.12        1.35 |
+  |    H       6       0.65       -0.06       -0.13        0.10        0.56 |
+  |    H       7       7.10        0.03        0.40       -0.27        7.26 |
+  |    H       8      -0.41       -0.07        0.30        0.03       -0.16 |
+  |    H       9       0.15        0.00        0.56       -0.40        0.30 |
+  |    H      10       0.16        0.04        0.10        0.10        0.40 |
+  |    H      11      -0.03       -0.01        0.37       -0.21        0.13 |
+  |    H      12       0.03        0.01        0.20       -0.07        0.16 |
+  |    H      13       0.09        0.01        0.38       -0.22        0.26 |
+  |    H      14       0.01        0.01        0.15        0.02        0.19 |
+  |    H      15       0.00        0.00        0.42       -0.26        0.15 |
+  |    H      16       0.00        0.00        0.33       -0.20        0.13 |
+  |    H      17       0.00        0.00        0.31       -0.16        0.15 |
+  |    H      18       0.00        0.00        0.40       -0.28        0.12 |
+  |    H      19       0.00        0.00        0.50       -0.36        0.14 |
+  |    H      20       0.00        0.00        0.46       -0.30        0.15 |
+  |    H      21       0.00        0.00        0.44       -0.29        0.14 |
+  |    H      22       0.08        0.00        0.43       -0.28        0.23 |
+  |    H      23      -0.01        0.07       -0.25        0.35        0.15 |
+  |    H      24       0.01        0.00        0.50       -0.33        0.19 |
+  |    H      25      -0.05        0.02        0.47       -0.32        0.12 |
+  |    H      26       0.06        0.00        0.02        0.14        0.21 |
+  |    H      27      -0.36       -0.01        0.06        0.03       -0.28 |
+  |    H      28       0.00        0.02        0.21       -0.06        0.17 |
+  |**  C       1   -2127.52      -36.02     -109.67       30.97    -2242.24 |
+  |    C       2      44.79        0.80       -1.36        0.27       44.50 |
+  |    C       3       1.28       -0.10       -0.23        0.05        1.01 |
+  |    C       4       0.01        0.00        0.19       -0.10        0.10 |
+  |    C       5       0.01        0.01        0.19       -0.10        0.11 |
+  |    C       6       0.10        0.00        0.06       -0.01        0.15 |
+  |    C       7       0.00        0.00        0.20       -0.10        0.11 |
+  |    C       8       0.00        0.00        0.15       -0.09        0.06 |
+  |    C       9       0.00        0.00        0.11       -0.08        0.03 |
+  |    C      10      -0.01        0.00        0.17       -0.06        0.10 |
+  |    C      11       0.05        0.01        0.05       -0.02        0.09 |
+  |    C      12       0.06        0.00        0.05       -0.01        0.09 |
+  |    N       1      -0.77        0.01        0.11       -0.01       -0.66 |
+  |    N       2      -0.43        0.01       -0.05        0.02       -0.45 |
+  |    N       3       0.00        0.00       -0.09        0.04       -0.05 |
+  |    N       4      -0.51       -0.01       -0.02        0.02       -0.52 |
+  |    O       1      10.27       -0.45       11.87       -0.16       21.54 |
+  |    O       2      10.38       -0.36       11.08       -0.15       20.95 |
+  |    O       3      -0.09        0.00       -0.13        0.04       -0.18 |
+  |    O       4       0.00        0.00       -0.16        0.06       -0.10 |
+  |    O       5       0.00        0.00       -0.07        0.04       -0.03 |
+  |    O       6      -0.02        0.00       -0.06        0.04       -0.04 |
+  |    O       7      -0.01        0.01       -0.06        0.02       -0.05 |
+  |    O       8      -0.01       -0.01        0.01        0.01        0.00 |
+  |                                                                         |
+  |** Signifies Perturbing Nucleus A of coupling J_AB                       |
+  ===========================================================================
+ 
+  ===========================================================================
+  |                         Anisotropic J-coupling                          |
+  |-------------------------------------------------------------------------|
+  |     Nucleus                 Delta  J-coupling values                    |
+  |  Species   Ion     FC           SD         PARA       DIA       TOT(Hz) |
+  |    H       1       0.50       -1.05       -2.45        1.28        1.17 |
+  |    H       2      -2.15        4.37       -3.03        1.73        5.28 |
+  |    H       3       0.50       -1.21       -1.33        0.82        0.90 |
+  |    H       4       1.04        1.92       -4.31        2.36        1.94 |
+  |    H       5       0.42       -1.35       -2.48        1.52        1.21 |
+  |    H       6       0.31       -1.35       -2.13        1.28        1.07 |
+  |    H       7       1.60        0.57        1.58       -1.12        1.54 |
+  |    H       8      -0.13        2.14        1.09        0.58       -2.02 |
+  |    H       9       0.07        0.05        0.44       -0.30        0.16 |
+  |    H      10       0.08       -0.79        0.75        0.58        0.68 |
+  |    H      11      -0.03       -0.25        0.63       -0.38        0.29 |
+  |    H      12       0.05       -0.29        0.41       -0.27        0.37 |
+  |    H      13       0.06        0.21        0.46       -0.34        0.16 |
+  |    H      14      -0.07       -0.46        0.49        0.33        0.47 |
+  |    H      15      -0.02        0.03        0.35       -0.21        0.18 |
+  |    H      16      -0.03        0.03        0.34       -0.25        0.15 |
+  |    H      17      -0.03       -0.06        0.26       -0.20        0.12 |
+  |    H      18      -0.01       -0.02        0.44       -0.30        0.16 |
+  |    H      19       0.02       -0.01        0.36       -0.24        0.16 |
+  |    H      20      -0.02       -0.02        0.38       -0.22        0.16 |
+  |    H      21      -0.01       -0.02        0.44       -0.28        0.17 |
+  |    H      22       0.04        0.20        0.51       -0.29        0.15 |
+  |    H      23      -0.32       -1.18       -1.95        1.03       -2.41 |
+  |    H      24       0.07       -0.10        0.52       -0.33        0.20 |
+  |    H      25      -0.04        0.30        0.44       -0.38        0.30 |
+  |    H      26       0.06       -0.61       -0.94        0.51        0.63 |
+  |    H      27      -0.18        2.22       -1.38        0.58       -1.31 |
+  |    H      28      -0.08       -0.38        0.37       -0.31        0.37 |
+  |**  C       1      -5.32       -5.93       -7.97        4.22       -8.84 |
+  |    C       2       9.83       20.44       -1.62        0.81       30.23 |
+  |    C       3       0.80       -0.39       -0.36        0.32        0.96 |
+  |    C       4       0.04       -0.01        0.10       -0.05        0.08 |
+  |    C       5       0.07        0.03        0.15       -0.07        0.08 |
+  |    C       6       0.04       -0.11        0.09       -0.05        0.14 |
+  |    C       7       0.01        0.00        0.17       -0.10        0.09 |
+  |    C       8       0.02        0.00        0.13       -0.09        0.04 |
+  |    C       9       0.02        0.00        0.09       -0.07        0.05 |
+  |    C      10      -0.09       -0.05        0.30       -0.12        0.25 |
+  |    C      11       0.10        0.07        0.20        0.16        0.16 |
+  |    C      12       0.06       -0.10        0.13        0.11        0.17 |
+  |    N       1      -0.22       -0.35        0.34       -0.22       -0.47 |
+  |    N       2      -0.27       -0.22       -0.11        0.03       -0.12 |
+  |    N       3       0.00        0.00       -0.08        0.04       -0.04 |
+  |    N       4      -0.19       -0.24       -0.08        0.04       -0.21 |
+  |    O       1       1.49      -29.15       29.86       -1.04       47.97 |
+  |    O       2       1.33      -29.22       27.04       -1.00       44.43 |
+  |    O       3      -0.06        0.04       -0.15        0.05       -0.10 |
+  |    O       4      -0.02        0.01       -0.11        0.05       -0.10 |
+  |    O       5      -0.01        0.00       -0.10        0.03       -0.07 |
+  |    O       6      -0.01       -0.01       -0.10        0.04       -0.06 |
+  |    O       7      -0.03        0.04       -0.15        0.04       -0.18 |
+  |    O       8       0.09       -0.04        0.10        0.06        0.16 |
+  |                                                                         |
+  |** Signifies Perturbing Nucleus A of coupling J_AB                       |
+  ===========================================================================
+ 
+               Bond                Length (A)   1st image (A) Iso (Hz)   Aniso
+================================================================================
+       C 001 --        O 001         1.23985      5.06511       21.54      47.97
+       C 001 --        O 002         1.25694      4.93667       20.95      44.43
+       C 001 --        C 002         1.53079      4.39505       44.50      30.23
+       C 001 --        H 002         2.14421      4.51436       -0.27       5.28
+       C 001 --        H 004         2.41759      3.38356        6.05       1.94
+       C 001 --        N 001         2.47269      3.42652       -0.66      -0.47
+       C 001 --        C 003         2.51698      4.44624        1.01       0.96
+       C 001 --        H 023         2.66761      4.02216        0.15      -2.41
+       C 001 --        H 001         2.68804      3.71962        1.28       1.17
+       C 001 --        H 006         2.70186      3.82454        0.56       1.07
+       C 001 --        H 005         2.72610      3.69207        1.35       1.21
+       C 001 --        H 003         2.79340      4.63214        1.65       0.90
+       C 001 --        H 027         2.85842      4.94105       -0.28      -1.31
+       C 001 --        H 008         2.88921      5.29502       -0.16      -2.02
+       C 001 --        H 010         3.15458      4.32570        0.40       0.68
+       C 001 --        H 026         3.17218      6.33748        0.21       0.63
+       C 001 --        H 007         3.45674      3.74810        7.26       1.54
+       C 001 --        C 011         3.50064      4.28249        0.09       0.16
+       C 001 --        H 014         3.51219      5.38522        0.19       0.47
+       C 001 --        H 028         3.53642      5.30995        0.17       0.37
+       C 001 --        C 012         3.57736      5.79203        0.09       0.17
+       C 001 --        C 006         3.69809      5.06374        0.15       0.14
+       C 001 --        H 012         3.79030      5.08670        0.16       0.37
+       C 001 --        O 008         3.80460      4.74218        0.00       0.16
+       C 001 --        N 004         3.85448      4.66494       -0.52      -0.21
+       C 001 --        N 002         3.87514      5.54129       -0.45      -0.12
+       C 001 --        O 003         4.10724      4.31863       -0.18      -0.10
+       C 001 --        O 007         4.14444      5.41839       -0.05      -0.18
+       C 001 --        H 011         4.16653      5.35040        0.13       0.29
+       C 001 --        C 010         4.19723      4.19723        0.10       0.25
+       C 001 --        H 013         4.25861      6.56990        0.26       0.16
+       C 001 --        H 022         4.39931      5.50083        0.23       0.15
+       C 001 --        H 025         4.40372      4.67708        0.12       0.30
+       C 001 --        H 024         4.63798      6.24945        0.19       0.20
+       C 001 --        C 005         4.88437      5.15328        0.11       0.08
+       C 001 --        C 004         5.07221      5.07221        0.10       0.08
+       C 001 --        H 017         5.13273      5.70476        0.15       0.12
+       C 001 --        O 004         5.36368      5.43510       -0.10      -0.10
+       C 001 --        H 016         5.48177      5.84132        0.13       0.15
+       C 001 --        H 015         5.67827      6.74432        0.15       0.18
+       C 001 --        O 006         5.68034      6.74736       -0.04      -0.06
+       C 001 --        H 009         5.80888      5.83269        0.30       0.16
+       C 001 --        O 005         5.94067      7.11514       -0.03      -0.07
+       C 001 --        H 021         6.09789      6.82280        0.14       0.17
+       C 001 --        C 009         6.10128      6.60641        0.03       0.05
+       C 001 --        H 018         6.17930      6.36208        0.12       0.16
+       C 001 --        H 020         6.18857      7.04068        0.15       0.16
+       C 001 --        C 007         6.43802      6.43802        0.11       0.09
+       C 001 --        N 003         6.47286      6.55422       -0.05      -0.04
+       C 001 --        C 008         6.48321      6.70164        0.06       0.04
+       C 001 --        H 019         6.56658      6.72323        0.14       0.16
+==================================================
+ 
+ 
+ *********************** Forces ***********************
+ *                                                    *
+ *            Cartesian components (eV/A)             *
+ * -------------------------------------------------- *
+ *                   x            y            z      *
+ *                                                    *
+ * H         1      0.25223     -0.65687      0.05309 *
+ * H         2     -0.04733      0.22155     -0.03046 *
+ * H         3      0.13884     -0.62242      0.01674 *
+ * H         4     -0.23521      0.10229     -0.45542 *
+ * H         5     -0.35718      0.09691      0.31703 *
+ * H         6      0.54050      0.46383      0.13633 *
+ * H         7     -0.19756      0.13599     -0.47570 *
+ * H         8     -0.25862      0.66346      0.04546 *
+ * H         9      0.04642     -0.22784     -0.02295 *
+ * H        10     -0.13607      0.62457      0.01446 *
+ * H        11      0.23267     -0.10337     -0.45857 *
+ * H        12      0.34780     -0.09580      0.31464 *
+ * H        13     -0.55251     -0.46987      0.12870 *
+ * H        14      0.22404     -0.14251     -0.51035 *
+ * H        15     -0.25249     -0.65718     -0.05347 *
+ * H        16      0.04739      0.22185      0.03031 *
+ * H        17     -0.13882     -0.62218     -0.01713 *
+ * H        18      0.23515      0.10233      0.45505 *
+ * H        19      0.35715      0.09696     -0.31739 *
+ * H        20     -0.54049      0.46410     -0.13666 *
+ * H        21      0.19761      0.13605      0.47544 *
+ * H        22      0.25869      0.66344     -0.04581 *
+ * H        23     -0.04608     -0.22810      0.02267 *
+ * H        24      0.13601      0.62418     -0.01484 *
+ * H        25     -0.23254     -0.10337      0.45819 *
+ * H        26     -0.34803     -0.09589     -0.31507 *
+ * H        27      0.55251     -0.47023     -0.12908 *
+ * H        28     -0.22436     -0.14266      0.51026 *
+ * C         1     -0.50308      0.37352     -1.27802 *
+ * C         2     -0.18258      0.06349     -0.01159 *
+ * C         3      0.17210      0.18097      0.07290 *
+ * C         4      0.50145     -0.34419     -1.21528 *
+ * C         5      0.22635     -0.01810     -0.04350 *
+ * C         6     -0.18924     -0.20313      0.13038 *
+ * C         7      0.50324      0.37436      1.27770 *
+ * C         8      0.18284      0.06338      0.01143 *
+ * C         9     -0.17160      0.18045     -0.07388 *
+ * C        10     -0.50091     -0.34397      1.21467 *
+ * C        11     -0.22628     -0.01767      0.04319 *
+ * C        12      0.19016     -0.20238     -0.13137 *
+ * N         1     -0.27687      0.07255     -0.02862 *
+ * N         2      0.27437     -0.06816     -0.04466 *
+ * N         3      0.27693      0.07302      0.02806 *
+ * N         4     -0.27393     -0.06829      0.04408 *
+ * O         1      1.79121     -1.30001      0.20034 *
+ * O         2     -1.08807      0.88781      1.49626 *
+ * O         3     -1.79512      1.24328      0.19865 *
+ * O         4      1.06867     -0.87794      1.47578 *
+ * O         5     -1.79025     -1.29966     -0.19848 *
+ * O         6      1.08645      0.88755     -1.49252 *
+ * O         7      1.79632      1.24210     -0.19792 *
+ * O         8     -1.07188     -0.87821     -1.47309 *
+ *                                                    *
+ ******************************************************
+ 
+ Pseudo atomic calculation performed for H 1s1
+ 
+ Converged in 18 iterations to a total energy of -12.4932 eV
+ 
+ 
+ Pseudo atomic calculation performed for C 2s2 2p2
+ 
+ Converged in 22 iterations to a total energy of -146.0014 eV
+ 
+ 
+ Pseudo atomic calculation performed for N 2s2 2p3
+ 
+ Converged in 30 iterations to a total energy of -262.4694 eV
+ 
+ 
+ Pseudo atomic calculation performed for O 2s2 2p4
+ 
+ Converged in 33 iterations to a total energy of -428.7222 eV
+ 
+Charge spilling parameter for spin component 1 = 1.26%
+ 
+     Atomic Populations (Mulliken)
+     -----------------------------
+Species   Ion     s      p      d      f     Total  Charge (e)
+==============================================================
+  H        1     0.55   0.00   0.00   0.00   0.55     0.45
+  H        2     0.71   0.00   0.00   0.00   0.71     0.29
+  H        3     0.74   0.00   0.00   0.00   0.74     0.26
+  H        4     0.57   0.00   0.00   0.00   0.57     0.43
+  H        5     0.73   0.00   0.00   0.00   0.73     0.27
+  H        6     0.56   0.00   0.00   0.00   0.56     0.44
+  H        7     0.74   0.00   0.00   0.00   0.74     0.26
+  H        8     0.55   0.00   0.00   0.00   0.55     0.45
+  H        9     0.71   0.00   0.00   0.00   0.71     0.29
+  H       10     0.74   0.00   0.00   0.00   0.74     0.26
+  H       11     0.58   0.00   0.00   0.00   0.58     0.42
+  H       12     0.73   0.00   0.00   0.00   0.73     0.27
+  H       13     0.56   0.00   0.00   0.00   0.56     0.44
+  H       14     0.75   0.00   0.00   0.00   0.75     0.25
+  H       15     0.55   0.00   0.00   0.00   0.55     0.45
+  H       16     0.71   0.00   0.00   0.00   0.71     0.29
+  H       17     0.74   0.00   0.00   0.00   0.74     0.26
+  H       18     0.57   0.00   0.00   0.00   0.57     0.43
+  H       19     0.73   0.00   0.00   0.00   0.73     0.27
+  H       20     0.56   0.00   0.00   0.00   0.56     0.44
+  H       21     0.74   0.00   0.00   0.00   0.74     0.26
+  H       22     0.55   0.00   0.00   0.00   0.55     0.45
+  H       23     0.71   0.00   0.00   0.00   0.71     0.29
+  H       24     0.74   0.00   0.00   0.00   0.74     0.26
+  H       25     0.58   0.00   0.00   0.00   0.58     0.42
+  H       26     0.73   0.00   0.00   0.00   0.73     0.27
+  H       27     0.56   0.00   0.00   0.00   0.56     0.44
+  H       28     0.75   0.00   0.00   0.00   0.75     0.25
+  C        1     0.85   2.47   0.00   0.00   3.33     0.67
+  C        2     1.17   3.00   0.00   0.00   4.17    -0.17
+  C        3     1.32   3.41   0.00   0.00   4.73    -0.73
+  C        4     0.85   2.47   0.00   0.00   3.32     0.68
+  C        5     1.17   2.99   0.00   0.00   4.17    -0.17
+  C        6     1.32   3.41   0.00   0.00   4.73    -0.73
+  C        7     0.85   2.47   0.00   0.00   3.33     0.67
+  C        8     1.17   3.00   0.00   0.00   4.17    -0.17
+  C        9     1.32   3.41   0.00   0.00   4.73    -0.73
+  C       10     0.85   2.47   0.00   0.00   3.32     0.68
+  C       11     1.17   2.99   0.00   0.00   4.17    -0.17
+  C       12     1.32   3.41   0.00   0.00   4.73    -0.73
+  N        1     1.59   4.19   0.00   0.00   5.78    -0.78
+  N        2     1.59   4.19   0.00   0.00   5.78    -0.78
+  N        3     1.59   4.19   0.00   0.00   5.78    -0.78
+  N        4     1.59   4.19   0.00   0.00   5.78    -0.78
+  O        1     1.80   4.89   0.00   0.00   6.69    -0.69
+  O        2     1.80   4.88   0.00   0.00   6.68    -0.68
+  O        3     1.80   4.89   0.00   0.00   6.69    -0.69
+  O        4     1.80   4.88   0.00   0.00   6.68    -0.68
+  O        5     1.80   4.89   0.00   0.00   6.69    -0.69
+  O        6     1.80   4.88   0.00   0.00   6.68    -0.68
+  O        7     1.80   4.89   0.00   0.00   6.69    -0.69
+  O        8     1.80   4.88   0.00   0.00   6.68    -0.68
+==============================================================
+ 
+            Bond              Population      Length (A)
+============================================================
+         H 22 -- N 4               0.64        1.02782
+         H 1  -- N 1               0.64        1.02782
+         H 15 -- N 3               0.64        1.02782
+         H 8  -- N 2               0.64        1.02782
+         H 6  -- N 1               0.64        1.03044
+         H 13 -- N 2               0.63        1.03044
+         H 20 -- N 3               0.64        1.03044
+         H 27 -- N 4               0.63        1.03044
+         H 11 -- N 2               0.59        1.04691
+         H 25 -- N 4               0.59        1.04691
+         H 18 -- N 3               0.60        1.04691
+         H 4  -- N 1               0.60        1.04691
+         H 24 -- C 12              0.86        1.07946
+         H 17 -- C 9               0.85        1.07946
+         H 10 -- C 6               0.86        1.07946
+         H 3  -- C 3               0.85        1.07946
+         H 7  -- C 3               0.86        1.08040
+         H 28 -- C 12              0.86        1.08040
+         H 14 -- C 6               0.86        1.08040
+         H 21 -- C 9               0.86        1.08040
+         H 19 -- C 9               0.85        1.08149
+         H 5  -- C 3               0.85        1.08149
+         H 26 -- C 12              0.85        1.08149
+         H 12 -- C 6               0.85        1.08149
+         H 23 -- C 11              0.88        1.09132
+         H 2  -- C 2               0.88        1.09132
+         H 9  -- C 5               0.88        1.09132
+         H 16 -- C 8               0.88        1.09132
+         C 7  -- O 5               0.94        1.23985
+         C 4  -- O 3               0.95        1.23985
+         C 10 -- O 7               0.95        1.23985
+         C 1  -- O 1               0.94        1.23985
+         C 7  -- O 6               0.89        1.25694
+         C 1  -- O 2               0.89        1.25694
+         C 10 -- O 8               0.89        1.25694
+         C 4  -- O 4               0.89        1.25694
+         C 5  -- N 2               0.53        1.48592
+         C 2  -- N 1               0.53        1.48592
+         C 8  -- N 3               0.53        1.48592
+         C 11 -- N 4               0.53        1.48592
+         C 11 -- C 12              0.69        1.52129
+         C 2  -- C 3               0.68        1.52129
+         C 8  -- C 9               0.68        1.52129
+         C 5  -- C 6               0.69        1.52129
+         C 10 -- C 11              0.74        1.53079
+         C 7  -- C 8               0.74        1.53079
+         C 4  -- C 5               0.74        1.53079
+         C 1  -- C 2               0.74        1.53079
+         H 22 -- H 25             -0.08        1.68070
+         H 8  -- H 11             -0.08        1.68070
+         H 1  -- H 4              -0.08        1.68070
+         H 15 -- H 18             -0.08        1.68070
+         H 25 -- H 27             -0.08        1.68280
+         H 11 -- H 13             -0.08        1.68280
+         H 4  -- H 6              -0.08        1.68280
+         H 18 -- H 20             -0.08        1.68280
+         H 15 -- H 20             -0.07        1.69219
+         H 22 -- H 27             -0.07        1.69219
+         H 8  -- H 13             -0.07        1.69219
+         H 1  -- H 6              -0.07        1.69219
+         H 24 -- H 26             -0.09        1.75070
+         H 10 -- H 12             -0.09        1.75070
+         H 3  -- H 5              -0.09        1.75070
+         H 17 -- H 19             -0.09        1.75070
+         H 24 -- H 28             -0.10        1.75121
+         H 3  -- H 7              -0.10        1.75121
+         H 10 -- H 14             -0.10        1.75121
+         H 17 -- H 21             -0.10        1.75121
+         H 5  -- H 7              -0.09        1.75926
+         H 26 -- H 28             -0.09        1.75926
+         H 19 -- H 21             -0.09        1.75926
+         H 12 -- H 14             -0.09        1.75926
+         H 18 -- O 6               0.11        1.77901
+         H 11 -- O 4               0.11        1.77901
+         H 4  -- O 2               0.11        1.77901
+         H 25 -- O 8               0.11        1.77901
+         H 27 -- O 2               0.09        1.82471
+         H 20 -- O 4               0.09        1.82471
+         H 6  -- O 8               0.09        1.82471
+         H 13 -- O 6               0.09        1.82471
+         H 8  -- O 1               0.07        1.85820
+         H 1  -- O 3               0.07        1.85820
+         H 15 -- O 7               0.07        1.85820
+         H 22 -- O 5               0.07        1.85820
+         H 6  -- C 2              -0.12        2.06617
+         H 20 -- C 8              -0.12        2.06617
+         H 13 -- C 5              -0.12        2.06617
+         H 27 -- C 11             -0.12        2.06617
+         H 11 -- C 5              -0.09        2.08308
+         H 18 -- C 8              -0.09        2.08308
+         H 4  -- C 2              -0.09        2.08308
+         H 25 -- C 11             -0.09        2.08308
+         H 9  -- N 2              -0.13        2.08349
+         H 23 -- N 4              -0.13        2.08349
+         H 2  -- N 1              -0.13        2.08349
+         H 16 -- N 3              -0.13        2.08349
+         H 22 -- C 11             -0.11        2.09129
+         H 1  -- C 2              -0.11        2.09129
+         H 8  -- C 5              -0.11        2.09129
+         H 15 -- C 8              -0.11        2.09129
+         H 23 -- C 10             -0.13        2.14421
+         H 2  -- C 1              -0.13        2.14421
+         H 16 -- C 7              -0.13        2.14421
+         H 9  -- C 4              -0.13        2.14421
+         H 10 -- C 5              -0.13        2.14933
+         H 24 -- C 11             -0.13        2.14933
+         H 3  -- C 2              -0.13        2.14933
+         H 17 -- C 8              -0.13        2.14933
+         H 28 -- C 11             -0.12        2.15131
+         H 7  -- C 2              -0.12        2.15131
+         H 21 -- C 8              -0.12        2.15131
+         H 14 -- C 5              -0.12        2.15131
+         H 26 -- C 11             -0.11        2.15386
+         H 5  -- C 2              -0.11        2.15386
+         H 19 -- C 8              -0.11        2.15386
+         H 12 -- C 5              -0.11        2.15386
+         H 23 -- C 12             -0.12        2.15890
+         H 9  -- C 6              -0.12        2.15890
+         H 2  -- C 3              -0.12        2.15890
+         H 16 -- C 9              -0.12        2.15890
+          O 5 -- O 6              -0.20        2.22090
+          O 7 -- O 8              -0.20        2.22090
+          O 1 -- O 2              -0.20        2.22090
+          O 3 -- O 4              -0.20        2.22090
+         H 9  -- H 13             -0.04        2.32642
+         H 2  -- H 6              -0.04        2.32642
+         H 23 -- H 27             -0.04        2.32642
+         H 16 -- H 20             -0.04        2.32642
+         C 11 -- O 8              -0.22        2.36852
+         C 8  -- O 6              -0.22        2.36852
+         C 5  -- O 4              -0.22        2.36852
+         C 2  -- O 2              -0.22        2.36852
+         C 11 -- O 7              -0.21        2.38436
+         C 8  -- O 5              -0.21        2.38436
+         C 5  -- O 3              -0.21        2.38436
+         C 2  -- O 1              -0.21        2.38436
+         H 17 -- H 28             -0.03        2.38801
+         H 21 -- H 24             -0.03        2.38801
+         H 7  -- H 10             -0.03        2.38801
+         H 3  -- H 14             -0.03        2.38801
+         H 9  -- H 11             -0.03        2.40896
+         H 23 -- H 25             -0.03        2.40896
+         H 2  -- H 4              -0.03        2.40896
+         H 16 -- H 18             -0.03        2.40896
+         H 25 -- C 10             -0.05        2.41759
+         H 18 -- C 7              -0.05        2.41759
+         H 11 -- C 4              -0.05        2.41759
+         H 4  -- C 1              -0.05        2.41759
+         H 16 -- O 3               0.00        2.42854
+         H 23 -- O 1               0.00        2.42854
+         H 9  -- O 5               0.00        2.42854
+         H 2  -- O 7               0.00        2.42854
+         H 18 -- H 21             -0.01        2.45772
+         H 4  -- H 7              -0.01        2.45772
+         H 11 -- H 14             -0.01        2.45772
+         H 25 -- H 28             -0.01        2.45772
+         C 6  -- N 2              -0.14        2.45941
+         C 12 -- N 4              -0.14        2.45941
+         C 9  -- N 3              -0.14        2.45941
+         C 3  -- N 1              -0.14        2.45941
+         H 23 -- H 28             -0.04        2.46677
+         H 2  -- H 7              -0.04        2.46677
+         H 9  -- H 14             -0.04        2.46677
+         H 16 -- H 21             -0.04        2.46677
+         C 7  -- N 3              -0.15        2.47269
+         C 4  -- N 2              -0.15        2.47269
+         C 1  -- N 1              -0.15        2.47269
+         C 10 -- N 4              -0.15        2.47269
+         H 22 -- O 7               0.01        2.49572
+         H 15 -- O 5               0.01        2.49572
+         H 8  -- O 3               0.01        2.49572
+         H 1  -- O 1               0.01        2.49572
+         C 10 -- C 12             -0.15        2.51698
+         C 7  -- C 9              -0.15        2.51698
+         C 1  -- C 3              -0.15        2.51698
+         C 4  -- C 6              -0.15        2.51698
+         H 4  -- O 1              -0.01        2.52081
+         H 25 -- O 7              -0.01        2.52081
+         H 18 -- O 5              -0.01        2.52081
+         H 11 -- O 3              -0.01        2.52081
+         H 1  -- H 3              -0.01        2.52292
+         H 22 -- H 24              0.00        2.52292
+         H 8  -- H 10              0.00        2.52292
+         H 15 -- H 17             -0.01        2.52292
+         H 2  -- H 5              -0.02        2.53072
+         H 23 -- H 26             -0.02        2.53072
+         H 16 -- H 19             -0.02        2.53072
+         H 9  -- H 12             -0.02        2.53072
+         H 2  -- O 2              -0.02        2.56652
+         H 16 -- O 6              -0.02        2.56652
+         H 23 -- O 8              -0.02        2.56652
+         H 9  -- O 4              -0.02        2.56652
+         H 17 -- H 26             -0.02        2.58343
+         H 19 -- H 24             -0.02        2.58343
+         H 3  -- H 12             -0.02        2.58343
+         H 5  -- H 10             -0.02        2.58343
+         H 12 -- H 16             -0.02        2.59509
+         H 9  -- H 19             -0.02        2.59509
+         H 2  -- H 26             -0.02        2.59509
+         H 5  -- H 23             -0.02        2.59509
+         H 18 -- C 9              -0.05        2.63180
+         H 11 -- C 6              -0.05        2.63180
+         H 4  -- C 3              -0.05        2.63180
+         H 25 -- C 12             -0.05        2.63180
+         H 16 -- C 4              -0.04        2.66761
+         H 23 -- C 1              -0.04        2.66761
+         H 9  -- C 7              -0.04        2.66761
+         H 2  -- C 10             -0.04        2.66761
+          N 3 -- O 5              -0.05        2.67830
+          N 4 -- O 7              -0.05        2.67830
+          N 2 -- O 3              -0.05        2.67830
+          N 1 -- O 1              -0.05        2.67830
+         H 24 -- N 4              -0.03        2.68573
+         H 3  -- N 1              -0.03        2.68573
+         H 17 -- N 3              -0.03        2.68573
+         H 10 -- N 2              -0.03        2.68573
+         H 22 -- C 10             -0.04        2.68804
+         H 1  -- C 1              -0.04        2.68804
+         H 15 -- C 7              -0.04        2.68804
+         H 8  -- C 4              -0.04        2.68804
+         H 20 -- C 7              -0.03        2.70186
+         H 6  -- C 1              -0.03        2.70186
+         H 13 -- C 4              -0.03        2.70186
+         H 27 -- C 10             -0.03        2.70186
+         H 22 -- C 12             -0.04        2.72170
+         H 1  -- C 3              -0.04        2.72170
+         H 8  -- C 6              -0.04        2.72170
+         H 15 -- C 9              -0.04        2.72170
+         H 28 -- N 4              -0.03        2.72320
+         H 21 -- N 3              -0.03        2.72320
+         H 7  -- N 1              -0.03        2.72320
+         H 14 -- N 2              -0.03        2.72320
+         H 26 -- C 10             -0.04        2.72610
+         H 19 -- C 7              -0.04        2.72610
+         H 12 -- C 4              -0.04        2.72610
+         H 5  -- C 1              -0.04        2.72610
+         H 19 -- H 20             -0.01        2.73605
+         H 26 -- H 27             -0.01        2.73605
+         H 12 -- H 13             -0.01        2.73605
+         H 5  -- H 6              -0.01        2.73605
+         H 28 -- O 8               0.00        2.75093
+         H 7  -- O 2               0.00        2.75093
+         H 21 -- O 6               0.00        2.75093
+         H 14 -- O 4               0.00        2.75093
+         H 27 -- O 7               0.00        2.77062
+         H 20 -- O 5               0.00        2.77062
+         H 13 -- O 3               0.00        2.77062
+         H 6  -- O 1               0.00        2.77062
+         H 12 -- O 3               0.01        2.77740
+         H 5  -- O 1               0.01        2.77740
+         H 26 -- O 7               0.01        2.77740
+         H 19 -- O 5               0.01        2.77740
+         H 20 -- H 21             -0.01        2.78990
+         H 13 -- H 14             -0.01        2.78990
+         H 27 -- H 28             -0.01        2.78990
+         H 6  -- H 7              -0.01        2.78990
+         H 10 -- C 4              -0.03        2.79340
+         H 24 -- C 10             -0.03        2.79340
+         H 17 -- C 7              -0.03        2.79340
+         H 3  -- C 1              -0.03        2.79340
+          N 1 -- O 2              -0.10        2.81195
+          N 4 -- O 8              -0.10        2.81195
+          N 3 -- O 6              -0.10        2.81195
+          N 2 -- O 4              -0.10        2.81195
+          N 1 -- O 8              -0.10        2.82862
+          N 4 -- O 2              -0.10        2.82862
+          N 3 -- O 4              -0.10        2.82862
+          N 2 -- O 6              -0.10        2.82862
+         H 19 -- O 6               0.00        2.82933
+         H 12 -- O 4               0.00        2.82933
+         H 5  -- O 2               0.00        2.82933
+         H 26 -- O 8               0.00        2.82933
+          N 4 -- O 5              -0.08        2.84928
+          N 2 -- O 1              -0.08        2.84928
+          N 3 -- O 7              -0.08        2.84928
+          N 1 -- O 3              -0.08        2.84928
+         H 6  -- C 10             -0.03        2.85842
+         H 20 -- C 4              -0.03        2.85842
+         H 27 -- C 1              -0.03        2.85842
+         H 13 -- C 7              -0.03        2.85842
+         H 13 -- H 16             -0.01        2.86536
+         H 6  -- H 23             -0.01        2.86536
+         H 2  -- H 27             -0.01        2.86536
+         H 9  -- H 20             -0.01        2.86536
+         H 17 -- O 8               0.00        2.87782
+         H 24 -- O 6               0.00        2.87782
+         H 10 -- O 2               0.00        2.87782
+         H 3  -- O 4               0.00        2.87782
+         H 1  -- C 4              -0.03        2.88921
+         H 15 -- C 10             -0.03        2.88921
+         H 8  -- C 1              -0.03        2.88921
+         H 22 -- C 7              -0.03        2.88921
+         H 17 -- H 18              0.00        2.93385
+         H 10 -- H 11              0.00        2.93385
+         H 3  -- H 4               0.00        2.93385
+         H 24 -- H 25              0.00        2.93385
+         H 22 -- H 23              0.03        2.95607
+         H 1  -- H 2               0.03        2.95607
+         H 8  -- H 9               0.03        2.95607
+         H 15 -- H 16              0.03        2.95607
+         H 15 -- H 19              0.00        2.99123
+         H 22 -- H 26              0.00        2.99123
+         H 1  -- H 5               0.00        2.99123
+         H 8  -- H 12              0.00        2.99123
+============================================================
+ 
+ 
+Writing model to alanine.check
+ 
+Writing analysis data to alanine.castep_bin
+ 
+ A BibTeX formatted list of references used in this run has been written to 
+ alanine.bib
+ 
+Initialisation time =     10.87 s
+Calculation time    =    549.27 s
+Finalisation time   =      1.31 s
+Total time          =    561.45 s
+Peak Memory Use     = 351040 kB
+  
+Overall parallel efficiency rating: Mediocre (56%)                              
+  
+Data was distributed by:-
+G-vector (8-way); efficiency rating: Mediocre (56%)                             
+  
+Parallel notes:
+1) Calculation only took 560.1 s, so efficiency estimates may be inaccurate.    

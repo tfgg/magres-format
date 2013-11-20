@@ -948,7 +948,7 @@ class MagresAtomsView(object):
     has_ms = numpy.array([hasattr(atom, 'ms') for atom in self.atoms]).any()
 
     def lm_dist(atom1, atom2):
-        return self.least_mirror(atom1.position, atom2.position)[0]
+        return self.least_mirror(atom1.position, atom2.position)
 
     def strength_color(dist):
         x = min(max((abs(dist) - min_dist) / (max_dist - min_dist),0.0),1.0)
@@ -959,13 +959,14 @@ class MagresAtomsView(object):
     for atom in self:
         fillcolor, fontcolor = element_colours.get(atom.species, ("#CCCCCC","#000000"))
          
-        if has_ms:
-          label = "{}\n{:.3f}".format(str(atom), atom.ms.iso)
-        else:
-          label = str(atom)#"{}\n{:.3f}".format(str(atom), 3.0)
+        #if has_ms:
+        #  label = "{}\n{:.3f}".format(str(atom), atom.ms.iso)
+        #else:
+        label = str(atom)#"{}\n{:.3f}".format(str(atom), 3.0)
 
         node = pydot.Node(str(atom),
                           label=label,
+                          shape="circle",
                           style="filled",
                           size="0.01",
                           fillcolor=fillcolor,
@@ -975,22 +976,24 @@ class MagresAtomsView(object):
         dist_graph.add_node(node)
 
     bonds_done = set()
+    atom_set = set(self.atoms)
 
     for atom1 in self:
-      for atom2 in self:
-        dist = atom1.dist(atom2)#lm_dist(atom1, atom2)
+      for atom2 in atom1.bonded:
+        if atom2 not in atom_set:
+          continue
 
-        if dist < 0.1: continue
+        dist, pos = lm_dist(atom1, atom2)
 
         idx1 = (str(atom2), str(atom1))
         idx2 = (str(atom1), str(atom2))
 
-        if dist < max_dist and idx1 not in bonds_done and idx2 not in bonds_done:
+        if idx1 not in bonds_done and idx2 not in bonds_done:
           bonds_done.add(idx2)
 
           # Hide bonds if we have ISC, but keep for structure
           if has_isc:
-            color = "#00000000"
+            color = "#000000{:02x}".format(64)
           else:
             color = strength_color(dist)
             
@@ -1033,7 +1036,7 @@ class MagresAtomsView(object):
                             color=strength_color_K(isc.K_iso),
                             fontcolor=strength_color_K(isc.K_iso),
                             label="{:.3f}".format(isc.K_iso),
-                            len=lm_dist(isc.atom1, isc.atom2))
+                            len=lm_dist(isc.atom1, isc.atom2)[0])
 
           dist_graph.add_edge(edge)
 
@@ -1142,7 +1145,7 @@ class MagresAtoms(MagresAtomsView):
     bonded_dict = {(atom.species,atom.index): [] for atom in self}
 
     for idx1, idx2, pop, length in bonds:
-      if pop > 0.2:
+      if pop >= pop_tol:
         bonded_dict[idx1].append(idx2)
         bonded_dict[idx2].append(idx1)
 

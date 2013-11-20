@@ -7,9 +7,10 @@
 
 import sys,os
 import math
-import constants
 import numpy
+import re
 
+import constants
 import html_repr
 
 from decorators import lazyproperty
@@ -635,48 +636,21 @@ class SpeciesNotFound(Exception):
 class AtomNotFound(Exception):
   pass
 
-class MagresAtomPropertyView(object):
+class ListPropertyView(list):
   """
-    A single atom property opened up on a sequence of atoms.
+    Allows property accessors on lists of objects. E.g.
 
-    e.g. atoms.species('H').ms
+    x = [A(1), A(2), A(3)]
+    x.a = [1,2,3]
 
-    allows you to query across all atoms
-
-      atoms.species('H').ms.iso
+    if A(a) is an object that stores a in self.a
   """
 
-  def __init__(self, atoms, property):
-    self.atoms = atoms
-    self.property = property
+  def mean(self, *args, **kwargs):
+    return numpy.mean([x for x in self], *args, **kwargs) 
 
-  def __getattr__(self, name):
-    props = []
-
-    for atom in self.atoms:
-      try:
-        props.append(getattr(getattr(atom, self.property), name))
-      except AttributeError:
-        props.append(None)
-
-    return props
-
-  def __iter__(self):
-    for atom in self.atoms:
-      try:
-        thing = getattr(atom, self.property)
-
-        if type(thing) is dict:
-          for value in thing.values():
-            yield value
-        else:
-          yield thing
-
-      except AttributeError:
-        pass
-
-  def __len__(self):
-    return len(self.atoms)
+  def __getattr__(self, prop):
+    return ListPropertyView([getattr(x, prop) for x in self])
 
 class MagresAtomsView(object):
   """
@@ -903,11 +877,17 @@ class MagresAtomsView(object):
 
     return images
 
-  def __getattribute__(self, name):
+  re_species_index = re.compile('([A-Za-z]+)([0-9]+)')
+
+  def __getattribute__(self, attr_name):
     try:
-      return object.__getattribute__(self, name)
+      return object.__getattribute__(self, attr_name)
     except AttributeError:
-      return MagresAtomPropertyView(self, name) 
+      try:
+        s, i = self.re_species_index.findall(attr_name)[0]
+        return self.get_species(s, int(i))
+      except:
+        return getattr(ListPropertyView(self.atoms), attr_name)
 
   def __getitem__(self, idx):
     if type(idx) == tuple:
@@ -976,11 +956,11 @@ class MagresAtomsView(object):
         dist_graph.add_node(node)
 
     bonds_done = set()
-    atom_set = set(self.atoms)
+    atom_set = set([str(atom) for atom in self.atoms])
 
     for atom1 in self:
       for atom2 in atom1.bonded:
-        if atom2 not in atom_set:
+        if str(atom2) not in atom_set:
           continue
 
         dist, pos = lm_dist(atom1, atom2)
@@ -1093,12 +1073,10 @@ class MagresAtoms(MagresAtomsView):
 
         ms_type = tag
         
-        setattr(self, ms_type, [])
-
         for magres_ms in magres_file.data_dict['magres'][ms_type]:
           atom = temp_label_index[(magres_ms['atom']['label'], magres_ms['atom']['index'])]
           magres_atom_ms = MagresAtomMs(atom, magres_ms)
-          getattr(self, ms_type).append(magres_atom_ms)
+          #getattr(self, ms_type).append(magres_atom_ms)
           setattr(atom, ms_type, magres_atom_ms)
 
       for tag in magres_file.data_dict['magres']:
@@ -1107,12 +1085,10 @@ class MagresAtoms(MagresAtomsView):
 
         efg_type = tag
         
-        setattr(self, efg_type, [])
-
         for magres_efg in magres_file.data_dict['magres'][efg_type]:
           atom = temp_label_index[(magres_efg['atom']['label'], magres_efg['atom']['index'])]
           magres_atom_efg = MagresAtomEfg(atom, magres_efg)
-          getattr(self, efg_type).append(magres_atom_efg)
+          #getattr(self, efg_type).append(magres_atom_efg)
           setattr(atom, efg_type, magres_atom_efg)
      
       for tag in magres_file.data_dict['magres']:

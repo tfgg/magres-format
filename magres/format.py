@@ -132,7 +132,8 @@ def parse_magres_block(block):
     
   tags = {'ms': sitensor33('sigma'),
           'efg': sitensor33('V'),
-          'efg_local': sitensor33('V'), 'efg_nonlocal': sitensor33('V'),
+          'efg_local': sitensor33('V'),
+          'efg_nonlocal': sitensor33('V'),
           'isc': sisitensor33('K'),
           'isc_fc': sisitensor33('K'), 'isc_spin': sisitensor33('K'), 'isc_orbital_p': sisitensor33('K'), 'isc_orbital_d': sisitensor33('K'),
           'units': check_units}
@@ -173,8 +174,8 @@ def write_magres_block(data):
 
   siout('ms', 'sigma')
 
-  siout('efg_local', 'V_local')
-  siout('efg_nonlocal', 'V_nonlocal')
+  siout('efg_local', 'V')
+  siout('efg_nonlocal', 'V')
   siout('efg', 'V')
 
   def sisiout(tag, tensor_name):

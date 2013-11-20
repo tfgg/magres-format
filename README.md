@@ -12,7 +12,9 @@ A few IPython notebooks have been written using the library as examples:
  * [Calculating NQR frequencies from EFG calculations](http://nbviewer.ipython.org/7548650)
  * [Plotting bonding networks](http://nbviewer.ipython.org/7203658)
 
-IPython is an enhanced interpreter for Python and offers an excellent in-browser workbook experience, similar to Matlab or Mathematica. This is particularly useful when developing code using this library to process your magnetic resonance calculations. You can install it using easy_install or pip.
+IPython is an enhanced interpreter for Python and offers an excellent in-browser workbook experience,
+similar to Matlab or Mathematica. This is particularly useful when developing code using this library
+to process your magnetic resonance calculations. You can [read instructions for installing it here](http://ipython.org/install.html).
 
 Installing
 ----------
@@ -52,38 +54,14 @@ and optionally with the associated job's .castep file, to capture the lattice in
 Python module usage
 -------------------
 
-From inside Python you can import the magres.format module and use the MagresFile class.
+The `magres.format` and `magres.atoms` modules contain code for, respectively, a low level parser of the CCPNC ab-initio
+magres format and a high-level collection of objects to represent its contents.
 
-
-    >>> from magres.format import MagresFile
-    >>> magres_file = MagresFile(open('samples/T1Si0.magres'))
-    >>> magres_file
-    <magres.format.MagresFile object at 0x26ad690>
-
-The 'data_dict' member variable contains all the information parsed from the file. You can also request the data
-serialized as JSON by the .as_json() method and load JSON data with the .load_json() method.
-
-There is also the magres.atoms.MagresAtoms structure, which adds a more user-friendly interface to manipulating magres data on
-top of MagresFile. For example, loading and printing out the isotropic magnetic shieldings from an ethanol calculation:
-
-    >>> from magres.atoms import MagresAtoms
-    >>> atoms = MagresAtoms.load_magres('ethanol.magres')
-    >>> for atom in atoms:
-    >>>   print atom, atom.ms.iso
-    1H1 29.5599376391
-    1H2 30.2261866485
-    1H3 30.0722544561
-    1H4 26.9539908188
-    1H5 27.3739467591
-    1H6 31.8881193712
-    13C1 156.12291535
-    13C2 109.357530445
-    17O1 267.012276599
-
-More documentation is [available here](http://tfgg.github.io/magres-format/build/html/).
-
-The module also include the useful magres.constants module, which gives the best-known gamma constants and quadrupole 
+The module also include the useful `magres.constants` module, which gives the best-known gamma constants and quadrupole 
 moments for all isotopes, the most common isotopes used in experiments.
+
+More documentation is [available here](http://tfgg.github.io/magres-format/build/html/). Also, see the IPython notebooks
+linked at the top of this document.
 
 JSON schema
 -----------

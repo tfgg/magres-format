@@ -57,7 +57,7 @@ Python module usage
 The `magres.format` and `magres.atoms` modules contain code for, respectively, a low level parser of the CCPNC ab-initio
 magres format and a high-level collection of objects to represent its contents.
 
-The module also include the useful magres.constants module, which gives the best-known gamma constants and quadrupole 
+The module also include the useful `magres.constants` module, which gives the best-known gamma constants and quadrupole 
 moments for all isotopes, the most common isotopes used in experiments.
 
 More documentation is [available here](http://tfgg.github.io/magres-format/build/html/). Also, see the IPython notebooks

@@ -16,6 +16,11 @@ IPython is an enhanced interpreter for Python and offers an excellent in-browser
 similar to Matlab or Mathematica. This is particularly useful when developing code using this library
 to process your magnetic resonance calculations. You can [read instructions for installing it here](http://ipython.org/install.html).
 
+<p align="center">
+  <img src='https://github.com/tfgg/magres-format/raw/master//samples/ethanol.png' /><br/>
+  A calculated J-coupling network in ethanol.
+</p>
+
 Installing
 ----------
 

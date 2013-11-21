@@ -28,6 +28,22 @@ element_colours = {'H': ("#EEEEEE", "#000000"),
 min_dist = 1.0
 max_dist = 2.0
 
+class ListPropertyView(list):
+  """
+    Allows property accessors on lists of objects. E.g.
+
+    x = [A(1), A(2), A(3)]
+    x.a = [1,2,3]
+
+    if A(a) is an object that stores a in self.a
+  """
+
+  def mean(self, *args, **kwargs):
+    return numpy.mean([x for x in self], *args, **kwargs) 
+
+  def __getattr__(self, prop):
+    return ListPropertyView([getattr(x, prop) for x in self])
+
 def insideout():
   """
     Count up in positive numbers and down in negative numbers
@@ -50,22 +66,6 @@ class SpeciesNotFound(Exception):
 
 class AtomNotFound(Exception):
   pass
-
-class ListPropertyView(list):
-  """
-    Allows property accessors on lists of objects. E.g.
-
-    x = [A(1), A(2), A(3)]
-    x.a = [1,2,3]
-
-    if A(a) is an object that stores a in self.a
-  """
-
-  def mean(self, *args, **kwargs):
-    return numpy.mean([x for x in self], *args, **kwargs) 
-
-  def __getattr__(self, prop):
-    return ListPropertyView([getattr(x, prop) for x in self])
 
 class MagresAtomsView(object):
   """
@@ -404,8 +404,8 @@ class MagresAtomsView(object):
       isc_done = set()
       atom_set = {str(atom) for atom in self.atoms}
 
-      min_isc = min([abs(isc.K_iso) for isc in self.isc if isc.atom1 is not isc.atom2])
-      max_isc = max([abs(isc.K_iso) for isc in self.isc if isc.atom1 is not isc.atom2])
+      min_isc = min([abs(isc.K_iso) for isc_dict in self.isc for isc in isc_dict.values() if isc.atom1 is not isc.atom2])
+      max_isc = max([abs(isc.K_iso) for isc_dict in self.isc for isc in isc_dict.values() if isc.atom1 is not isc.atom2])
 
       def strength_color_K(K_iso):
           x = min(max((abs(K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
@@ -416,24 +416,25 @@ class MagresAtomsView(object):
           else:
             return "#0000FF%02X" % y
 
-      for isc in self.isc:
-        if abs(isc.K_iso) > 1.0 and \
-           isc.atom1 is not isc.atom2 and \
-           (str(isc.atom2), str(isc.atom1)) not in isc_done and \
-           str(isc.atom1) in atom_set and \
-           str(isc.atom2) in atom_set:
+      for atom in self.atoms:
+        for isc in atom.isc.values():
+          if abs(isc.K_iso) > 1.0 and \
+             isc.atom1 is not isc.atom2 and \
+             (str(isc.atom2), str(isc.atom1)) not in isc_done and \
+             str(isc.atom1) in atom_set and \
+             str(isc.atom2) in atom_set:
 
-          isc_done.add((str(isc.atom1), str(isc.atom2)))
+            isc_done.add((str(isc.atom1), str(isc.atom2)))
 
-          edge = pydot.Edge(str(isc.atom1),
-                            str(isc.atom2),
-                            fontsize=8,
-                            color=strength_color_K(isc.K_iso),
-                            fontcolor=strength_color_K(isc.K_iso),
-                            label="{:.3f}".format(isc.K_iso),
-                            len=lm_dist(isc.atom1, isc.atom2)[0])
+            edge = pydot.Edge(str(isc.atom1),
+                              str(isc.atom2),
+                              fontsize=8,
+                              color=strength_color_K(isc.K_iso),
+                              fontcolor=strength_color_K(isc.K_iso),
+                              label="{:.3f}".format(isc.K_iso),
+                              len=lm_dist(isc.atom1, isc.atom2)[0])
 
-          dist_graph.add_edge(edge)
+            dist_graph.add_edge(edge)
 
     return dist_graph.create_png(prog='neato')
 
@@ -512,13 +513,13 @@ class MagresAtoms(MagresAtomsView):
 
         isc_type = tag
 
-        setattr(self, isc_type, [])
+        #setattr(self, isc_type, [])
 
         for magres_isc in magres_file.data_dict['magres'][isc_type]:
           atom1 = temp_label_index[(magres_isc['atom1']['label'], magres_isc['atom1']['index'])]
           atom2 = temp_label_index[(magres_isc['atom2']['label'], magres_isc['atom2']['index'])]
           magres_atom_isc = MagresAtomIsc(atom1, atom2, magres_isc)
-          getattr(self, isc_type).append(magres_atom_isc) 
+          #getattr(self, isc_type).append(magres_atom_isc) 
 
           if not hasattr(atom1, isc_type):
             setattr(atom1, isc_type, {})

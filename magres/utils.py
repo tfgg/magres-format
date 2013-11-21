@@ -49,3 +49,5 @@ def load_all_magres(dir):
       pass
 
   return atoms
+
+

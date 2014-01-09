@@ -26,16 +26,17 @@ atoms = MagresAtoms.load_magres(magres_files)
 atom1 = atoms.get_species(s1, i1)
 atom2 = atoms.get_species(s2, i2)
 
-#if tensor == "isc_spin_total":
-#  K1 = atom1.isc_fc[atom2].K_sym + atom1.isc_spin[atom2].K_sym
-#  K2 = atom2.isc_fc[atom1].K_sym + atom2.isc_spin[atom1].K_sym
-#else:
-#  K1 = getattr(atom1, tensor)[atom2].K_sym
-#  K2 = getattr(atom2, tensor)[atom1].K_sym
-#
+if tensor == "isc_spin_total":
+  K1 = atom1.isc_fc[atom2].K + atom1.isc_spin[atom2].K
+  K2 = atom2.isc_fc[atom1].K + atom2.isc_spin[atom1].K
+else:
+  K1 = getattr(atom1, tensor)[atom2].K
+  K2 = getattr(atom2, tensor)[atom1].K
 
-K1 = getattr(atom1, tensor)[atom2].K
-K2 = getattr(atom2, tensor)[atom1].K
+
+#K1 = getattr(atom1, tensor)[atom2].K
+#K2 = getattr(atom2, tensor)[atom1].K
+
 diff = K1 - K2
 
 print sys.argv[1], abs(det(diff))**(1.0/3)

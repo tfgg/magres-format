@@ -1,6 +1,7 @@
 #!python
 import sys
 import yaml
+import re
 from magres.constants import K_to_J
 
 # Expression and dataset to compare against
@@ -47,7 +48,10 @@ for name, structure in data['structures'].items():
     else:
       indices2 = [coupling['index2']]
 
-    bond_symbol = ",".join(indices1) + "-->" + ",".join(indices2)
+    def s(x):
+      return re.findall('(.*?)([0-9]+)', x)[0][0]
+
+    bond_symbol = s(indices1[0]) + "-->" + s(indices2[0])
 
     print "#  " + bond_symbol
  

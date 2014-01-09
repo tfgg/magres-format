@@ -1,0 +1,3 @@
+#!/bin/sh
+python tests.py || exit 1
+

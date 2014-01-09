@@ -1,0 +1,936 @@
+ +-------------------------------------------------+
+ |                                                 |
+ |      CCC   AA    SSS  TTTTT  EEEEE  PPPP        |
+ |     C     A  A  S       T    E      P   P       |
+ |     C     AAAA   SS     T    EEE    PPPP        |
+ |     C     A  A     S    T    E      P           |
+ |      CCC  A  A  SSS     T    EEEEE  P           |
+ |                                                 |
+ +-------------------------------------------------+
+ |                                                 |
+ | Welcome to Academic Release CASTEP version 7.0  |
+ | Ab Initio Total Energy Program                  |
+ |                                                 |
+ | Authors:                                        |
+ | M. Segall, M. Probert, C. Pickard, P. Hasnip,   |
+ | S. Clark, K. Refson, J. R. Yates, M. Payne      |
+ |                                                 |
+ | Contributors:                                   |
+ | P. Lindan, P. Haynes, J. White, V. Milman,      |
+ | N. Govind, M. Gibson, P. Tulip, V. Cocula,      |
+ | B. Montanari, D. Quigley, M. Glover,            |
+ | L. Bernasconi, A. Perlov, M. Plummer,           |
+ | E. McNellis, J. Meyer, J. Gale, D. Jochym       |
+ | J. Aarons, B. Walker, R. Gillen                 |
+ |                                                 |
+ | Copyright (c) 2000 - 2013                       |
+ |                                                 |
+ |     Distributed under the terms of an           |
+ |     Agreement between the United Kingdom        |
+ |     Car-Parrinello (UKCP) Consortium,           |
+ |     Daresbury Laboratory and Accelrys, Inc.     |
+ |                                                 |
+ | Please cite                                     |
+ |                                                 |
+ |     "First principles methods using CASTEP"     |
+ |                                                 |
+ |         Zeitschrift fuer Kristallographie       |
+ |           220(5-6) pp. 567-570 (2005)           |
+ |                                                 |
+ | S. J. Clark, M. D. Segall, C. J. Pickard,       |
+ | P. J. Hasnip, M. J. Probert, K. Refson,         |
+ | M. C. Payne                                     |
+ |                                                 |
+ |       in all publications arising from          |
+ |              your use of CASTEP                 |
+ |                                                 |
+ +-------------------------------------------------+
+ 
+ 
+ Compiled for linux_x86_64_ifort12 on Thu Aug  8 18:16:08 2013
+ from source code version 0aa11acfb795+ magres-jcoupling 2013-08-07
+ Compiler: ; Optimisation: debug
+ MATHLIBS: Intel MKL(10.3.9) (LAPACK version 3.3.1)
+ FFT Lib : default
+ +-------------------------------------------------+
+ |                                                 |
+ |           N   N    M   M    RRRR                |
+ |           NN  N    MM MM    R   R               |
+ |           N N N    M M M    RRRR                |
+ |           N  NN    M   M    R  R                |
+ |           N   N    M   M    R   R               |
+ |                                                 |
+ +-------------------------------------------------+
+ |                                                 |
+ | Welcome to Materials Studio CASTEP-NMR          |
+ |                                                 |
+ | Authors:                                        |
+ | J. R. Yates, C. J. Pickard, F. Mauri            |
+ |                                                 |
+ | Copyright (c) 2004 - 2013                       |
+ |                                                 |
+ | Please cite the appropriate publications in all |
+ | work arising from your use of CASTEP NMR.       |
+ |                                                 |
+ | For NMR Shielding Tensors cite:                 |
+ |    "All-electron magnetic response with         |
+ |    pseudopotentials: NMR chemical shifts",      |
+ |    C. J. Pickard, F. Mauri;                     |
+ |    Physical Review B63 245101 (2001), and       |
+ |                                                 |
+ |    "Calculation of NMR Chemical Shifts          |
+ |    for extended systems using                   |
+ |    Ultrasoft Pseudopotentials",                 |
+ |    J. R. Yates, C. J. Pickard and F. Mauri      |
+ |    Physical Review B76 024401 (2007)            |
+ |                                                 |
+ | For Electric Field Gradients cite:              |
+ |  "Accurate First Principles Prediction of 17O   |
+ |   NMR Parameters in SiO2: Assignment of the     |
+ |   Zeolite Ferrierite Spectrum"                  |
+ |  M. Profeta, F. Mauri and C. J. Pickard         |
+ |  J. Amer. Chem. Soc. 125 541 (2003)             |
+ |                                                 |
+ +-------------------------------------------------+
+ 
+ H        NCP IS REL?  F
+ C        NCP IS REL?  F
+ O        NCP IS REL?  F
+ 
+ Pseudo atomic calculation performed for H 1s1
+ 
+ Converged in 18 iterations to a total energy of -12.4932 eV
+ 
+ 
+ Pseudo atomic calculation performed for C 2s2 2p2
+ 
+ Converged in 22 iterations to a total energy of -146.0014 eV
+ 
+ 
+ Pseudo atomic calculation performed for O 2s2 2p4
+ 
+ Converged in 33 iterations to a total energy of -428.7222 eV
+ 
+ Calculation parallelised over 8 processes.
+ Data is distributed by G-vector(8-way)
+
+ ************************************ Title ************************************
+ 
+
+ ***************************** General Parameters ******************************
+  
+ output verbosity                               : normal  (1)
+ write checkpoint data to                       : ethanol.check
+ type of calculation                            : Magnetic Resonance
+ stress calculation                             : off
+ density difference calculation                 : off
+ electron localisation func (ELF) calculation   : off
+ Hirshfeld analysis                             : off
+ unlimited duration calculation
+ timing information                             : on
+ memory usage estimate                          : on
+ write final potential to formatted file        : off
+ write final density to formatted file          : off
+ write BibTeX reference list                    : on
+  
+ output         length unit                     : A
+ output           mass unit                     : amu
+ output           time unit                     : ps
+ output         charge unit                     : e
+ output         energy unit                     : eV
+ output          force unit                     : eV/A
+ output       velocity unit                     : A/ps
+ output       pressure unit                     : GPa
+ output     inv_length unit                     : 1/A
+ output      frequency unit                     : cm-1
+ output force constant unit                     : eV/A**2
+ output         volume unit                     : A**3
+ output   IR intensity unit                     : (D/A)**2/amu
+ output         dipole unit                     : D
+ output         efield unit                     : eV/A/e
+ output        entropy unit                     : J/mol/K
+  
+ wavefunctions paging                           : none
+ random number generator seed                   : randomised (125947881)
+ data distribution                              : optimal for this architecture
+ optimization strategy                          : maximize speed(+++)
+
+ *********************** Exchange-Correlation Parameters ***********************
+  
+ using functional                               : Perdew Burke Ernzerhof
+ Divergence correction                          : off
+ DFT+D: Semi-empirical dispersion correction    : off
+
+ ************************* Pseudopotential Parameters **************************
+  
+ pseudopotential representation                 : reciprocal space
+ <beta|phi> representation                      : reciprocal space
+
+ **************************** Basis Set Parameters *****************************
+  
+ plane wave basis set cut-off                   :  1088.4554   eV
+ size of standard grid                          :     1.7500
+ size of   fine   gmax                          :    29.5789   1/A
+ largest prime factor in FFT                    :          5
+ finite basis set correction                    : none
+
+ **************************** Electronic Parameters ****************************
+  
+ number of  electrons                           :  20.00    
+ net charge of system                           :  0.000    
+ net spin   of system                           :  0.000    
+ number of  up  spins                           :  10.00    
+ number of down spins                           :  10.00    
+ treating system as non-spin-polarized
+ number of bands                                :         30
+
+ ********************* Electronic Minimization Parameters **********************
+  
+ Method: Treating system as metallic with density mixing treatment of electrons,
+         and number of  SD  steps               :          1
+         and number of  CG  steps               :          4
+  
+ total energy / atom convergence tol.           : 0.1000E-07   eV
+ eigen-energy convergence tolerance             : 0.3000E-08   eV
+ max force / atom convergence tol.              : ignored
+ convergence tolerance window                   :          3   cycles
+ max. number of SCF cycles                      :         60
+ number of fixed-spin iterations                :         10
+ smearing scheme                                : Gaussian
+ smearing width                                 : 0.2000       eV
+ Fermi energy convergence tolerance             : 0.3000E-09   eV
+ periodic dipole correction                     : NONE
+
+ ************************** Density Mixing Parameters **************************
+  
+ density-mixing scheme                          : Broyden
+ max. length of mixing history                  :          7
+ charge density mixing amplitude                : 0.8000    
+ cut-off energy for mixing                      :  1088.       eV
+ charge density mixing g-vector                 :  1.500       1/A
+
+ *********************** Population Analysis Parameters ************************
+  
+ Population analysis with cutoff                :  3.000       A
+
+ ************************ Magnetic Resonance Parameters ************************
+  
+ Magnetic Resonance Property                    : J-Coupling
+ J-Coupling term                                : All terms
+ max. number of MagRes CG steps                 :        250
+ convergence tolerance window                   :          2   cycles
+ max. number of MagRes sc cycles                :         20
+ energy convergence tolerance                   : 0.1000E-11   eV
+ band convergence tolerance                     : 0.1000E-08   eV
+
+ ******************************* Developer Code ********************************
+  
+ JC:fc_bands=T:ENDJC:                                                           
+  
+
+ *******************************************************************************
+  
+ 
+                           -------------------------------
+                                      Unit Cell
+                           -------------------------------
+        Real Lattice(A)                      Reciprocal Lattice(1/A)
+   6.0000000   0.0000000   0.0000000        1.0471976   0.0000000   0.0000000
+   0.0000000   6.0000000   0.0000000        0.0000000   1.0471976   0.0000000
+   0.0000000   0.0000000   6.0000000        0.0000000   0.0000000   1.0471976
+ 
+                       Lattice parameters(A)       Cell Angles
+                    a =    6.000000          alpha =   90.000000
+                    b =    6.000000          beta  =   90.000000
+                    c =    6.000000          gamma =   90.000000
+ 
+                       Current cell volume =  216.000000       A**3
+ 
+                           -------------------------------
+                                     Cell Contents
+                           -------------------------------
+                         Total number of ions in cell =    9
+                      Total number of species in cell =    3
+                        Max number of any one species =    6
+ 
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            x  Element    Atom        Fractional coordinates of atoms  x
+            x            Number           u          v          w      x
+            x----------------------------------------------------------x
+            x  H            1        -0.144890  -0.029215  -0.108176   x
+            x  H            2         0.030576  -0.153867   0.093437   x
+            x  H            3         0.144855   0.033104  -0.104797   x
+            x  H            4        -0.188284   0.162646   0.260962   x
+            x  H            5        -0.072961   0.346657   0.062144   x
+            x  H            6         0.176945   0.113109   0.383011   x
+            x  C            1        -0.000500  -0.000500  -0.000500   x
+            x  C            2        -0.041153   0.194184   0.156399   x
+            x  O            1         0.149386   0.243179   0.290494   x
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 
+ 
+                         No user defined ionic velocities
+ 
+                           -------------------------------
+                                   Details of Species
+                           -------------------------------
+ 
+                               Mass of species in AMU
+                                    H    1.0079400
+                                    C   12.0107000
+                                    O   15.9994000
+ 
+                          J-Coupling: Perturbing Site: C   1
+ 
+ 
+                          Files used for pseudopotentials:
+                                    H H_POT.ASC.DAT
+                                    C C_POT.ASC.DAT
+                                    O O_POT.ASC.DAT
+ 
+                           -------------------------------
+                              k-Points For BZ Sampling
+                           -------------------------------
+                       MP grid size for SCF calculation is  1  1  1
+                         Number of kpoints used =           1
+ 
+             +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+             +  Number       Fractional coordinates        Weight  +
+             +-----------------------------------------------------+
+             +     1   0.250000   0.250000   0.250000   1.0000000  +
+             +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+                           -------------------------------
+                               Symmetry and Constraints
+                           -------------------------------
+ 
+         There are no symmetry operations specified or generated for this cell
+                      Number of ionic constraints     =           3
+                      Maximum deviation from symmetry =  0.00000         ANG
+               Point group of crystal =     1: C1, 1, 1
+ 
+                          Centre of mass is constrained
+             Set iprint > 1 for details of linear ionic constraints
+ 
+                         Number of cell constraints= 0
+                         Cell constraints are:  1 2 3 4 5 6
+ 
+                         External pressure/stress (GPa)
+                          0.00000   0.00000   0.00000
+                                    0.00000   0.00000
+                                              0.00000
+  
++---------------- MEMORY AND SCRATCH DISK ESTIMATES PER PROCESS --------------+
+|                                                     Memory          Disk    |
+| Model and support data                               18.1 MB         0.0 MB |
+| Electronic energy minimisation requirements           5.2 MB         0.0 MB |
+|                                               ----------------------------- |
+| Approx. total storage required per process           23.4 MB         0.0 MB |
+|                                                                             |
+| Requirements will fluctuate during execution and may exceed these estimates |
++-----------------------------------------------------------------------------+
+------------------------------------------------------------------------ <-- SCF
+SCF loop      Energy           Fermi           Energy gain       Timer   <-- SCF
+                               energy          per atom          (sec)   <-- SCF
+------------------------------------------------------------------------ <-- SCF
+Initial  -4.09496191E+002  0.00000000E+000                         7.70  <-- SCF
+      1  -7.46675141E+002  6.93448434E-001   3.74643278E+001       8.59  <-- SCF
+      2  -8.42788188E+002 -1.14556546E+000   1.06792274E+001       9.21  <-- SCF
+      3  -8.47311154E+002 -1.24920002E+000   5.02551737E-001       9.77  <-- SCF
+      4  -8.42644536E+002 -8.92908656E-001  -5.18513135E-001      10.56  <-- SCF
+      5  -8.42283295E+002 -8.22885923E-001  -4.01377918E-002      11.40  <-- SCF
+      6  -8.42139889E+002 -7.25248338E-001  -1.59341042E-002      12.19  <-- SCF
+      7  -8.42131776E+002 -6.59259624E-001  -9.01410189E-004      13.02  <-- SCF
+      8  -8.42139656E+002 -5.68373876E-001   8.75611163E-004      13.78  <-- SCF
+      9  -8.42147566E+002 -4.95699397E-001   8.78877981E-004      14.57  <-- SCF
+     10  -8.42151547E+002 -4.51653257E-001   4.42358041E-004      15.36  <-- SCF
+     11  -8.42152743E+002 -4.33104312E-001   1.32831589E-004      16.14  <-- SCF
+     12  -8.42153057E+002 -4.25520419E-001   3.48410698E-005      16.92  <-- SCF
+     13  -8.42153087E+002 -4.23672178E-001   3.43731220E-006      17.77  <-- SCF
+     14  -8.42153092E+002 -4.23419165E-001   4.87245931E-007      18.53  <-- SCF
+     15  -8.42153093E+002 -4.23072455E-001   1.29362102E-007      19.28  <-- SCF
+     16  -8.42153093E+002 -4.22987342E-001   4.53275521E-009      20.11  <-- SCF
+     17  -8.42153093E+002 -4.23006718E-001   3.47210970E-010      20.82  <-- SCF
+------------------------------------------------------------------------ <-- SCF
+ 
+Final energy, E             =  -842.1530930623     eV
+Final free energy (E-TS)    =  -842.1530930623     eV
+(energies not corrected for finite basis set)
+ 
+NB est. 0K energy (E-0.5TS)      =  -842.1530930623     eV
+ 
+ 
+Writing model to ethanol.check
+ 
+  =====================================================================
+  +               Calculation of NMR J-Coupling Tensors               +
+  + ================================================================= +
+ 
+  Starting Calculation of J-coupling Spin-dipole and Fermi-contact|<-- NMR
+  Starting k-point:   1 of   1 on this node                       |<-- NMR
+  Time for Diagonalize Hamiltonian                  0.21 sec   |<-- NMR
+  Dipole component: Step 1 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  0.19 sec   |<-- NMR
+  1st-order wvfn converged in   5 SCF cycles. Time:      3.50 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.04 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.01 sec   |<-- NMR
+  Dipole component: Step 2 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  0.17 sec   |<-- NMR
+  1st-order wvfn converged in   3 SCF cycles. Time:      1.82 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.02 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.01 sec   |<-- NMR
+  Dipole component: Step 3 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  0.17 sec   |<-- NMR
+  1st-order wvfn converged in   4 SCF cycles. Time:      2.32 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.02 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.01 sec   |<-- NMR
+  Dipole component: Step 4 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  0.17 sec   |<-- NMR
+  1st-order wvfn converged in   3 SCF cycles. Time:      1.82 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.02 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.01 sec   |<-- NMR
+  Dipole component: Step 5 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  0.18 sec   |<-- NMR
+  1st-order wvfn converged in   5 SCF cycles. Time:      4.11 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.02 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.01 sec   |<-- NMR
+  Dipole component: Step 6 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  0.17 sec   |<-- NMR
+  1st-order wvfn converged in   4 SCF cycles. Time:      2.37 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.02 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.01 sec   |<-- NMR
+  Dipole component: Step 7 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  0.17 sec   |<-- NMR
+  1st-order wvfn converged in   4 SCF cycles. Time:      2.33 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.02 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.01 sec   |<-- NMR
+  Dipole component: Step 8 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  0.17 sec   |<-- NMR
+  1st-order wvfn converged in   4 SCF cycles. Time:      2.35 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.02 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.01 sec   |<-- NMR
+  Dipole component: Step 9 of  9 in Total                         |<-- NMR
+  Time for Construct 1st order Ham                  0.18 sec   |<-- NMR
+  1st-order wvfn converged in   5 SCF cycles. Time:      3.50 sec |<-- NMR
+  Time for Compute PAW Contribs                     0.02 sec   |<-- NMR
+  Time for Compute SD Contribs                      0.01 sec   |<-- NMR
+ 
+H    1     FERMI          33.1557
+
+  FC      35.9946      1.0866      4.3511
+
+  FC       1.0866     30.2366      0.8123
+
+  FC       4.3511      0.8123     33.2358
+
+H    1      BARE           0.0690
+
+BARE      -4.9840     -2.2251     -8.1923
+
+BARE      -2.2225      5.4483     -1.7028
+
+BARE      -8.1768     -1.7074     -0.2572
+
+H    1   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    1    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    2     FERMI          34.0189
+
+  FC      31.1380     -1.2189      0.8243
+
+  FC      -1.2189     37.2471     -4.1942
+
+  FC       0.8243     -4.1942     33.6717
+
+H    2      BARE           0.0667
+
+BARE       5.3611      2.5288     -1.5561
+
+BARE       2.5210     -6.5138      7.5560
+
+BARE      -1.5495      7.5565      1.3527
+
+H    2   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    2    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    3     FERMI          34.4913
+
+  FC      37.3135      1.5696     -4.2320
+
+  FC       1.5696     31.7652     -1.1305
+
+  FC      -4.2320     -1.1305     34.3954
+
+H    3      BARE           0.0721
+
+BARE      -5.3310     -2.5720      8.1005
+
+BARE      -2.5858      5.4218      1.8405
+
+BARE       8.0785      1.8241      0.1256
+
+H    3   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    3    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    4     FERMI           1.2938
+
+  FC       1.1714     -0.0025      0.0889
+
+  FC      -0.0025      1.4656      0.1064
+
+  FC       0.0889      0.1064      1.2445
+
+H    4      BARE           0.0145
+
+BARE       0.3111      0.5764     -0.1649
+
+BARE       0.6515      0.1775     -0.4967
+
+BARE      -0.0991     -0.4405     -0.4450
+
+H    4   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    4    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    5     FERMI           0.4808
+
+  FC       0.4803      0.0078     -0.0371
+
+  FC       0.0078      0.3729      0.1424
+
+  FC      -0.0371      0.1424      0.5891
+
+H    5      BARE           0.0197
+
+BARE      -0.2028      0.0013     -0.0171
+
+BARE       0.0052     -0.3822     -0.5658
+
+BARE       0.0192     -0.6498      0.6441
+
+H    5   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    5    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+H    6     FERMI           0.2856
+
+  FC       0.2631      0.0034     -0.0208
+
+  FC       0.0034      0.3374      0.0544
+
+  FC      -0.0208      0.0544      0.2562
+
+H    6      BARE          -0.0018
+
+BARE      -0.1979     -0.1191     -0.0453
+
+BARE      -0.1428      0.1683     -0.5471
+
+BARE      -0.1063     -0.4837      0.0243
+
+H    6   DPLE AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+H    6    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    1     FERMI       -2801.5391
+
+  FC   -2802.0728     -0.1911     -0.1527
+
+  FC      -0.1911  -2801.1046      0.7283
+
+  FC      -0.1527      0.7283  -2801.4400
+
+C    1      BARE         -30.9882
+
+BARE     -31.6122     -0.1967     -0.1211
+
+BARE      -0.2163    -30.4667      0.9516
+
+BARE      -0.1209      0.9538    -30.8857
+
+C    1   DPLE AUG        -19.1942
+
+ AUG     -19.3646     -0.0915     -0.0114
+
+ AUG      -0.0835    -19.0347      0.2950
+
+ AUG      -0.0132      0.2947    -19.1833
+
+C    1    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+C    2     FERMI          37.8735
+
+  FC      31.8521     -1.7321     -1.4577
+
+  FC      -1.7321     42.6480      9.0491
+
+  FC      -1.4577      9.0491     39.1202
+
+C    2      BARE           0.8232
+
+BARE      -2.5666     -2.7587     -2.0420
+
+BARE      -2.7305      4.3033      5.6633
+
+BARE      -2.0071      5.6274      0.7330
+
+C    2   DPLE AUG          0.4381
+
+ AUG      -1.8398     -1.6079     -1.2230
+
+ AUG      -1.6326      2.6848      3.7193
+
+ AUG      -1.2469      3.7474      0.4695
+
+C    2    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ 
+O    1     FERMI           2.1915
+
+  FC       2.8110     -0.0407      0.3560
+
+  FC      -0.0407      2.0929     -0.0442
+
+  FC       0.3560     -0.0442      1.6706
+
+O    1      BARE          -0.0227
+
+BARE      -2.4556     -2.2427     -1.8901
+
+BARE      -2.5807      1.5435      4.6354
+
+BARE      -2.3060      4.8568      0.8440
+
+O    1   DPLE AUG         -0.0016
+
+ AUG      -1.8524     -1.6575     -1.5812
+
+ AUG      -1.4888      1.1313      3.4836
+
+ AUG      -1.3644      3.3665      0.7163
+
+O    1    ZFC AUG          0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+ AUG       0.0000      0.0000      0.0000
+
+  Total Time for J-coupling Spin terms            27.11 sec       |<-- NMR
+ 
+Writing model to ethanol.check
+ 
+Writing model to ethanol.check
+  Starting Calculation of J-coupling Orbital terms                |<-- NMR
+  Starting k-point:   1 of   1 on this node                       |<-- NMR
+  Total Time for step 1 of 3:                      2.21 sec       |<-- NMR
+  Total Time for step 2 of 3:                      2.20 sec       |<-- NMR
+  Total Time for step 3 of 3:                      2.19 sec       |<-- NMR
+  Total Time for k-point:   1 of   1               6.80 sec       |<-- NMR
+  Total Time for J-coupling orbital terms          7.57 sec       |<-- NMR
+ 
+Writing model to ethanol.check
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        267519062.305781     
+   67282068.9661600        67282068.9661600     
+   67282068.9661600       -36280384.2368642     
+ H                  1   23050.0723258239     
+ H                  2   23004.3608334344     
+ H                  3   23187.9376259699     
+ H                  4   2975.57647593269     
+ H                  5   2994.49157310456     
+ H                  6   1669.28625301442     
+ C                  1  0.000000000000000E+000
+ C                  2   2163.82658457497     
+ O                  1  -279.128450806240     
+ 
+  ===========================================================================
+  |                         Isotropic J-coupling                            |
+  |-------------------------------------------------------------------------|
+  |     Nucleus                        J-coupling values                    |
+  |  Species   Ion     FC           SD         PARA       DIA        TOT(K) |
+  |    H       1      33.16        0.07        0.59        0.09       33.91 |
+  |    H       2      34.02        0.07        0.58        0.10       34.76 |
+  |    H       3      34.49        0.07        0.56        0.10       35.22 |
+  |    H       4       1.29        0.01        0.06       -0.09        1.28 |
+  |    H       5       0.48        0.02        0.07       -0.09        0.48 |
+  |    H       6       0.29        0.00        0.13       -0.07        0.35 |
+  |**  C       1   -2801.54      -50.18     -150.56       35.89    -2966.39 |
+  |    C       2      37.87        1.26       -0.96        0.16       38.33 |
+  |    O       1       2.19       -0.02       -1.51       -0.04        0.62 |
+  |                                                                         |
+  |** Signifies Perturbing Nucleus A of coupling J_AB                       |
+  ===========================================================================
+ 
+  ===========================================================================
+  |                         Anisotropic J-coupling                          |
+  |-------------------------------------------------------------------------|
+  |     Nucleus                 Delta  J-coupling values                    |
+  |  Species   Ion     FC           SD         PARA       DIA        TOT(K) |
+  |    H       1       9.34      -17.50       -5.38        1.89        5.88 |
+  |    H       2       9.36      -17.53       -5.39        1.92        5.96 |
+  |    H       3       9.38      -17.69       -5.39        1.93        5.97 |
+  |    H       4       0.33        1.45       -0.72       -0.35        1.36 |
+  |    H       5       0.28        1.36       -0.80        0.64        1.30 |
+  |    H       6       0.12        0.93        0.40       -0.31        0.84 |
+  |**  C       1      -0.86       -1.41       -2.07        0.06       -1.33 |
+  |    C       2      18.76       21.22       -2.07        1.01       38.57 |
+  |    O       1       1.09       18.12       -3.06        0.52       19.02 |
+  |                                                                         |
+  |** Signifies Perturbing Nucleus A of coupling J_AB                       |
+  ===========================================================================
+ 
+  ===========================================================================
+  |                         Isotropic J-coupling                            |
+  |-------------------------------------------------------------------------|
+  |     Nucleus                        J-coupling values                    |
+  |  Species   Ion     FC           SD         PARA       DIA       TOT(Hz) |
+  |    H       1     100.17        0.21        1.78        0.29      102.44 |
+  |    H       2     102.77        0.20        1.75        0.30      105.02 |
+  |    H       3     104.20        0.22        1.69        0.30      106.41 |
+  |    H       4       3.91        0.04        0.19       -0.27        3.87 |
+  |    H       5       1.45        0.06        0.21       -0.27        1.45 |
+  |    H       6       0.86       -0.01        0.39       -0.20        1.05 |
+  |**  C       1   -2128.64      -38.13     -114.39       27.27    -2253.89 |
+  |    C       2      28.78        0.96       -0.73        0.12       29.13 |
+  |    O       1      -0.90        0.01        0.62        0.02       -0.25 |
+  |                                                                         |
+  |** Signifies Perturbing Nucleus A of coupling J_AB                       |
+  ===========================================================================
+ 
+  ===========================================================================
+  |                         Anisotropic J-coupling                          |
+  |-------------------------------------------------------------------------|
+  |     Nucleus                 Delta  J-coupling values                    |
+  |  Species   Ion     FC           SD         PARA       DIA       TOT(Hz) |
+  |    H       1      28.21      -52.88      -16.24        5.70       17.75 |
+  |    H       2      28.26      -52.94      -16.27        5.79       18.00 |
+  |    H       3      28.35      -53.45      -16.29        5.83       18.04 |
+  |    H       4       0.99        4.40       -2.16       -1.05        4.12 |
+  |    H       5       0.83        4.11       -2.43        1.94        3.94 |
+  |    H       6       0.36        2.82        1.21       -0.93        2.55 |
+  |**  C       1      -0.65       -1.07       -1.57        0.04       -1.01 |
+  |    C       2      14.25       16.12       -1.58        0.77       29.30 |
+  |    O       1      -0.45       -7.42        1.26       -0.21       -7.79 |
+  |                                                                         |
+  |** Signifies Perturbing Nucleus A of coupling J_AB                       |
+  ===========================================================================
+ 
+               Bond                Length (A)   1st image (A) Iso (Hz)   Aniso
+================================================================================
+       C 001 --        H 003         1.09219      5.16985      106.41      18.04
+       C 001 --        H 001         1.09436      5.17702      102.44      17.75
+       C 001 --        H 002         1.09508      5.11437      105.02      18.00
+       C 001 --        C 002         1.51993      4.92878       29.13      29.30
+       C 001 --        H 005         2.16077      3.95900        1.45       3.94
+       C 001 --        H 004         2.16534      4.67583        3.87       4.12
+       C 001 --        O 001         2.44843      4.58729       -0.25      -7.79
+       C 001 --        H 006         2.62547      3.90900        1.05       2.55
+==================================================
+ 
+ 
+ *********************** Forces ***********************
+ *                                                    *
+ *            Cartesian components (eV/A)             *
+ * -------------------------------------------------- *
+ *                   x            y            z      *
+ *                                                    *
+ * H         1     -0.16975     -0.02882     -0.12115 *
+ * H         2      0.03707     -0.19341      0.08279 *
+ * H         3      0.18517      0.01902     -0.16370 *
+ * H         4     -0.16817     -0.01665      0.12376 *
+ * H         5     -0.07594      0.20046     -0.13986 *
+ * H         6      0.15301     -0.34818      0.30512 *
+ * C         1     -0.02174     -0.00091      0.02405 *
+ * C         2     -0.31966     -0.09655     -0.30177 *
+ * O         1      0.38002      0.46503      0.19076 *
+ *                                                    *
+ ******************************************************
+ 
+ Pseudo atomic calculation performed for H 1s1
+ 
+ Converged in 18 iterations to a total energy of -12.4932 eV
+ 
+ 
+ Pseudo atomic calculation performed for C 2s2 2p2
+ 
+ Converged in 22 iterations to a total energy of -146.0014 eV
+ 
+ 
+ Pseudo atomic calculation performed for O 2s2 2p4
+ 
+ Converged in 33 iterations to a total energy of -428.7222 eV
+ 
+Charge spilling parameter for spin component 1 = 1.71%
+ 
+     Atomic Populations (Mulliken)
+     -----------------------------
+Species   Ion     s      p      d      f     Total  Charge (e)
+==============================================================
+  H        1     0.74   0.00   0.00   0.00   0.74     0.26
+  H        2     0.75   0.00   0.00   0.00   0.75     0.25
+  H        3     0.74   0.00   0.00   0.00   0.74     0.26
+  H        4     0.74   0.00   0.00   0.00   0.74     0.26
+  H        5     0.71   0.00   0.00   0.00   0.71     0.29
+  H        6     0.49   0.00   0.00   0.00   0.49     0.51
+  C        1     1.38   3.42   0.00   0.00   4.80    -0.80
+  C        2     1.25   3.02   0.00   0.00   4.27    -0.27
+  O        1     1.82   4.95   0.00   0.00   6.78    -0.78
+==============================================================
+ 
+            Bond              Population      Length (A)
+============================================================
+          H 6 -- O 1               0.53        0.97187
+          H 3 -- C 1               0.81        1.09219
+          H 5 -- C 2               0.83        1.09232
+          H 1 -- C 1               0.79        1.09436
+          H 2 -- C 1               0.82        1.09508
+          H 4 -- C 2               0.82        1.09942
+          C 2 -- O 1               0.49        1.42854
+          C 1 -- C 2               0.64        1.51993
+          H 4 -- H 5              -0.14        1.76657
+          H 1 -- H 2              -0.10        1.76948
+          H 2 -- H 3              -0.11        1.77295
+          H 1 -- H 3              -0.09        1.77834
+          H 6 -- C 2              -0.18        1.94878
+          H 5 -- O 1              -0.12        2.01058
+          H 4 -- O 1              -0.11        2.09037
+          H 3 -- C 2              -0.13        2.15307
+          H 5 -- C 1              -0.14        2.16077
+          H 4 -- C 1              -0.16        2.16534
+          H 2 -- C 2              -0.13        2.16540
+          H 1 -- C 2              -0.11        2.16889
+          H 4 -- H 6              -0.04        2.32953
+          C 1 -- O 1              -0.14        2.44843
+          H 3 -- H 5              -0.04        2.50013
+          H 1 -- H 4              -0.02        2.50967
+          H 1 -- H 5              -0.02        2.51329
+          H 2 -- H 4              -0.04        2.51817
+          H 2 -- H 6               0.00        2.52109
+          H 6 -- C 1              -0.04        2.62547
+          H 3 -- O 1              -0.01        2.68601
+          H 2 -- O 1              -0.01        2.75342
+          H 5 -- H 6               0.04        2.81395
+          H 3 -- H 6              -0.01        2.97219
+============================================================
+ 
+ 
+Writing model to ethanol.check
+ 
+Writing analysis data to ethanol.castep_bin
+ 
+ A BibTeX formatted list of references used in this run has been written to 
+ ethanol.bib
+ 
+Initialisation time =      7.47 s
+Calculation time    =     57.33 s
+Finalisation time   =      0.46 s
+Total time          =     65.26 s
+Peak Memory Use     = 255100 kB
+  
+Overall parallel efficiency rating: Satisfactory (60%)                          
+  
+Data was distributed by:-
+G-vector (8-way); efficiency rating: Satisfactory (60%)                         
+  
+Parallel notes:
+1) Calculation only took 64.8 s, so efficiency estimates may be inaccurate.     

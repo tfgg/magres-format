@@ -42,7 +42,7 @@ class ListPropertyView(list):
     return numpy.mean([x for x in self], *args, **kwargs) 
 
   def __getattr__(self, prop):
-    return ListPropertyView([getattr(x, prop) for x in self])
+    return ListPropertyView([getattr(x, prop, None) for x in self])
 
 def insideout():
   """

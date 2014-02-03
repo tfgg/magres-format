@@ -18,6 +18,12 @@ dataset_name = yaml.load(sys.argv[2])
 for structure_name in data['structures']:
   couplings = data['structures'][structure_name]['couplings']
   for i, coupling in enumerate(couplings):
+    if type(coupling['index1']) is not list:
+      coupling['index1'] = coupling['index1'].split(',')
+
+    if type(coupling['index2']) is not list:
+      coupling['index2'] = coupling['index2'].split(',')
+
     if type(coupling['expr']) is not list:
       coupling['expr'] = coupling['expr'].split(',')
 
@@ -33,48 +39,52 @@ for magres_file in magres_files:
 
   dir, name = calc_from_path(magres_file)
 
-  if name in data['structures'] and hasattr(atoms, 'isc'):
+  if name in data['structures']: # and hasattr(atoms, 'isc'):
     couplings = data['structures'][name]['couplings']
 
     # Go through each coupling in the structure and check if we want it.
-    for isc in atoms.isc:
-      idx1 = "%s%d" % (isc.atom1.species, isc.atom1.index)
-      idx2 = "%s%d" % (isc.atom2.species, isc.atom2.index)
+    for atom in atoms:
+      if hasattr(atom, 'isc'):
+        for isc in atom.isc.values():
+          idx1 = "%s%d" % (isc.atom1.species, isc.atom1.index)
+          idx2 = "%s%d" % (isc.atom2.species, isc.atom2.index)
 
-      # Don't extract an atom's coupling with itself. That's weird.
-      if idx1 != idx2:
-        atom1 = isc.atom1
-        atom2 = isc.atom2
+          # Don't extract an atom's coupling with itself. That's weird.
+          if idx1 != idx2:
+            atom1 = isc.atom1
+            atom2 = isc.atom2
 
-        for i, coupling in enumerate(couplings):
-          values = []
+            print >>sys.stderr, idx1, idx2
 
-          # Do we match this coupling?
-          if (idx1 in coupling['index1'] and idx2 in coupling['index2']) or \
-             (idx1 in coupling['index2'] and idx2 in coupling['index1']):
+            for i, coupling in enumerate(couplings):
+              values = []
 
-            for expr in coupling['expr']:
-              tensor, quantity = expr.strip().split('.')
+              # Do we match this coupling?
+              if (idx1 in coupling['index1'] and idx2 in coupling['index2']) or \
+                 (idx1 in coupling['index2'] and idx2 in coupling['index1']):
 
-              if hasattr(atom1, tensor):
-                atom1_tensor = getattr(atom1, tensor)[atom2]
+                for expr in coupling['expr']:
+                  tensor, quantity = expr.strip().split('.')
 
-                if hasattr(atom1_tensor, quantity):
-                  value = float(getattr(atom1_tensor, quantity))
-                else:
-                  value = None
-              else:
-                value = None
+                  if hasattr(atom1, tensor):
+                    atom1_tensor = getattr(atom1, tensor)[atom2]
 
-              values.append(value)
+                    if hasattr(atom1_tensor, quantity):
+                      value = float(getattr(atom1_tensor, quantity))
+                    else:
+                      value = None
+                  else:
+                    value = None
 
-            coupling_id = "%s-%d" % (name, i)
+                  values.append(value)
 
-            if coupling_id not in to_mean:
-              couplings_map[coupling_id] = coupling
-              to_mean[coupling_id] = []
+                coupling_id = "%s-%d" % (name, i)
 
-            to_mean[coupling_id].append(values)
+                if coupling_id not in to_mean:
+                  couplings_map[coupling_id] = coupling
+                  to_mean[coupling_id] = []
+
+                to_mean[coupling_id].append(values)
 
 if dataset_name in data['datasets']:
   dataset = data['datasets'][dataset_name]

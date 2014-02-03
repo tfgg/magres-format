@@ -51,14 +51,16 @@ for atoms in magres_atoms:
     continue
 
   for tensor in tensors:
-    for isc in getattr(atoms, tensor):
-      if (find_s is None and find_i is None) or (isc.atom2.species == find_s and isc.atom2.index == find_i) or (isc.atom1.species == find_s and isc.atom1.index == find_i) and (find_s2 is None or isc.atom2.species == find_s2):
+    for atom in atoms:
+      if hasattr(atom, tensor):
+        for isc in getattr(atom, tensor).values():
+          if (find_s is None and find_i is None) or (isc.atom2.species == find_s and isc.atom2.index == find_i) or (isc.atom1.species == find_s and isc.atom1.index == find_i) and (find_s2 is None or isc.atom2.species == find_s2):
 
-        idx = (isc.atom1.species,isc.atom1.index,isc.atom2.species,isc.atom2.index)
-        if idx not in all_Js:
-          all_Js[idx] = {}
+            idx = (isc.atom1.species,isc.atom1.index,isc.atom2.species,isc.atom2.index)
+            if idx not in all_Js:
+              all_Js[idx] = {}
 
-        all_Js[idx][tensor] = isc
+            all_Js[idx][tensor] = isc
 
 matching_Js = []
 

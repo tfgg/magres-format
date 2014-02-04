@@ -6,6 +6,7 @@
 
 import os
 import sys
+import argparse
 
 from magres.format import BadVersion
 from magres.atoms import MagresAtoms
@@ -13,28 +14,25 @@ from magres.utils import load_all_magres
 
 cwd = "."
 
-if len(sys.argv)>1:
-    cwd = str(sys.argv[1])
+parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
+parser.add_argument('-J', '--J_tensor', action="store_const", help="Display J tensor", default=False, const=True)
+parser.add_argument('source_dir', help='Directory to look for calculations in')
+parser.add_argument('species', nargs=argparse.REMAINDER, help='Species to look for')
 
-#magres_files = find_all_magres(cwd)
-#magres_atoms = []
+a = parser.parse_args(sys.argv[1:])
 
-#for magres_file in magres_files:
-#  try:
-#    magres_atoms.append(MagresAtoms.load_magres(magres_file))
-#  except BadVersion:
-#    print "Couldn't load %s" % magres_file
+print a
 
-magres_atoms = load_all_magres(cwd)
+magres_atoms = load_all_magres(a.source_dir)
 
 if len(sys.argv) >= 4:
-  find_s = str(sys.argv[2])
-  find_i = int(sys.argv[3])
+  find_s = str(a.species[0])
+  find_i = int(a.species[1])
 else:
   find_s = find_i = None
 
-if len(sys.argv) >= 5 and sys.argv[4] != "X":
-  find_s2 = str(sys.argv[4])
+if len(a.species) > 2:
+  find_s2 = str(a.species[2])
 else:
   find_s2 = None
 
@@ -53,14 +51,16 @@ for atoms in magres_atoms:
     continue
 
   for tensor in tensors:
-    for isc in getattr(atoms, tensor):
-      if (find_s is None and find_i is None) or (isc.atom2.species == find_s and isc.atom2.index == find_i) or (isc.atom1.species == find_s and isc.atom1.index == find_i) and (find_s2 is None or isc.atom2.species == find_s2):
+    for atom in atoms:
+      if hasattr(atom, tensor):
+        for isc in getattr(atom, tensor).values():
+          if (find_s is None and find_i is None) or (isc.atom2.species == find_s and isc.atom2.index == find_i) or (isc.atom1.species == find_s and isc.atom1.index == find_i) and (find_s2 is None or isc.atom2.species == find_s2):
 
-        idx = (isc.atom1.species,isc.atom1.index,isc.atom2.species,isc.atom2.index)
-        if idx not in all_Js:
-          all_Js[idx] = {}
+            idx = (isc.atom1.species,isc.atom1.index,isc.atom2.species,isc.atom2.index)
+            if idx not in all_Js:
+              all_Js[idx] = {}
 
-        all_Js[idx][tensor] = isc
+            all_Js[idx][tensor] = isc
 
 matching_Js = []
 
@@ -84,6 +84,8 @@ for s1,i1,s2,i2,iscs in matching_Js:
     J_isos.append(iscs[tensor].J_iso)
     K_isos.append(iscs[tensor].K_iso)
 
-  print "J %s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % J_iso for J_iso in J_isos]) + "\t" + str(d)
-  print "K %s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % K_iso for K_iso in K_isos]) + "\t" + str(d)
+  if a.J_tensor:
+    print "J %s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % J_iso for J_iso in J_isos]) + "\t" + str(d)
+  else:
+    print "K %s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % K_iso for K_iso in K_isos]) + "\t" + str(d)
 

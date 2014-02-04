@@ -5,12 +5,7 @@ Code for parsing the CCP-NC ab-initio magnetic resonance file format as used in 
 
 Documentation for the Python API is [available here](http://tfgg.github.io/magres-format/build/html/).
 
-A few IPython notebooks have been written using the library as examples:
-
- * [Getting started with chemical shifts](http://nbviewer.ipython.org/7563922)
- * [Plotting glycine chemical shifts](http://nbviewer.ipython.org/6699984)
- * [Calculating NQR frequencies from EFG calculations](http://nbviewer.ipython.org/7548650)
- * [Plotting bonding networks](http://nbviewer.ipython.org/7203658)
+A few IPython notebooks have been written using the library as examples. You can [see them here](https://github.com/tfgg/magres-format/tree/master/notebooks).
 
 IPython is an enhanced interpreter for Python and offers an excellent in-browser workbook experience,
 similar to Matlab or Mathematica. This is particularly useful when developing code using this library

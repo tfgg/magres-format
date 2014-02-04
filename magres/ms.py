@@ -1,5 +1,7 @@
 import numpy
 
+import html_repr
+
 from decorators import lazyproperty
 
 class MagresAtomMs(object):
@@ -182,4 +184,12 @@ class MagresAtomMs(object):
     """
     return 3.0*(self.iso - self.evals_mehring[1]) / self.span
 
+  def _repr_html_(self):
+    return html_repr.ms(self)
+  
+  def _repr_html_row_(self):
+    return html_repr.ms_row(self)
+
+  def _repr_html_row_head_(self):
+    return html_repr.ms_row_head(self)
 

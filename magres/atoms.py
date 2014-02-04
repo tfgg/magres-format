@@ -42,7 +42,13 @@ class ListPropertyView(list):
     return numpy.mean([x for x in self], *args, **kwargs) 
 
   def __getattr__(self, prop):
-    return ListPropertyView([getattr(x, prop) for x in self])
+    if any([hasattr(x, prop) for x in self]):
+      return ListPropertyView([getattr(x, prop, None) for x in self])
+    else:
+      raise AttributeError("{} not present".format(prop))
+
+  def _repr_html_(self):
+    return html_repr.list_view(self)
 
 def insideout():
   """
@@ -404,8 +410,8 @@ class MagresAtomsView(object):
       isc_done = set()
       atom_set = {str(atom) for atom in self.atoms}
 
-      min_isc = min([abs(isc.K_iso) for isc_dict in self.isc for isc in isc_dict.values() if isc.atom1 is not isc.atom2])
-      max_isc = max([abs(isc.K_iso) for isc_dict in self.isc for isc in isc_dict.values() if isc.atom1 is not isc.atom2])
+      min_isc = min([abs(isc.K_iso) for isc_dict in self.isc if isc_dict is not None for isc in isc_dict.values() if isc.atom1 is not isc.atom2 and str(isc.atom1) in atom_set and str(isc.atom2) in atom_set])
+      max_isc = max([abs(isc.K_iso) for isc_dict in self.isc if isc_dict is not None for isc in isc_dict.values() if isc.atom1 is not isc.atom2 and str(isc.atom1) in atom_set and str(isc.atom2) in atom_set])
 
       def strength_color_K(K_iso):
           x = min(max((abs(K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
@@ -417,24 +423,27 @@ class MagresAtomsView(object):
             return "#0000FF%02X" % y
 
       for atom in self.atoms:
-        for isc in atom.isc.values():
-          if abs(isc.K_iso) > 1.0 and \
-             isc.atom1 is not isc.atom2 and \
-             (str(isc.atom2), str(isc.atom1)) not in isc_done and \
-             str(isc.atom1) in atom_set and \
-             str(isc.atom2) in atom_set:
+        if hasattr(atom, 'isc'):
+          for isc in atom.isc.values():
+            strength = min(max((abs(isc.K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
 
-            isc_done.add((str(isc.atom1), str(isc.atom2)))
+            if strength > 0.01 and \
+               isc.atom1 is not isc.atom2 and \
+               (str(isc.atom2), str(isc.atom1)) not in isc_done and \
+               str(isc.atom1) in atom_set and \
+               str(isc.atom2) in atom_set:
 
-            edge = pydot.Edge(str(isc.atom1),
-                              str(isc.atom2),
-                              fontsize=8,
-                              color=strength_color_K(isc.K_iso),
-                              fontcolor=strength_color_K(isc.K_iso),
-                              label="{:.3f}".format(isc.K_iso),
-                              len=lm_dist(isc.atom1, isc.atom2)[0])
+              isc_done.add((str(isc.atom1), str(isc.atom2)))
 
-            dist_graph.add_edge(edge)
+              edge = pydot.Edge(str(isc.atom1),
+                                str(isc.atom2),
+                                fontsize=8,
+                                color=strength_color_K(isc.K_iso),
+                                fontcolor=strength_color_K(isc.K_iso),
+                                label="{:.3f}".format(isc.K_iso),
+                                len=lm_dist(isc.atom1, isc.atom2)[0])
+
+              dist_graph.add_edge(edge)
 
     return dist_graph.create_png(prog='neato')
 

@@ -98,3 +98,8 @@ class MagresAtomEfg(object):
   def _repr_html_(self):
     return html_repr.efg(self)
 
+  def _repr_html_row_(self):
+    return html_repr.efg_row(self)
+
+  def _repr_html_row_head_(self):
+    return html_repr.efg_row_head(self)

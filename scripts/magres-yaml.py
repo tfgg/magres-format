@@ -1,5 +1,6 @@
 #!python
 import yaml
+import pyaml
 import sys, os
 from numpy import mean, std, array
 from magres.utils import find_all
@@ -12,11 +13,13 @@ for dir in sys.argv[3:]:
   magres_files += find_all(dir, '.magres')
 
 data = yaml.load(open(sys.argv[1]))
-dataset_name = yaml.load(sys.argv[2])
+dataset_name = sys.argv[2]
+
+seed_map = {}
 
 # make all the coupling expressions lists
-for structure_name in data['structures']:
-  couplings = data['structures'][structure_name]['couplings']
+for structure_name, structure in data['structures'].items():
+  couplings = structure['couplings']
   for i, coupling in enumerate(couplings):
     if type(coupling['index1']) is not list:
       coupling['index1'] = coupling['index1'].split(',')
@@ -26,6 +29,10 @@ for structure_name in data['structures']:
 
     if type(coupling['expr']) is not list:
       coupling['expr'] = coupling['expr'].split(',')
+
+  if 'seeds' in structure:
+    for seed in structure['seeds']:
+      seed_map[seed] = structure_name
 
 couplings_map = {}
 to_mean = {}
@@ -39,8 +46,14 @@ for magres_file in magres_files:
 
   dir, name = calc_from_path(magres_file)
 
-  if name in data['structures']: # and hasattr(atoms, 'isc'):
-    couplings = data['structures'][name]['couplings']
+  structure = None
+  if name in seed_map:
+    structure = data['structures'][seed_map[name]]
+  elif name in data['structures']:
+    structure = data['structures'][name]
+
+  if structure is not None:
+    couplings = structure['couplings']
 
     # Go through each coupling in the structure and check if we want it.
     for atom in atoms:
@@ -116,4 +129,5 @@ for coupling_id in to_mean:
  
   coupling['values'].append(value_obj)
 
-print yaml.dump(data, default_flow_style=False)
+print yaml.dump(data, default_flow_style=False)#, sys.stdout, vspacing=[2,1])
+

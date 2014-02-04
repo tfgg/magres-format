@@ -1,7 +1,7 @@
 IPython notebooks
 =================
 
-You can run the IPython notebook server inside this folder to play with the notebooks:
+You can run the [IPython notebook](http://ipython.org/notebook.html) server inside this folder to play with the notebooks:
 
     ipython notebook --pylab inline
     

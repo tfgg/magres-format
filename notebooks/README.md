@@ -1,7 +1,13 @@
 IPython notebooks
 =================
 
-Links to view the IPython notebooks in this folder in [nbviewer](http://nbviewer.ipython.org/):
+You can run the IPython notebook server inside this folder to play with the notebooks:
+
+    ipython notebook --pylab inline
+    
+will launch a browser window with the IPython Dashboard.
+
+You can also just view the notebooks in this folder in [nbviewer](http://nbviewer.ipython.org/) using these links:
 
 * [Bonding and J-coupling networks](http://nbviewer.ipython.org/github/tfgg/magres-format/blob/master/notebooks/Bonding%20and%20J-coupling%20network%20output%20example.ipynb)
 * [NQR frequencies](http://nbviewer.ipython.org/github/tfgg/magres-format/blob/master/notebooks/Calculating%20NQR%20frequencies.ipynb)

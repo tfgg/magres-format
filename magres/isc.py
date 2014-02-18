@@ -8,6 +8,8 @@ class MagresAtomIsc(object):
   """
     Representation of the indirect spin coupling between two atoms.
   """
+  __slots__ = ["atom1", "atom2", "magres_isc"]
+
   def __init__(self, atom1, atom2, magres_isc):
     self.atom1 = atom1
     self.atom2 = atom2

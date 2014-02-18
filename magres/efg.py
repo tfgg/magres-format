@@ -7,6 +7,8 @@ class MagresAtomEfg(object):
   """
     Representation of the electric field gradient on a particular atom.
   """
+  
+  __slots__ = ["atom", "magres_efg"]
 
   def __init__(self, atom, magres_efg):
     self.atom = atom

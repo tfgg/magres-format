@@ -6,6 +6,19 @@ import constants
 from decorators import lazyproperty
 
 class MagresAtom(object):
+  __slots__ = ["magres_atom",
+               "reference",
+               "efg",
+               "efg_nonlocal",
+               "efg_local",
+               "isc",
+               "isc_fc",
+               "isc_spin",
+               "isc_orbital_p",
+               "isc_orbital_d",
+               "ms",
+               "bonded",]
+
   def __init__(self, magres_atom):
     self.magres_atom = magres_atom
     self.reference = 0.0
@@ -113,6 +126,8 @@ class MagresAtomImage(object):
   """
     A periodic image of a particular atom. Exactly like the underlying atom except for its position.
   """
+
+  __slots__ = ["position", "atom"]
 
   def __init__(self, atom, position):
     object.__setattr__(self, "position", position)

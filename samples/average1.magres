@@ -1,0 +1,15 @@
+#$magres-abinitio-v1.0
+# See URL for format definition and code samples and libraries
+[atoms]
+units lattice Angstrom
+lattice 6 0 0 0 6 0 0 0 6
+units atom Angstrom
+atom H H 1 0 0 0
+atom H H 2 1 1 1
+[/atoms]
+[magres]
+units ms ppm
+ms  H   1   1 2 3 4 5 6 7 8 9
+ms  H   2   0 0 0 0 0 0 0 0 0
+[/magres]
+

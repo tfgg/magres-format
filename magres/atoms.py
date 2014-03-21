@@ -78,6 +78,8 @@ class MagresAtomsView(object):
     A container for a collection of atoms with an optional lattice.
   """
 
+  __slots__ = ["atoms", "lattice", "label_index", "species_index"]
+
   def __init__(self, atoms=None, lattice=None):
     if atoms is not None:
       self.atoms = atoms

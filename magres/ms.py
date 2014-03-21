@@ -9,6 +9,8 @@ class MagresAtomMs(object):
     Representation of the magnetic shielding of a particular atom.
   """
 
+  __slots__ = ["atom", "magres_ms"]
+
   def __init__(self, atom, magres_ms):
     self.atom = atom
     self.magres_ms = magres_ms

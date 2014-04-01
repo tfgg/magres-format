@@ -165,22 +165,17 @@ class MagresAtomsView(object):
         rtn_atoms += self.label_index[l]
     return MagresAtomsView(rtn_atoms, self.lattice)
 
-  def get_species(self, species, index=None):
+  def get(self, species, index):
     """
       Get a single atom of a particular species and index.
       
-      >>> atoms.get_species('C', 2)
+      >>> atoms.get('C', 2)
     """
 
     if species not in self.species_index:
-      if index is None:
-        return []
-      else:
-        return None
+      return None
     else:
-      if index is None:
-        return self.species_index[species]
-      elif len(self.species_index[species]) >= index:
+      if len(self.species_index[species]) >= index:
         return self.species_index[species][index-1]
       else:
         raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms in the %s species." % (species, index, len(self.species_index[species]), species))

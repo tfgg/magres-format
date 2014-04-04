@@ -19,7 +19,7 @@ class MagresTest(unittest.TestCase):
 
     self.assertEqual(len(atoms.C2.isc), len(atoms))
 
-    perturb_atom = atoms.get_species('C', 2)
+    perturb_atom = atoms.get('C', 2)
 
     for isc in atoms.C2.isc.values():
       self.assertEqual(isc.atom1, perturb_atom)

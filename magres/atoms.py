@@ -303,7 +303,7 @@ class MagresAtomsView(object):
     except AttributeError:
       try:
         s, i = self.re_species_index.findall(attr_name)[0]
-        return self.get_species(s, int(i))
+        return self.get(s, int(i))
       except:
         return getattr(ListPropertyView(self.atoms), attr_name)
 

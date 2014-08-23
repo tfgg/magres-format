@@ -17,7 +17,8 @@ class MagresAtom(object):
                "isc_orbital_p",
                "isc_orbital_d",
                "ms",
-               "bonded",]
+               "bonded",
+               "_isotope",]
 
   def __init__(self, magres_atom):
     self.magres_atom = magres_atom

@@ -8,6 +8,11 @@ def bin():
 def bin_on_path():
   return bin() in os.environ['PATH'].split(':')
 
+def find_scripts():
+  for f in os.listdir("scripts/"):
+    if f.endswith(".py"):
+      yield os.path.join("scripts", f)
+
 setup(name='Magres format',
       version='0.9',
       description='Ab-initio magnetic resonance format',
@@ -15,22 +20,7 @@ setup(name='Magres format',
       author_email='timothy.green@gmail.com',
       url='http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat',
       packages=['magres', 'magres.schema'],
-      scripts=['scripts/convertoldmagres.py',
-               'scripts/gui_convertmagres.py',
-               'scripts/magresjson.py',
-               'scripts/extract-jc-compare.py',
-               'scripts/compisc.py',
-               'scripts/magresmerge.py',
-               'scripts/extract-jc.py',
-               'scripts/extract-ms.py',
-               'scripts/extract-efg.py',
-               'scripts/absiscdev.py',
-               'scripts/nqr.py',
-               'scripts/magres-yaml.py',
-               'scripts/magres-average.py',
-               'scripts/yaml-errors.py',
-               'scripts/copy-seed-tree.py',
-               'scripts/magres-ms-pcs.py'],
+      scripts=list(find_scripts()),
       )
 
 if not bin_on_path() and "--user" in sys.argv[1:]:

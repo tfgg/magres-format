@@ -1,4 +1,5 @@
 import os
+import re
 from format import BadVersion
 from atoms import MagresAtoms
 
@@ -9,7 +10,7 @@ def get_numeric(s):
 
     This is useful for plotting things like convergence.
   """
-  return [float(x) for x in re.split("[^0-9\.]+", s) if len(x) != 0]
+  return [float(x) for x in re.split("[^0-9\.]+", s) if (len(x) != 0 and x != ".")]
 
 def find_all(dir, suffix=".cell"):
   """

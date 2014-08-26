@@ -48,7 +48,7 @@ print "# Number\tPath\tAtom1\tAtom2\t" + "\t".join(tensors)
 
 lines = []
 
-for i, atoms in emumerate(magres_atoms):
+for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
 
   if num:
@@ -76,9 +76,9 @@ for i, atoms in emumerate(magres_atoms):
                         tensor_strs,
                         "\t%.3F" % atom1.dist(atom2)))
 
-lines = sorted(lines, key=lambda xs: x[0])
+lines = sorted(lines, key=lambda xs: xs[0])
 
 for idx, path, atom1, atom2, data, dist in lines:
-  print " ".join(idx), path, atom1, atom2, "\t".join(data), dist
+  print " ".join(map(str,idx)), path, atom1, atom2, "\t".join(data), dist
 
 

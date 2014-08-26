@@ -1,27 +1,24 @@
 #!python
 
-"""
-  Only show couplings where the coupling in the opposite direction exists in another calculation.
-"""
-
 import os
 import sys
+import argparse
 
-from magres.format import BadVersion
-from magres.atoms import MagresAtoms
-from magres.utils import load_all_magres
+from magres.utils import load_all_magres, get_numeric
 
-cwd = "."
+parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
+parser.add_argument('-J', '--J_tensor', action="store_const", help="Display J tensor", default=False, const=True)
+parser.add_argument('source_dir', help='Directory to look for calculations in')
+parser.add_argument('species', nargs=argparse.REMAINDER, help='Species to look for')
 
-if len(sys.argv)>1:
-    cwd = str(sys.argv[1])
+a = parser.parse_args(sys.argv[1:])
 
-magres_atoms = load_all_magres(cwd)
+magres_atoms = load_all_magres(a.source_dir)
 
-find_s = str(sys.argv[2])
+find_s = str(a.species[0])
 
-if len(sys.argv) >= 4:
-  find_i = int(sys.argv[3])
+if len(a.species) >= 2:
+  find_i = int(a.species[1])
 else:
   find_i = None
 
@@ -29,26 +26,30 @@ tensors = ['efg', 'efg_local', 'efg_nonlocal']
 
 lines = []
 
-def get_numeric(s):
-  return "".join([c for c in s if ord("0") <= ord(c) <= ord("9")])
-
-print "# Number\tPath\tAtom\tCq\tCq_local\tCq_nonlocal\tEta\tEta_local\tEta_nonlocal"
+print "# Number\tAtom\tCq\tCq_local\tCq_nonlocal\tEta\tEta_local\tEta_nonlocal\tPath"
 
 for atoms in magres_atoms:
   num = get_numeric(atoms.magres_file.path)
 
-  if num != '':
-    idx = int(num)
+  if num:
+    idx = num
   else:
-    idx = 0
+    idx = [i]
 
   for atom in atoms: 
-    if atom.species == find_s and (find_i is None or atom.index == find_i) and hasattr(atom, 'efg'):
-      lines.append((idx, atoms.magres_file.path, str(atom) + "\t" + "\t".join(["%.2f" % getattr(atom, tensor).Cq for tensor in tensors]) + "\t" + "\t".join(["%.2f" % getattr(atom, tensor).eta for tensor in tensors])))
+    if atom.species == find_s and \
+      (find_i is None or atom.index == find_i) and \
+      hasattr(atom, 'efg'):
 
-lines = sorted(lines, key=lambda (x,y,z): x)
+      lines.append((idx,
+                    atoms.magres_file.path,
+                    str(atom),
+                    ["%.2f" % getattr(atom, tensor).Cq for tensor in tensors],
+                    ["%.2f" % getattr(atom, tensor).eta for tensor in tensors]))
 
-for idx, path, line in lines:
-  print idx, path, line
+lines = sorted(lines, key=lambda xs: xs[0])
+
+for idx, path, atom, data1, data2 in lines:
+  print " ".join(map(str,idx)) + "\t" + atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2)
 
 

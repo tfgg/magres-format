@@ -21,8 +21,6 @@ parser.add_argument('species', nargs=argparse.REMAINDER, help='Species to look f
 
 a = parser.parse_args(sys.argv[1:])
 
-print a
-
 magres_atoms = load_all_magres(a.source_dir)
 
 if len(sys.argv) >= 4:

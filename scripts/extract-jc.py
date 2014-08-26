@@ -4,13 +4,10 @@
   Only show couplings where the coupling in the opposite direction exists in another calculation.
 """
 
-import re
 import os
 import sys
 import argparse
 
-from magres.format import BadVersion
-from magres.atoms import MagresAtoms
 from magres.utils import load_all_magres, get_numeric
 
 parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
@@ -20,18 +17,16 @@ parser.add_argument('species', nargs=argparse.REMAINDER, help='Species to look f
 
 a = parser.parse_args(sys.argv[1:])
 
-magres_atoms = load_all_magres(a.source_dir)
-
 find_s1 = str(a.species[0])
 find_i1 = int(a.species[1])
 
-if len(sys.argv) >= 5:
-  find_s2 = str(a.species[3])
+if len(a.species) >= 3:
+  find_s2 = str(a.species[2])
 else:
   find_s2 = None
 
-if len(sys.argv) >= 6:
-  find_i2 = int(a.species[4])
+if len(a.species) >= 4:
+  find_i2 = int(a.species[3])
 else:
   find_i2 = None
 
@@ -39,14 +34,17 @@ all_Js = {}
 
 tensors = ['isc', 'isc_fc', 'isc_spin', 'isc_orbital_p', 'isc_orbital_d']
 
+
 if a.J_tensor:
   print "# Showing in Hz (J)"
 else:
   print "# Showing in 10e19.T^2.J^-1 (K)"
 
-print "# Number\tPath\tAtom1\tAtom2\t" + "\t".join(tensors)
+print "# Number\tAtom1\tAtom2\t{}\tDist\tPath".format("\t".join(tensors))
 
 lines = []
+
+magres_atoms = load_all_magres(a.source_dir)
 
 for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
@@ -79,6 +77,6 @@ for i, atoms in enumerate(magres_atoms):
 lines = sorted(lines, key=lambda xs: xs[0])
 
 for idx, path, atom1, atom2, data, dist in lines:
-  print " ".join(map(str,idx)), path, atom1, atom2, "\t".join(data), dist
+  print " ".join(map(str,idx)), atom1, atom2, "\t".join(data), dist, path
 
 

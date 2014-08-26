@@ -2,22 +2,22 @@
 
 import os
 import sys
+import argparse
 
-from magres.format import BadVersion
-from magres.atoms import MagresAtoms
-from magres.utils import load_all_magres
+from magres.utils import load_all_magres, get_numeric
 
-cwd = "."
+parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
+parser.add_argument('source_dir', help='Directory to look for calculations in')
+parser.add_argument('species', nargs=argparse.REMAINDER, help='Species to look for')
 
-if len(sys.argv)>1:
-    cwd = str(sys.argv[1])
+a = parser.parse_args(sys.argv[1:])
 
-magres_atoms = load_all_magres(cwd)
+magres_atoms = load_all_magres(a.source_dir)
 
-find_s = str(sys.argv[2])
+find_s = str(a.species[0])
 
-if len(sys.argv) >= 4:
-  find_i = int(sys.argv[3])
+if len(a.species) >= 2:
+  find_i = int(a.species[1])
 else:
   find_i = None
 
@@ -25,26 +25,28 @@ tensors = ['ms']
 
 lines = []
 
-def get_numeric(s):
-  return "".join([c for c in s if ord("0") <= ord(c) <= ord("9")])
+print "# Number\tAtom\tIso\tAniso\tAsym\tPath"
 
-print "# Number\tPath\tAtom\tIso\tAniso\tAsym"
-
-for atoms in magres_atoms:
+for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
 
-  if num != '':
-    idx = int(num)
+  if num:
+    idx = num
   else:
-    idx = 0
+    idx = [i]
 
   for atom in atoms: 
-    if atom.species == find_s and (find_i is None or atom.index == find_i) and hasattr(atom, 'efg'):
-      lines.append((idx, atoms.magres_file.path, str(atom) + "\t" + atom.ms.iso + "\t" + atom.ms.aniso + "\t" + atom.ms.asym)))
+    if atom.species == find_s and \
+       (find_i is None or atom.index == find_i) and \
+       hasattr(atom, 'efg'):
 
-lines = sorted(lines, key=lambda (x,y,z): x)
+      lines.append((idx,
+                    atoms.magres_file.path,
+                    str(atom),
+                    [atom.ms.iso, atom.ms.aniso, atom.ms.eta]))
 
-for idx, path, line in lines:
-  print idx, path, line
+lines = sorted(lines, key=lambda xs: xs[0])
 
+for idx, path, atom, data in lines:
+  print " ".join(map(str, idx)) + "\t" + atom + "\t" + "\t".join("{:.3f}".format(x) for x in data) + "\t" + path
 

@@ -9,18 +9,15 @@ from magres.utils import load_all_magres, get_numeric
 parser = argparse.ArgumentParser(description='Extract magnetic shielding parameters from a set of calculations.')
 parser.add_argument('-N', '--numbers', action="store_const", help="Parse numbers from path and print. This is useful for e.g. convergence calculations.", default=False, const=True)
 parser.add_argument('source_dir', help='Directory to look for calculations below.')
-parser.add_argument('species', nargs=argparse.REMAINDER, help='Only print this species.')
+parser.add_argument('atom_species', nargs='?', type=str, default=None, help='Only print this atomic species.')
+parser.add_argument('atom_index', nargs='?', type=int, default=None, help='Only print this atom.')
 
 a = parser.parse_args(sys.argv[1:])
 
 magres_atoms = load_all_magres(a.source_dir)
 
-find_s = str(a.species[0])
-
-if len(a.species) >= 2:
-  find_i = int(a.species[1])
-else:
-  find_i = None
+find_s = a.atom_species
+find_i = a.atom_index
 
 tensors = ['ms']
 

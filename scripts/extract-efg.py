@@ -50,6 +50,6 @@ for atoms in magres_atoms:
 lines = sorted(lines, key=lambda xs: xs[0])
 
 for idx, path, atom, data1, data2 in lines:
-  print " ".join(map(str,idx)) + "\t" + atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2)
+  print " ".join(map(str,idx)) + "\t" + atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2), path
 
 

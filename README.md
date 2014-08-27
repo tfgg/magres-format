@@ -65,7 +65,7 @@ The `extract-efg.py` and `extract-jc.py` scripts extract, respectively, EFG and 
 Conversion script usage
 -----------------------
 
-The `convertoldmagres.py` script convert an old-style Castep magres file to the new-style CCP-NC format for use with the new tools. You use it from the command line like:
+The `convertoldmagres.py` script converts an old-style Castep magres file to the new-style CCP-NC format for use with the new tools. You use it from the command line like:
 
     magres-convert.py sample.magres > sample.new.magres
 

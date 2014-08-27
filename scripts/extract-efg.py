@@ -6,10 +6,10 @@ import argparse
 
 from magres.utils import load_all_magres, get_numeric
 
-parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
-parser.add_argument('-J', '--J_tensor', action="store_const", help="Display J tensor", default=False, const=True)
-parser.add_argument('source_dir', help='Directory to look for calculations in')
-parser.add_argument('species', nargs=argparse.REMAINDER, help='Species to look for')
+parser = argparse.ArgumentParser(description='Extract and print EFG values from a set of calculations.')
+parser.add_argument('-N', '--numbers', action="store_const", help="Parse numbers from path and print. This is useful for e.g. convergence calculations.", default=False, const=True)
+parser.add_argument('source_dir', help='Directory to look for calculations below.')
+parser.add_argument('species', nargs=argparse.REMAINDER, help='Species to look for.')
 
 a = parser.parse_args(sys.argv[1:])
 
@@ -50,6 +50,9 @@ for atoms in magres_atoms:
 lines = sorted(lines, key=lambda xs: xs[0])
 
 for idx, path, atom, data1, data2 in lines:
-  print " ".join(map(str,idx)) + "\t" + atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2), path
+  if a.numbers:
+    print " ".join(map(str,idx)) + "\t" + atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2), path
+  else:
+    print atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2), path
 
 

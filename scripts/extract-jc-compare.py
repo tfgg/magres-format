@@ -17,28 +17,24 @@ cwd = "."
 parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
 parser.add_argument('-J', '--J_tensor', action="store_const", help="Display J tensor", default=False, const=True)
 parser.add_argument('source_dir', help='Directory to look for calculations in')
-parser.add_argument('species', nargs=argparse.REMAINDER, help='Species to look for')
+parser.add_argument('atom_species1', nargs='?', type=str, default=None, help='Only print couplings from this atomic species.')
+parser.add_argument('atom_index1', nargs='?', type=int, default=None, help='Only print couplings from this atom.')
+parser.add_argument('atom_species2', nargs='?', type=str, default=None, help='Only print couplings to this atomic species.')
+parser.add_argument('atom_index2', nargs='?', type=int, default=None, help='Only print couplings to this atom.')
 
 a = parser.parse_args(sys.argv[1:])
 
-print a
+find_s1 = a.atom_species1
+find_i1 = a.atom_index1
 
-magres_atoms = load_all_magres(a.source_dir)
-
-if len(sys.argv) >= 4:
-  find_s = str(a.species[0])
-  find_i = int(a.species[1])
-else:
-  find_s = find_i = None
-
-if len(a.species) > 2:
-  find_s2 = str(a.species[2])
-else:
-  find_s2 = None
+find_s2 = a.atom_species2
+find_i2 = a.atom_index2
 
 all_Js = {}
 
 tensors = ['isc', 'isc_fc', 'isc_spin', 'isc_orbital_p', 'isc_orbital_d']
+
+magres_atoms = load_all_magres(a.source_dir)
 
 for atoms in magres_atoms:
   have_all_tensors = True
@@ -54,7 +50,10 @@ for atoms in magres_atoms:
     for atom in atoms:
       if hasattr(atom, tensor):
         for isc in getattr(atom, tensor).values():
-          if (find_s is None and find_i is None) or (isc.atom2.species == find_s and isc.atom2.index == find_i) or (isc.atom1.species == find_s and isc.atom1.index == find_i) and (find_s2 is None or isc.atom2.species == find_s2):
+          if (find_s1 is None and find_i1 is None) or \
+             (isc.atom2.species == find_s1 and isc.atom2.index == find_i2) or \
+             (isc.atom1.species == find_s1 and isc.atom1.index == find_i2) and \
+             (find_s2 is None or isc.atom2.species == find_s2):
 
             idx = (isc.atom1.species,isc.atom1.index,isc.atom2.species,isc.atom2.index)
             if idx not in all_Js:

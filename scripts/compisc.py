@@ -23,15 +23,15 @@ if len(sys.argv) >= 7:
 
 atoms = MagresAtoms.load_magres(magres_files)
 
-atom1 = atoms.get_species(s1, i1)
-atom2 = atoms.get_species(s2, i2)
+atom1 = atoms.get(s1, i1)
+atom2 = atoms.get(s2, i2)
 
 if tensor == "isc_spin_total":
   K1 = atom1.isc_fc[atom2].K + atom1.isc_spin[atom2].K
   K2 = atom2.isc_fc[atom1].K + atom2.isc_spin[atom1].K
 else:
-  K1 = getattr(atom1, tensor)[atom2].K
-  K2 = getattr(atom2, tensor)[atom1].K
+  K1 = getattr(atom1, tensor)[atom2].J
+  K2 = getattr(atom2, tensor)[atom1].J
 
 
 #K1 = getattr(atom1, tensor)[atom2].K

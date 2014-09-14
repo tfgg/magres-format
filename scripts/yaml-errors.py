@@ -67,7 +67,8 @@ for name, structure in data['structures'].items():
 
     if expr_idx is None:
       print "# %s not present" % expr
-      break
+      continue
+      #break
 
     for value in coupling['values']:
       if type(value['value']) is not list:

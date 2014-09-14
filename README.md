@@ -39,29 +39,48 @@ to your ~/.bashrc and restarting your session or running "source ~/.bashrc". If 
     
 and then restart your session.
 
+Extraction scripts
+------------------
+
+Some utility scripts for extracting values from a large number of calculation output files are provided.
+
+`extract-ms.py` extracts magnetic shielding parameters. Call, optionally, with a species and, also optionally, an atomic index.
+
+    extract-ms.py .
+
+will print all magnetic shieldings for all atoms in all `.magres` files found in the current directory.
+
+    extract-ms.py . Zn
+
+will print only the magnetic shieldings of zinc atoms in all the `.magres` files found in the current directory.
+
+    extract-ms.py . Zn 1 
+
+will print only the magnetic shielding of the first zinc atom in all the `.magres` files found in the current directory.
+
+The `-N` flag optionally outputs in the first columns of the output an attempt at parsing out numbers in a path. This is useful for convergence tests. E.g. the path `grid_scale=2/energy_cut_off=80/ethanol.magres` will output the numbers 2.0 and 80.0 in the first two output columns.
+
+The `extract-efg.py` and `extract-jc.py` scripts extract, respectively, EFG and J-coupling parameters, with a similar syntax. Call the scripts with a `-h` flag to view the full help information.
+
 Conversion script usage
 -----------------------
 
-The convertoldmagres.py script installed by the above command will convert an old-style Castep magres file to
-the new-style format for use with the new tools. You use it from the command line like:
+The `convertoldmagres.py` script converts an old-style Castep magres file to the new-style CCP-NC format for use with the new tools. You use it from the command line like:
 
-    convertoldmagres.py sample.magres > sample.new.magres
+    magres-convert.py sample.magres > sample.new.magres
 
 and optionally with the associated job's .castep file, to capture the lattice information,
 
-    convertoldmagres.py sample.magres sample.castep > sample.new.magres
+    magres_convert.py sample.magres sample.castep > sample.new.magres
 
 Python module usage
 -------------------
 
-The `magres.format` and `magres.atoms` modules contain code for, respectively, a low level parser of the CCPNC ab-initio
-magres format and a high-level collection of objects to represent its contents.
+The `magres.format` and `magres.atoms` modules contain code for, respectively, a low level parser of the CCP-NC ab-initio magres format and a high-level collection of objects to represent its contents.
 
-The module also include the useful `magres.constants` module, which gives the best-known gamma constants and quadrupole 
-moments for all isotopes, the most common isotopes used in experiments.
+The module also include the useful `magres.constants` module, which gives the best-known gamma constants and quadrupole moments for all isotopes, the most common isotopes used in experiments.
 
-More documentation is [available here](http://tfgg.github.io/magres-format/build/html/). Also, see the IPython notebooks
-linked at the top of this document.
+More documentation is [available here](http://tfgg.github.io/magres-format/build/html/). Also, see the IPython notebooks linked at the top of this document.
 
 JSON schema
 -----------

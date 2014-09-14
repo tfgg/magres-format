@@ -2,49 +2,52 @@
 
 import os
 import sys
+import argparse
 
-from magres.format import BadVersion
-from magres.atoms import MagresAtoms
-from magres.utils import load_all_magres
+from magres.utils import load_all_magres, get_numeric
 
-cwd = "."
+parser = argparse.ArgumentParser(description='Extract magnetic shielding parameters from a set of calculations.')
+parser.add_argument('-N', '--numbers', action="store_const", help="Parse numbers from path and print. This is useful for e.g. convergence calculations.", default=False, const=True)
+parser.add_argument('source_dir', help='Directory to look for calculations below.')
+parser.add_argument('atom_species', nargs='?', type=str, default=None, help='Only print this atomic species.')
+parser.add_argument('atom_index', nargs='?', type=int, default=None, help='Only print this atom.')
 
-if len(sys.argv)>1:
-    cwd = str(sys.argv[1])
+a = parser.parse_args(sys.argv[1:])
 
-magres_atoms = load_all_magres(cwd)
+magres_atoms = load_all_magres(a.source_dir)
 
-find_s = str(sys.argv[2])
-
-if len(sys.argv) >= 4:
-  find_i = int(sys.argv[3])
-else:
-  find_i = None
+find_s = a.atom_species
+find_i = a.atom_index
 
 tensors = ['ms']
 
 lines = []
 
-def get_numeric(s):
-  return "".join([c for c in s if ord("0") <= ord(c) <= ord("9")])
+print "# Number\tAtom\tIso\tAniso\tAsym\tPath"
 
-print "# Number\tPath\tAtom\tIso\tAniso\tAsym"
-
-for atoms in magres_atoms:
+for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
 
-  if num != '':
-    idx = int(num)
+  if num:
+    idx = num
   else:
-    idx = 0
+    idx = [i]
 
   for atom in atoms: 
-    if atom.species == find_s and (find_i is None or atom.index == find_i) and hasattr(atom, 'efg'):
-      lines.append((idx, atoms.magres_file.path, str(atom) + "\t" + atom.ms.iso + "\t" + atom.ms.aniso + "\t" + atom.ms.asym)))
+    if atom.species == find_s and \
+       (find_i is None or atom.index == find_i) and \
+       hasattr(atom, 'efg'):
 
-lines = sorted(lines, key=lambda (x,y,z): x)
+      lines.append((idx,
+                    atoms.magres_file.path,
+                    str(atom),
+                    [atom.ms.iso, atom.ms.aniso, atom.ms.eta]))
 
-for idx, path, line in lines:
-  print idx, path, line
+lines = sorted(lines, key=lambda xs: xs[0])
 
+for idx, path, atom, data in lines:
+  if a.numbers:
+    print " ".join(map(str, idx)) + "\t" + atom + "\t" + "\t".join("{:.3f}".format(x) for x in data) + "\t" + path
+  else:
+    print atom + "\t" + "\t".join("{:.3f}".format(x) for x in data) + "\t" + path
 

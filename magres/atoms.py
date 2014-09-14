@@ -310,7 +310,7 @@ class MagresAtomsView(object):
   def __getitem__(self, idx):
     if type(idx) == tuple:
       s, i = idx
-      return self.get_species(s, i)
+      return self.get(s, i)
     else:
       return self.atoms[idx]
 
@@ -538,7 +538,7 @@ class MagresAtoms(MagresAtomsView):
     from castepy.output.bonds import parse_bonds
     from collections import Counter
 
-    bonds = parse_bonds(castep_file)
+    bonds = parse_bonds(castep_file).next()
 
     bonded_dict = {(atom.species,atom.index): [] for atom in self}
 
@@ -548,12 +548,12 @@ class MagresAtoms(MagresAtomsView):
         bonded_dict[idx2].append(idx1)
 
     for idx1, idx2s in bonded_dict.items():
-      atom1 = self.get_species(*idx1)
+      atom1 = self.get(*idx1)
 
       bonded_atoms = []
 
       for idx2 in idx2s:
-        atom2 = self.get_species(*idx2)
+        atom2 = self.get(*idx2)
         bonded_atoms.append(atom2)
 
       atom1.bonded = MagresAtomsView(list(bonded_atoms), self.lattice)

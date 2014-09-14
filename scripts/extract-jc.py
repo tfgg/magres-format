@@ -6,59 +6,74 @@
 
 import os
 import sys
+import argparse
 
-from magres.format import BadVersion
-from magres.atoms import MagresAtoms
-from magres.utils import load_all_magres
+from magres.utils import load_all_magres, get_numeric
 
-cwd = "."
+parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
+parser.add_argument('-J', '--J_tensor', action="store_const", help="Display J tensor", default=False, const=True)
+parser.add_argument('-N', '--numbers', action="store_const", help="Parse numbers from path and print. This is useful for e.g. convergence calculations.", default=False, const=True)
+parser.add_argument('source_dir', help='Directory to look for calculations in')
+parser.add_argument('atom_species1', nargs='?', type=str, default=None, help='Only print couplings from this atomic species.')
+parser.add_argument('atom_index1', nargs='?', type=int, default=None, help='Only print couplings from this atom.')
+parser.add_argument('atom_species2', nargs='?', type=str, default=None, help='Only print couplings to this atomic species.')
+parser.add_argument('atom_index2', nargs='?', type=int, default=None, help='Only print couplings to this atom.')
 
-if len(sys.argv)>1:
-    cwd = str(sys.argv[1])
+a = parser.parse_args(sys.argv[1:])
 
-magres_atoms = load_all_magres(cwd)
-
-find_s1 = str(sys.argv[2])
-find_i1 = int(sys.argv[3])
-
-if len(sys.argv) >= 5:
-  find_s2 = str(sys.argv[4])
-else:
-  find_s2 = None
-
-if len(sys.argv) >= 6:
-  find_i2 = int(sys.argv[5])
-else:
-  find_i2 = None
+find_s1 = a.atom_species1
+find_i1 = a.atom_index1
+find_s2 = a.atom_species2
+find_i2 = a.atom_index2
 
 all_Js = {}
 
 tensors = ['isc', 'isc_fc', 'isc_spin', 'isc_orbital_p', 'isc_orbital_d']
 
-print "# Number\tPath\tAtom1\tAtom2\t" + "\t".join(tensors)
+if a.J_tensor:
+  print "# Showing in Hz (J)"
+else:
+  print "# Showing in 10e19.T^2.J^-1 (K)"
+
+print "# Number\tAtom1\tAtom2\t{}\tDist\tPath".format("\t".join(tensors))
 
 lines = []
 
-def get_numeric(s):
-  return "".join([c for c in s if ord("0") <= ord(c) <= ord("9")])
+magres_atoms = load_all_magres(a.source_dir)
 
-for atoms in magres_atoms:
+for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
 
-  if num != '':
-    idx = int(num)
+  if num:
+    idx = num
   else:
-    idx = 0
+    idx = [i]
 
   for atom1 in atoms: 
     if atom1.species == find_s1 and atom1.index == find_i1 and hasattr(atom1, 'isc'):
       for atom2 in atom1.isc:
-        if (find_s2 is None or atom2.species == find_s2) and (find_i2 is None or atom2.index == find_i2) and (atom1 != atom2):
-          lines.append((idx, atoms.magres_file.path, str(atom1) + "\t" + str(atom2) + "\t" + "\t".join(["%.2f" % getattr(atom1, tensor)[atom2].K_iso for tensor in tensors]) + "\t%.2F" % atom1.dist(atom2)))
+        if (find_s2 is None or atom2.species == find_s2) and \
+           (find_i2 is None or atom2.index == find_i2) and \
+           (atom1 != atom2):
 
-lines = sorted(lines, key=lambda (x,y,z): (x,y,z))
+          if a.J_tensor:
+            tensor_strs = ["{:.3f}".format(getattr(atom1, tensor)[atom2].J_iso) for tensor in tensors]
+          else:
+            tensor_strs = ["{:.3f}".format(getattr(atom1, tensor)[atom2].K_iso) for tensor in tensors]
 
-for idx, path, line in lines:
-  print idx, path, line
+          lines.append((idx,
+                        atoms.magres_file.path,
+                        str(atom1),
+                        str(atom2),
+                        tensor_strs,
+                        "\t%.3F" % atom1.dist(atom2)))
+
+lines = sorted(lines, key=lambda xs: xs[0])
+
+for idx, path, atom1, atom2, data, dist in lines:
+  if a.numbers:
+    print " ".join(map(str,idx)), atom1, atom2, "\t".join(data), dist, path
+  else:
+    print atom1, atom2, "\t".join(data), dist, path
 
 

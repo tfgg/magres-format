@@ -44,7 +44,7 @@ def efg_to_Cq_isotope(efg, species, isotope):
 
 def val_to_Cq(ev, s):
   if s in Q_iso:
-    return ev * Q_common[s] * units.millibarn / megahertz
+    return ev * Q_common[s] * millibarn / megahertz
   else:
     return ev
 

@@ -22,13 +22,13 @@ for structure_name, structure in data['structures'].items():
   couplings = structure['couplings']
   for i, coupling in enumerate(couplings):
     if type(coupling['index1']) is not list:
-      coupling['index1'] = coupling['index1'].split(',')
+      coupling['index1'] = [x.strip() for x in coupling['index1'].split(',')]
 
     if type(coupling['index2']) is not list:
-      coupling['index2'] = coupling['index2'].split(',')
+      coupling['index2'] = [x.strip() for x in coupling['index2'].split(',')]
 
     if type(coupling['expr']) is not list:
-      coupling['expr'] = coupling['expr'].split(',')
+      coupling['expr'] = [x.strip() for x in coupling['expr'].split(',')]
 
   if 'seeds' in structure:
     for seed in structure['seeds']:

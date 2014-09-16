@@ -43,12 +43,29 @@ class ListPropertyView(list):
 
   def __getattr__(self, prop):
     if any([hasattr(x, prop) for x in self]):
-      return ListPropertyView([getattr(x, prop, None) for x in self])
+      return ListPropertyView([getattr(x, prop) for x in self if hasattr(x, prop)])
     else:
       raise AttributeError("{} not present".format(prop))
 
   def _repr_html_(self):
     return html_repr.list_view(self)
+
+class IscListPropertyView(ListPropertyView):
+  def atom1(self, species=None, index=None):
+    if species is not None and index is None:
+      return IscListPropertyView([x for x in self if x.atom1.species == species])
+    elif species is not None and index is not None:
+      return IscListPropertyView([x for x in self if x.atom1.species == species and x.atom1.index == index])
+    else:
+      return self
+
+  def atom2(self, species=None, index=None):
+    if species is not None and index is None:
+      return IscListPropertyView([x for x in self if x.atom2.species == species])
+    elif species is not None and index is not None:
+      return IscListPropertyView([x for x in self if x.atom2.species == species and x.atom2.index == index])
+    else:
+      return self
 
 def insideout():
   """
@@ -519,18 +536,24 @@ class MagresAtoms(MagresAtomsView):
 
         isc_type = tag
 
-        #setattr(self, isc_type, [])
+        setattr(self, isc_type, IscListPropertyView([]))
 
         for magres_isc in magres_file.data_dict['magres'][isc_type]:
           atom1 = temp_label_index[(magres_isc['atom1']['label'], magres_isc['atom1']['index'])]
           atom2 = temp_label_index[(magres_isc['atom2']['label'], magres_isc['atom2']['index'])]
+
+          # Don't bother with self couplings
+          if atom1 == atom2:
+            continue
+
           magres_atom_isc = MagresAtomIsc(atom1, atom2, magres_isc)
-          #getattr(self, isc_type).append(magres_atom_isc) 
+
+          getattr(self, isc_type).append(magres_atom_isc) 
 
           if not hasattr(atom1, isc_type):
-            setattr(atom1, isc_type, {})
+            setattr(atom1, isc_type, IscListPropertyView([]))
 
-          getattr(atom1, isc_type)[atom2] = magres_atom_isc
+          getattr(atom1, isc_type).append(magres_atom_isc)
 
     return (atoms, lattice)
 

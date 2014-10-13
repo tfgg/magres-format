@@ -17,18 +17,18 @@ class MagresTest(unittest.TestCase):
     self.assertTrue(hasattr(atoms.C2, "isc_spin"))
     self.assertTrue(hasattr(atoms.C2, "isc_fc"))
 
-    #self.assertEqual(len(atoms.C2.isc), len(atoms))
+    self.assertEqual(len(atoms.C2.isc), len(atoms)-1)
 
     perturb_atom = atoms.get('C', 2)
 
-    #for isc in atoms.C2.isc.values():
-    #  self.assertEqual(isc.atom1, perturb_atom)
-   #   self.assertEqual(isc.K_iso, numpy.trace(isc.K)/3.0)
+    for isc in atoms.C2.isc:
+      self.assertEqual(isc.atom1, perturb_atom)
+      self.assertEqual(isc.K_iso, numpy.trace(isc.K)/3.0)
     
     # Check that the principal components are ordered by the Haeberlen convention
-    #for isc in atoms.C2.isc.values():
-    #  self.assertTrue(abs(isc.K_evals[2] - isc.K_iso) >= abs(isc.K_evals[0] - isc.K_iso))
-    #  self.assertTrue(abs(isc.K_evals[0] - isc.K_iso) >= abs(isc.K_evals[1] - isc.K_iso))
+    for isc in atoms.C2.isc:
+      self.assertTrue(abs(isc.K_evals[2] - isc.K_iso) >= abs(isc.K_evals[0] - isc.K_iso))
+      self.assertTrue(abs(isc.K_evals[0] - isc.K_iso) >= abs(isc.K_evals[1] - isc.K_iso))
 
   def test_full_isc(self):
     magres_files = [MagresFile(open(os.path.join(DATA_DIR, "ethanol", f))) for f in os.listdir(os.path.join(DATA_DIR, "ethanol")) if f.startswith('ethanol-jc')]
@@ -43,8 +43,8 @@ class MagresTest(unittest.TestCase):
     self.assertEqual(len(atoms.isc), len(atoms))
 
     # Check every atom has couplings to every other atom
-    #for atom in atoms:
-    #  self.assertEqual(len(atom.isc), len(atoms))
+    for atom in atoms:
+      self.assertEqual(len(atom.isc), len(atoms)-1)
 
   def test_nmr(self):
     atoms = MagresAtoms.load_magres(os.path.join(DATA_DIR, "ethanol/ethanol-nmr.magres"))

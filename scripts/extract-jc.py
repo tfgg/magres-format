@@ -32,8 +32,10 @@ tensors = ['isc', 'isc_fc', 'isc_spin', 'isc_orbital_p', 'isc_orbital_d']
 
 if a.J_tensor:
   print "# Showing in Hz (J)"
+  property = "J_iso"
 else:
   print "# Showing in 10e19.T^2.J^-1 (K)"
+  property = "K_iso"
 
 print "# Number\tAtom1\tAtom2\t{}\tDist\tPath".format("\t".join(tensors))
 
@@ -49,24 +51,20 @@ for i, atoms in enumerate(magres_atoms):
   else:
     idx = [i]
 
-  for atom1 in atoms: 
-    if atom1.species == find_s1 and atom1.index == find_i1 and hasattr(atom1, 'isc'):
-      for atom2 in atom1.isc:
-        if (find_s2 is None or atom2.species == find_s2) and \
-           (find_i2 is None or atom2.index == find_i2) and \
-           (atom1 != atom2):
+  for isc in atoms.isc.atom1(find_s1, find_i1).atom2(find_s2, find_i2):
+    atom1 = isc.atom1
+    atom2 = isc.atom2
 
-          if a.J_tensor:
-            tensor_strs = ["{:.3f}".format(getattr(atom1, tensor)[atom2].J_iso) for tensor in tensors]
-          else:
-            tensor_strs = ["{:.3f}".format(getattr(atom1, tensor)[atom2].K_iso) for tensor in tensors]
+    all_tensors = [getattr(atoms, tensor).atom1(atom1).atom2(atom2)[0] for tensor in tensors]
 
-          lines.append((idx,
-                        atoms.magres_file.path,
-                        str(atom1),
-                        str(atom2),
-                        tensor_strs,
-                        "\t%.3F" % atom1.dist(atom2)))
+    tensor_strs = ["{:.3f}".format(getattr(isc_, property)) for isc_ in all_tensors]
+
+    lines.append((idx,
+                  atoms.magres_file.path,
+                  str(atom1),
+                  str(atom2),
+                  tensor_strs,
+                  "\t%.3F" % atom1.dist(atom2)))
 
 lines = sorted(lines, key=lambda xs: xs[0])
 

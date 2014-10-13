@@ -47,12 +47,17 @@ class ListPropertyView(list):
     else:
       raise AttributeError("{} not present".format(prop))
 
+  def __repr__(self):
+    return "<ListPropertyView of {} objects>".format(len(self))
+
   def _repr_html_(self):
     return html_repr.list_view(self)
 
 class IscListPropertyView(ListPropertyView):
   def atom1(self, species=None, index=None):
-    if species is not None and index is None:
+    if hasattr(species, "species") and hasattr(species, "index"):
+      return IscListPropertyView([x for x in self if x.atom1.species == species.species and x.atom1.index == species.index])
+    elif species is not None and index is None:
       return IscListPropertyView([x for x in self if x.atom1.species == species])
     elif species is not None and index is not None:
       return IscListPropertyView([x for x in self if x.atom1.species == species and x.atom1.index == index])
@@ -60,12 +65,17 @@ class IscListPropertyView(ListPropertyView):
       return self
 
   def atom2(self, species=None, index=None):
-    if species is not None and index is None:
+    if hasattr(species, "species") and hasattr(species, "index"):
+      return IscListPropertyView([x for x in self if x.atom2.species == species.species and x.atom2.index == species.index])
+    elif species is not None and index is None:
       return IscListPropertyView([x for x in self if x.atom2.species == species])
     elif species is not None and index is not None:
       return IscListPropertyView([x for x in self if x.atom2.species == species and x.atom2.index == index])
     else:
       return self
+  
+  def __repr__(self):
+    return "<IscListPropertyView of {} objects>".format(len(self))
 
 def insideout():
   """

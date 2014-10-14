@@ -20,6 +20,8 @@ from isc import MagresAtomIsc
 from ms import MagresAtomMs
 from atom import MagresAtom, MagresAtomImage
 
+from view import ListPropertyView
+
 element_colours = {'H': ("#EEEEEE", "#000000"),
                    'C': ("#999999", "#000000"),
                    'O': ("#FF0000", "#FFFFFF"),
@@ -27,75 +29,6 @@ element_colours = {'H': ("#EEEEEE", "#000000"),
 
 min_dist = 1.0
 max_dist = 2.0
-
-def is_iter(xs):
-  try:
-    iter(xs)
-    return True
-  except TypeError:
-    return False
-
-def flatten(xs):
-  if all(map(is_iter,xs)):
-    return sum(xs[1:], xs[0])
-  else:
-    return xs
-
-class ListPropertyView(list):
-  """
-    Allows property accessors on lists of objects. E.g.
-
-    x = [A(1), A(2), A(3)]
-    x.a = [1,2,3]
-
-    if A(a) is an object that stores a in self.a
-  """
-
-  def mean(self, *args, **kwargs):
-    return numpy.mean([x for x in self], *args, **kwargs) 
-
-  def __getattr__(self, prop):
-    if any([hasattr(x, prop) for x in self]):
-      return ListPropertyView(flatten([getattr(x, prop) for x in self if hasattr(x, prop)]))
-    else:
-      raise AttributeError("{} not present".format(prop))
-
-  def __repr__(self):
-      return "ListPropertyView([{}])".format(", ".join(repr(x) for x in self))
-
-  #def _repr_html_(self):
-  #  return html_repr.list_view(self)
-
-  def __call__(self, *args, **kwargs):
-    return ListPropertyView([x(*args, **kwargs) for x in self])
-
-  def __add__(self, b):
-    return ListPropertyView(super(ListPropertyView, self).__add__(b))
-
-
-class IscListPropertyView(ListPropertyView):
-  def atom1(self, species=None, index=None):
-    if hasattr(species, "species") and hasattr(species, "index"):
-      return IscListPropertyView([x for x in self if x.atom1.species == species.species and x.atom1.index == species.index])
-    elif species is not None and index is None:
-      return IscListPropertyView([x for x in self if x.atom1.species == species])
-    elif species is not None and index is not None:
-      return IscListPropertyView([x for x in self if x.atom1.species == species and x.atom1.index == index])
-    else:
-      return self
-
-  def atom2(self, species=None, index=None):
-    if hasattr(species, "species") and hasattr(species, "index"):
-      return IscListPropertyView([x for x in self if x.atom2.species == species.species and x.atom2.index == species.index])
-    elif species is not None and index is None:
-      return IscListPropertyView([x for x in self if x.atom2.species == species])
-    elif species is not None and index is not None:
-      return IscListPropertyView([x for x in self if x.atom2.species == species and x.atom2.index == index])
-    else:
-      return self
-  
-  def __repr__(self):
-    return "<IscListPropertyView of {} objects>".format(len(self))
 
 def insideout():
   """
@@ -576,7 +509,7 @@ class MagresAtoms(MagresAtomsView):
           #getattr(self, isc_type).append(magres_atom_isc) 
 
           if not hasattr(atom1, isc_type):
-            setattr(atom1, isc_type, IscListPropertyView([]))
+            setattr(atom1, isc_type, ListPropertyView([]))
 
           getattr(atom1, isc_type).append(magres_atom_isc)
 

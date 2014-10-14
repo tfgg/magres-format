@@ -4,10 +4,11 @@
   Only show couplings where the coupling in the opposite direction exists in another calculation.
 """
 
-import os
+import os, os.path
 import sys
 import argparse
 
+from magres.atoms import MagresAtoms
 from magres.utils import load_all_magres, get_numeric
 
 parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
@@ -41,7 +42,10 @@ print "# Number\tAtom1\tAtom2\t{}\tDist\tPath".format("\t".join(tensors))
 
 lines = []
 
-magres_atoms = load_all_magres(a.source_dir)
+if os.path.isfile(a.source_dir):
+  magres_atoms = [MagresAtoms.load_magres(a.source_dir)]
+else:
+  magres_atoms = load_all_magres(a.source_dir)
 
 for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
@@ -51,15 +55,11 @@ for i, atoms in enumerate(magres_atoms):
   else:
     idx = [i]
 
-  print atoms.isc[0]
-
-  for isc in atoms.isc.atom1(find_s1, find_i1).atom2(find_s2, find_i2):
+  for isc in atoms.isc.perturbing(find_s1, find_i1).receiving(find_s2, find_i2):
     atom1 = isc.atom1
     atom2 = isc.atom2
 
-    all_tensors = [getattr(atoms, tensor).atom1(atom1).atom2(atom2)[0] for tensor in tensors]
-
-    print all_tensors
+    all_tensors = [getattr(atoms, tensor).perturbing(atom1).receiving(atom2)[0] for tensor in tensors]
 
     tensor_strs = ["{:.3f}".format(getattr(isc_, property)) for isc_ in all_tensors]
 

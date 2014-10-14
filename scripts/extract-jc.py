@@ -51,11 +51,15 @@ for i, atoms in enumerate(magres_atoms):
   else:
     idx = [i]
 
+  print atoms.isc[0]
+
   for isc in atoms.isc.atom1(find_s1, find_i1).atom2(find_s2, find_i2):
     atom1 = isc.atom1
     atom2 = isc.atom2
 
     all_tensors = [getattr(atoms, tensor).atom1(atom1).atom2(atom2)[0] for tensor in tensors]
+
+    print all_tensors
 
     tensor_strs = ["{:.3f}".format(getattr(isc_, property)) for isc_ in all_tensors]
 

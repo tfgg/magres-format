@@ -53,6 +53,9 @@ class ListPropertyView(list):
   def _repr_html_(self):
     return html_repr.list_view(self)
 
+  def __call__(self, *args, **kwargs):
+    return ListPropertyView([x(*args, **kwargs) for x in self])
+
 class IscListPropertyView(ListPropertyView):
   def atom1(self, species=None, index=None):
     if hasattr(species, "species") and hasattr(species, "index"):

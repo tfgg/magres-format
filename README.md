@@ -56,19 +56,29 @@ For J-couplings (indirect spin-spin coupling)
 
     extract-jc.py --help
 
-These scripts can be called with an atom list to restrict which atoms or couplings are shown. For example,
+These scripts can be called with an atom list to restrict which atoms or couplings are shown. These can select an entire species
+
+    H
+    
+will select all hydrogen atoms. They can select a single atom
+
+    H2
+    
+will select the second hydrogen atom. They select ranges of atoms
+
+    H2-5
+    
+will select the second to fifth hydrogen atoms. These can also be chained together with commas
+
+    H1-5,O
+    
+will select the first five hydrogen atoms and all oxygen atoms.
+
+For example,
 
     extract-ms.py . Zn
 
 will print only the magnetic shieldings of zinc atoms in all the `.magres` files found in the current directory.
-
-    extract-ms.py . Zn1 
-
-will print only the magnetic shielding of the first zinc atom
-
-    extract-ms.py . H1-5,O
-    
-will print the magnetic shielding of the first five hydrogen atoms and all oxygen atoms.
 
 The `-N` flag optionally outputs in the first columns of the output an attempt at parsing out numbers in a path. This is useful for convergence tests. E.g. the path `grid_scale=2/energy_cut_off=80/ethanol.magres` will output the numbers 2.0 and 80.0 in the first two output columns.
 

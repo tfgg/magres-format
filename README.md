@@ -42,7 +42,11 @@ and then restart your session.
 Extraction scripts
 ------------------
 
-Some utility scripts for extracting values from a large number of calculation output files are provided.
+Some utility scripts for extracting values from a large number of calculation output files are provided. Look at their help information for detailed instructions
+
+    extract-ms.py --help
+    extract-efg.py --help
+    extract-jc.py --help
 
 `extract-ms.py` extracts magnetic shielding parameters. Call, optionally, with a species and, also optionally, an atomic index.
 

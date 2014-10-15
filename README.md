@@ -54,9 +54,19 @@ will print all magnetic shieldings for all atoms in all `.magres` files found in
 
 will print only the magnetic shieldings of zinc atoms in all the `.magres` files found in the current directory.
 
-    extract-ms.py . Zn 1 
+    extract-ms.py . Zn1 
 
 will print only the magnetic shielding of the first zinc atom in all the `.magres` files found in the current directory.
+
+More generally, you can use an atom list format such as
+
+    H,O
+  
+to show all hydrogen and oxygen atoms, and
+
+    H1-5,O1
+    
+to show the first five hydrogen atoms and the first oxygen atom.
 
 The `-N` flag optionally outputs in the first columns of the output an attempt at parsing out numbers in a path. This is useful for convergence tests. E.g. the path `grid_scale=2/energy_cut_off=80/ethanol.magres` will output the numbers 2.0 and 80.0 in the first two output columns.
 

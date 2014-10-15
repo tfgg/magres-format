@@ -44,15 +44,19 @@ Extraction scripts
 
 Some utility scripts for extracting values from a large number of calculation output files are provided. Look at their help information for detailed instructions
 
+For magnetic shieldings (chemical shifts)
+
     extract-ms.py --help
+    
+For electric field gradients (quadrupolar couplings)
+    
     extract-efg.py --help
+
+For J-couplings (indirect spin-spin coupling)
+
     extract-jc.py --help
 
-`extract-ms.py` extracts magnetic shielding parameters. Call, optionally, with a species and, also optionally, an atomic index.
-
-    extract-ms.py .
-
-will print all magnetic shieldings for all atoms in all `.magres` files found in the current directory.
+These scripts can be called with an atom list to restrict which atoms or couplings are shown. For example,
 
     extract-ms.py . Zn
 
@@ -60,21 +64,13 @@ will print only the magnetic shieldings of zinc atoms in all the `.magres` files
 
     extract-ms.py . Zn1 
 
-will print only the magnetic shielding of the first zinc atom in all the `.magres` files found in the current directory.
+will print only the magnetic shielding of the first zinc atom
 
-More generally, you can use an atom list format such as
-
-    H,O
-  
-to show all hydrogen and oxygen atoms, and
-
-    H1-5,O1
+    extract-ms.py . H1-5,O
     
-to show the first five hydrogen atoms and the first oxygen atom.
+will print the magnetic shielding of the first five hydrogen atoms and all oxygen atoms.
 
 The `-N` flag optionally outputs in the first columns of the output an attempt at parsing out numbers in a path. This is useful for convergence tests. E.g. the path `grid_scale=2/energy_cut_off=80/ethanol.magres` will output the numbers 2.0 and 80.0 in the first two output columns.
-
-The `extract-efg.py` and `extract-jc.py` scripts extract, respectively, EFG and J-coupling parameters, with a similar syntax. Call the scripts with a `-h` flag to view the full help information.
 
 Conversion script usage
 -----------------------

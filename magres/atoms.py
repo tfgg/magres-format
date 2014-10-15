@@ -130,20 +130,26 @@ class MagresAtomsView(object):
       else:
         raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms at the %s label." % (label, index, len(self.label_index[label]), label))
 
-  def label(self, label):
-    """
-      Return a MagresAtomsView containing only atoms of the specified label.
-
-      >>> atoms.label("C1")
-    """
-    if type(label) != list:
-      label = [label]
+  #def label(self, label):
+  #  """
+  #    Return a MagresAtomsView containing only atoms of the specified label.
+  #
+  #    >>> atoms.label("C1")
+  #  """
+  #  if type(label) != list:
+  #    label = [label]
       
-    rtn_atoms = []
-    for l in label:
-      if l in self.label_index:
-        rtn_atoms += self.label_index[l]
-    return MagresAtomsView(rtn_atoms, self.lattice)
+  #  rtn_atoms = []
+  #  for l in label:
+  #    if l in self.label_index:
+  #      rtn_atoms += self.label_index[l]
+  #  return MagresAtomsView(rtn_atoms, self.lattice)
+
+  def filter(self, fn):
+    """
+      Filter atoms by some function fn.
+    """
+    return MagresAtomsView([x for x in self if fn(x)], self.lattice)
 
   def get(self, species, index):
     """
@@ -160,19 +166,20 @@ class MagresAtomsView(object):
       else:
         raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms in the %s species." % (species, index, len(self.species_index[species]), species))
 
-  def species(self, species):
+  def species(self, *args):
     """
       Return a MagresAtomsView containing only atoms of the specified species.
 
       >>> atoms.species('C')
     """
-    if type(species) != list:
-      species = [species]
+
+    species = args
       
     rtn_atoms = []
     for s in species:
       if s in self.species_index:
         rtn_atoms += self.species_index[s]
+
     return MagresAtomsView(rtn_atoms, self.lattice)
 
   def set_reference(self, reference):

@@ -17,7 +17,13 @@ class MagresAtomIsc(object):
     self.magres_isc = magres_isc
 
   def perturbing(self, species=None, index=None):
-    if hasattr(species, 'species'):
+    if hasattr(species, "__call__"):
+      if species(self.atom1):
+        return ListPropertyView([self])
+      else:
+        return ListPropertyView([])
+
+    elif hasattr(species, 'species'):
       index = species.index
       species = species.species
 
@@ -30,7 +36,13 @@ class MagresAtomIsc(object):
       return ListPropertyView([])
 
   def receiving(self, species=None, index=None):
-    if hasattr(species, 'species'):
+    if hasattr(species, "__call__"):
+      if species(self.atom2):
+        return ListPropertyView([self])
+      else:
+        return ListPropertyView([])
+
+    elif hasattr(species, 'species'):
       index = species.index
       species = species.species
 

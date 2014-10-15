@@ -1,7 +1,7 @@
 #!python
 
 """
-  Only show couplings where the coupling in the opposite direction exists in another calculation.
+  Extract J-couplings from given .magres file. You can specify the perturbing nuclei and receiving nuclei.
 """
 
 import os, os.path
@@ -9,23 +9,30 @@ import sys
 import argparse
 
 from magres.atoms import MagresAtoms
-from magres.utils import load_all_magres, get_numeric
+from magres.utils import load_all_magres, get_numeric, parse_atom_list
 
 parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
 parser.add_argument('-J', '--J_tensor', action="store_const", help="Display J tensor", default=False, const=True)
 parser.add_argument('-N', '--numbers', action="store_const", help="Parse numbers from path and print. This is useful for e.g. convergence calculations.", default=False, const=True)
 parser.add_argument('source_dir', help='Directory to look for calculations in')
-parser.add_argument('atom_species1', nargs='?', type=str, default=None, help='Only print couplings from this atomic species.')
-parser.add_argument('atom_index1', nargs='?', type=int, default=None, help='Only print couplings from this atom.')
-parser.add_argument('atom_species2', nargs='?', type=str, default=None, help='Only print couplings to this atomic species.')
-parser.add_argument('atom_index2', nargs='?', type=int, default=None, help='Only print couplings to this atom.')
+
+parser.add_argument('atoms1', nargs='?', type=str, default=None, help='Only print couplings from these atoms. Specify with atom list notation, e.g. "H1", "H1,H2,H3", "H,C", or "H1-3".')
+parser.add_argument('atoms2', nargs='?', type=str, default=None, help='Only print couplings to these atoms. Specify with atom list notation, e.g. "H1", "H1,H2,H3", "H,C", or "H1-3".')
 
 a = parser.parse_args(sys.argv[1:])
 
-find_s1 = a.atom_species1
-find_i1 = a.atom_index1
-find_s2 = a.atom_species2
-find_i2 = a.atom_index2
+atoms1 = a.atoms1
+atoms2 = a.atoms2
+
+if atoms1:
+  atoms1_filter = parse_atom_list(atoms1)
+else:
+  atoms1_filter = lambda x: True
+
+if atoms2:
+  atoms2_filter = parse_atom_list(atoms2)
+else:
+  atoms2_filter = lambda x: True
 
 all_Js = {}
 
@@ -55,7 +62,7 @@ for i, atoms in enumerate(magres_atoms):
   else:
     idx = [i]
 
-  for isc in atoms.isc.perturbing(find_s1, find_i1).receiving(find_s2, find_i2):
+  for isc in atoms.isc.perturbing(atoms1_filter).receiving(atoms2_filter):
     atom1 = isc.atom1
     atom2 = isc.atom2
 

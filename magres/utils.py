@@ -46,6 +46,7 @@ def find_all_magres(dir):
   
   return calcs
 
+
 def load_all_magres(dir):
   """
     Find all magres files starting in directory dir and load them into a :py:class:`magres.atoms.MagresAtoms` structure. Returns a list.
@@ -60,4 +61,54 @@ def load_all_magres(dir):
 
   return atoms
 
+
+def parse_atom_list(string):
+    """
+      Parse an atom list such as "H1,H2" or "C" or "C5-10" and return a filter function.
+    """
+
+    fns = []
+    
+    for species, start, end, _ in re.findall("([A-Za-z]{1,2})([0-9]{0,})\-?([0-9]{0,})($|,)", string):
+        if start:
+            start = int(start)
+        else:
+            start = None
+            
+        if end:
+            end = int(end)
+        else:
+            end = None
+            
+        # Python closures are late binding - pull species, start & end into via default args
+        def check_(s_, i_, species=species, start=start, end=end):
+            if species == s_:
+                if start is None:
+                    return True
+                else:
+                    if end is None:
+                        if i_ == start:
+                            return True
+                        else:
+                            return False
+                    else:
+                        if start <= i_ <= end:
+                            return True
+                        else:
+                            return False
+            else:
+                return False
+            
+        fns.append(check_)
+        
+    def check(atom):
+        for fn in fns:
+            if fn(atom.species, atom.index):
+                return True
+            
+        return False
+        
+    return check
+
+f = parse_atom_list
 

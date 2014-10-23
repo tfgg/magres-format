@@ -8,7 +8,7 @@ def is_iter(xs):
 
 def flatten(xs):
   if all(map(is_iter,xs)):
-    if len(xs) > 1:
+    if len(xs) > 0:
       xs = map(flatten, xs)
       return sum(xs[1:], xs[0])
     else:

@@ -11,8 +11,9 @@ import argparse
 from magres.atoms import MagresAtoms
 from magres.utils import load_all_magres, get_numeric, parse_atom_list
 
-parser = argparse.ArgumentParser(description='Extract J-coupling parameters in both directions')
-parser.add_argument('-J', '--J_tensor', action="store_const", help="Display J tensor", default=False, const=True)
+parser = argparse.ArgumentParser(description='Extract J-coupling parameters from one set of atoms to another.')
+parser.add_argument('-J', '--J_tensor', action="store_const", help="Display J tensor.", default=False, const=True)
+parser.add_argument('-S', '--sort', action="store_const", help="Sort by coupling strength before displaying.", default=False, const=True)
 parser.add_argument('-N', '--numbers', action="store_const", help="Parse numbers from path and print. This is useful for e.g. convergence calculations.", default=False, const=True)
 parser.add_argument('source_dir', help='Directory to look for calculations in')
 
@@ -66,20 +67,28 @@ for i, atoms in enumerate(magres_atoms):
     atom1 = isc.atom1
     atom2 = isc.atom2
 
+    sort_val = abs(getattr(isc, property))
+
     all_tensors = [getattr(atoms, tensor).perturbing(atom1).receiving(atom2)[0] for tensor in tensors]
 
     tensor_strs = ["{:.3f}".format(getattr(isc_, property)) for isc_ in all_tensors]
+
+    dist, _ = atoms.least_mirror(atom2.position, atom1.position)
 
     lines.append((idx,
                   atoms.magres_file.path,
                   str(atom1),
                   str(atom2),
                   tensor_strs,
-                  "\t%.3F" % atom1.dist(atom2)))
+                  "{:.3F}".format(dist),
+                  sort_val))
 
-lines = sorted(lines, key=lambda xs: xs[0])
+if a.sort:
+  lines = sorted(lines, key=lambda xs: xs[-1])
+else:
+  lines = sorted(lines, key=lambda xs: xs[0])
 
-for idx, path, atom1, atom2, data, dist in lines:
+for idx, path, atom1, atom2, data, dist, _ in lines:
   if a.numbers:
     print " ".join(map(str,idx)), atom1, atom2, "\t".join(data), dist, path
   else:

@@ -1,13 +1,14 @@
+from numpy import mean
+
 def is_iter(xs):
-  try:
-    iter(xs)
+  if type(xs) in [ListPropertyView, list]:
     return True
-  except TypeError:
+  else:
     return False
 
 def flatten(xs):
   if all(map(is_iter,xs)):
-    if len(xs) > 0:
+    if len(xs) > 1:
       xs = map(flatten, xs)
       return sum(xs[1:], xs[0])
     else:
@@ -26,7 +27,7 @@ class ListPropertyView(list):
   """
 
   def mean(self, *args, **kwargs):
-    return numpy.mean([x for x in self], *args, **kwargs) 
+    return mean([x for x in self], *args, **kwargs) 
 
   def __getattr__(self, prop):
     if any([hasattr(x, prop) for x in self]):

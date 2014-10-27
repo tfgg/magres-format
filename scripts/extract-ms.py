@@ -4,26 +4,34 @@ import os
 import sys
 import argparse
 
-from magres.utils import load_all_magres, get_numeric
+from magres.atoms import MagresAtoms
+from magres.utils import load_all_magres, get_numeric, parse_atom_list
 
 parser = argparse.ArgumentParser(description='Extract magnetic shielding parameters from a set of calculations.')
 parser.add_argument('-N', '--numbers', action="store_const", help="Parse numbers from path and print. This is useful for e.g. convergence calculations.", default=False, const=True)
 parser.add_argument('source_dir', help='Directory to look for calculations below.')
-parser.add_argument('atom_species', nargs='?', type=str, default=None, help='Only print this atomic species.')
-parser.add_argument('atom_index', nargs='?', type=int, default=None, help='Only print this atom.')
+
+parser.add_argument('atoms', nargs='?', type=str, default=None, help='Which atoms to print shieldings of. Specify with atom list notation, e.g. "H1" or "H1,H2,H3" or "H,C" or "H1-3".')
 
 a = parser.parse_args(sys.argv[1:])
 
-magres_atoms = load_all_magres(a.source_dir)
+atoms_filter_str = a.atoms
 
-find_s = a.atom_species
-find_i = a.atom_index
+if atoms_filter_str:
+  atoms_filter = parse_atom_list(atoms_filter_str)
+else:
+  atoms_filter = lambda x: True
 
 tensors = ['ms']
 
 lines = []
 
 print "# Number\tAtom\tIso\tAniso\tAsym\tPath"
+
+if os.path.isfile(a.source_dir):
+  magres_atoms = [MagresAtoms.load_magres(a.source_dir)]
+else:
+  magres_atoms = load_all_magres(a.source_dir)
 
 for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
@@ -34,9 +42,8 @@ for i, atoms in enumerate(magres_atoms):
     idx = [i]
 
   for atom in atoms: 
-    if atom.species == find_s and \
-       (find_i is None or atom.index == find_i) and \
-       hasattr(atom, 'efg'):
+    if atoms_filter(atom) and \
+       hasattr(atom, 'ms'):
 
       lines.append((idx,
                     atoms.magres_file.path,

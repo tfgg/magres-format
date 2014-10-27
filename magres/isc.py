@@ -3,6 +3,7 @@ import html_repr
 import numpy
 
 from decorators import lazyproperty
+from view import ListPropertyView
 
 class MagresAtomIsc(object):
   """
@@ -14,6 +15,44 @@ class MagresAtomIsc(object):
     self.atom1 = atom1
     self.atom2 = atom2
     self.magres_isc = magres_isc
+
+  def perturbing(self, species=None, index=None):
+    if hasattr(species, "__call__"):
+      if species(self.atom1):
+        return ListPropertyView([self])
+      else:
+        return ListPropertyView([])
+
+    elif hasattr(species, 'species'):
+      index = species.index
+      species = species.species
+
+    if species is None or self.atom1.species == species:
+      if index is None or self.atom1.index == index:
+        return ListPropertyView([self])
+      else:
+        return ListPropertyView([])
+    else:
+      return ListPropertyView([])
+
+  def receiving(self, species=None, index=None):
+    if hasattr(species, "__call__"):
+      if species(self.atom2):
+        return ListPropertyView([self])
+      else:
+        return ListPropertyView([])
+
+    elif hasattr(species, 'species'):
+      index = species.index
+      species = species.species
+
+    if species is None or self.atom2.species == species:
+      if index is None or self.atom2.index == index:
+        return ListPropertyView([self])
+      else:
+        return ListPropertyView([])
+    else:
+      return ListPropertyView([])
 
   @property
   def symbol(self):

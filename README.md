@@ -42,30 +42,50 @@ and then restart your session.
 Extraction scripts
 ------------------
 
-Some utility scripts for extracting values from a large number of calculation output files are provided.
+Some utility scripts for extracting values from a large number of calculation output files are provided. Look at their help information for detailed instructions
 
-`extract-ms.py` extracts magnetic shielding parameters. Call, optionally, with a species and, also optionally, an atomic index.
+For magnetic shieldings (chemical shifts)
 
-    extract-ms.py .
+    extract-ms.py --help
+    
+For electric field gradients (quadrupolar couplings)
+    
+    extract-efg.py --help
 
-will print all magnetic shieldings for all atoms in all `.magres` files found in the current directory.
+For J-couplings (indirect spin-spin coupling)
+
+    extract-jc.py --help
+
+These scripts can be called with an atom list to restrict which atoms or couplings are shown. These can select an entire species
+
+    H
+    
+will select all hydrogen atoms. They can select a single atom
+
+    H2
+    
+will select the second hydrogen atom. They select ranges of atoms
+
+    H2-5
+    
+will select the second to fifth hydrogen atoms. These can also be chained together with commas
+
+    H1-5,O
+    
+will select the first five hydrogen atoms and all oxygen atoms.
+
+For example,
 
     extract-ms.py . Zn
 
 will print only the magnetic shieldings of zinc atoms in all the `.magres` files found in the current directory.
 
-    extract-ms.py . Zn 1 
-
-will print only the magnetic shielding of the first zinc atom in all the `.magres` files found in the current directory.
-
 The `-N` flag optionally outputs in the first columns of the output an attempt at parsing out numbers in a path. This is useful for convergence tests. E.g. the path `grid_scale=2/energy_cut_off=80/ethanol.magres` will output the numbers 2.0 and 80.0 in the first two output columns.
-
-The `extract-efg.py` and `extract-jc.py` scripts extract, respectively, EFG and J-coupling parameters, with a similar syntax. Call the scripts with a `-h` flag to view the full help information.
 
 Conversion script usage
 -----------------------
 
-The `convertoldmagres.py` script convert an old-style Castep magres file to the new-style CCP-NC format for use with the new tools. You use it from the command line like:
+The `convertoldmagres.py` script converts an old-style Castep magres file to the new-style CCP-NC format for use with the new tools. You use it from the command line like:
 
     magres-convert.py sample.magres > sample.new.magres
 

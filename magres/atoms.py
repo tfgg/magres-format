@@ -20,6 +20,8 @@ from isc import MagresAtomIsc
 from ms import MagresAtomMs
 from atom import MagresAtom, MagresAtomImage
 
+from view import ListPropertyView
+
 element_colours = {'H': ("#EEEEEE", "#000000"),
                    'C': ("#999999", "#000000"),
                    'O': ("#FF0000", "#FFFFFF"),
@@ -27,28 +29,6 @@ element_colours = {'H': ("#EEEEEE", "#000000"),
 
 min_dist = 1.0
 max_dist = 2.0
-
-class ListPropertyView(list):
-  """
-    Allows property accessors on lists of objects. E.g.
-
-    x = [A(1), A(2), A(3)]
-    x.a = [1,2,3]
-
-    if A(a) is an object that stores a in self.a
-  """
-
-  def mean(self, *args, **kwargs):
-    return numpy.mean([x for x in self], *args, **kwargs) 
-
-  def __getattr__(self, prop):
-    if any([hasattr(x, prop) for x in self]):
-      return ListPropertyView([getattr(x, prop, None) for x in self])
-    else:
-      raise AttributeError("{} not present".format(prop))
-
-  def _repr_html_(self):
-    return html_repr.list_view(self)
 
 def insideout():
   """
@@ -150,20 +130,26 @@ class MagresAtomsView(object):
       else:
         raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms at the %s label." % (label, index, len(self.label_index[label]), label))
 
-  def label(self, label):
-    """
-      Return a MagresAtomsView containing only atoms of the specified label.
-
-      >>> atoms.label("C1")
-    """
-    if type(label) != list:
-      label = [label]
+  #def label(self, label):
+  #  """
+  #    Return a MagresAtomsView containing only atoms of the specified label.
+  #
+  #    >>> atoms.label("C1")
+  #  """
+  #  if type(label) != list:
+  #    label = [label]
       
-    rtn_atoms = []
-    for l in label:
-      if l in self.label_index:
-        rtn_atoms += self.label_index[l]
-    return MagresAtomsView(rtn_atoms, self.lattice)
+  #  rtn_atoms = []
+  #  for l in label:
+  #    if l in self.label_index:
+  #      rtn_atoms += self.label_index[l]
+  #  return MagresAtomsView(rtn_atoms, self.lattice)
+
+  def filter(self, fn):
+    """
+      Filter atoms by some function fn.
+    """
+    return MagresAtomsView([x for x in self if fn(x)], self.lattice)
 
   def get(self, species, index):
     """
@@ -180,19 +166,20 @@ class MagresAtomsView(object):
       else:
         raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms in the %s species." % (species, index, len(self.species_index[species]), species))
 
-  def species(self, species):
+  def species(self, *args):
     """
       Return a MagresAtomsView containing only atoms of the specified species.
 
       >>> atoms.species('C')
     """
-    if type(species) != list:
-      species = [species]
+
+    species = args
       
     rtn_atoms = []
     for s in species:
       if s in self.species_index:
         rtn_atoms += self.species_index[s]
+
     return MagresAtomsView(rtn_atoms, self.lattice)
 
   def set_reference(self, reference):
@@ -223,16 +210,6 @@ class MagresAtomsView(object):
           atoms.append(atom)
 
     return MagresAtomsView(atoms, self.lattice)
-
-  #def transform(self, M):
-  #  """
-  #    Apply matrix M to positions of all atoms and return them.
-  #
-  #    TODO: Is this useful? What about rotating the tensors?
-  #    Active vs. passive rotations? What about the lattice?
-  #  """
-
-  #  return [MagresAtomImage(numpy.dot(M, atom.position.T).T, atom) for atom in self.atoms]
 
   def least_mirror(self, a, b):
     """
@@ -374,26 +351,27 @@ class MagresAtomsView(object):
         dist_graph.add_node(node)
 
     bonds_done = set()
-    atom_set = set([str(atom) for atom in self.atoms])
+    atoms_set = set(self.atoms)
 
     for atom1 in self:
       for atom2 in atom1.bonded:
-        if str(atom2) not in atom_set:
+        if atom2 not in atoms_set:
           continue
 
         dist, pos = lm_dist(atom1, atom2)
 
-        idx1 = (str(atom2), str(atom1))
-        idx2 = (str(atom1), str(atom2))
+        idx1 = (atom2, atom1)
+        idx2 = (atom1, atom2)
 
         if idx1 not in bonds_done and idx2 not in bonds_done:
           bonds_done.add(idx2)
 
           # Hide bonds if we have ISC, but keep for structure
-          if has_isc:
-            color = "#000000{:02x}".format(64)
-          else:
-            color = strength_color(dist)
+          #if has_isc:
+          #  color = "#000000{:02x}".format(64)
+          #else:
+          
+          color = strength_color(dist)
             
           edge = pydot.Edge(str(atom1),
                             str(atom2),
@@ -403,12 +381,21 @@ class MagresAtomsView(object):
 
           dist_graph.add_edge(edge)
 
+    def flatten(xs):
+      rtn = xs[0]
+      for x in xs[1:]:
+        rtn += x
+      return rtn
+
     if has_isc:
       isc_done = set()
-      atom_set = {str(atom) for atom in self.atoms}
 
-      min_isc = min([abs(isc.K_iso) for isc_dict in self.isc if isc_dict is not None for isc in isc_dict.values() if isc.atom1 is not isc.atom2 and str(isc.atom1) in atom_set and str(isc.atom2) in atom_set])
-      max_isc = max([abs(isc.K_iso) for isc_dict in self.isc if isc_dict is not None for isc in isc_dict.values() if isc.atom1 is not isc.atom2 and str(isc.atom1) in atom_set and str(isc.atom2) in atom_set])
+      K_isos = [abs(isc.K_iso) for iscs in self.isc
+                               for isc in iscs 
+                               if isc.atom1 in atoms_set and isc.atom2 in atoms_set]
+
+      min_isc = min(K_isos)
+      max_isc = max(K_isos)
 
       def strength_color_K(K_iso):
           x = min(max((abs(K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
@@ -419,28 +406,23 @@ class MagresAtomsView(object):
           else:
             return "#0000FF%02X" % y
 
-      for atom in self.atoms:
-        if hasattr(atom, 'isc'):
-          for isc in atom.isc.values():
-            strength = min(max((abs(isc.K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
+      for isc in flatten(self.isc):
+        strength = min(max((abs(isc.K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
 
-            if strength > 0.01 and \
-               isc.atom1 is not isc.atom2 and \
-               (str(isc.atom2), str(isc.atom1)) not in isc_done and \
-               str(isc.atom1) in atom_set and \
-               str(isc.atom2) in atom_set:
+        if strength > 0.01 and (isc.atom2, isc.atom1) not in isc_done \
+          and isc.atom1 in atoms_set and isc.atom2 in atoms_set:
 
-              isc_done.add((str(isc.atom1), str(isc.atom2)))
+          isc_done.add((isc.atom1, isc.atom2))
 
-              edge = pydot.Edge(str(isc.atom1),
-                                str(isc.atom2),
-                                fontsize=8,
-                                color=strength_color_K(isc.K_iso),
-                                fontcolor=strength_color_K(isc.K_iso),
-                                label="{:.3f}".format(isc.K_iso),
-                                len=lm_dist(isc.atom1, isc.atom2)[0])
+          edge = pydot.Edge(str(isc.atom1),
+                            str(isc.atom2),
+                            fontsize=8,
+                            color=strength_color_K(isc.K_iso),
+                            fontcolor=strength_color_K(isc.K_iso),
+                            label="{:.3f}".format(isc.K_iso),
+                            len=lm_dist(isc.atom1, isc.atom2)[0])
 
-              dist_graph.add_edge(edge)
+          dist_graph.add_edge(edge)
 
     return dist_graph.create_png(prog='neato')
 
@@ -519,18 +501,24 @@ class MagresAtoms(MagresAtomsView):
 
         isc_type = tag
 
-        #setattr(self, isc_type, [])
+        #setattr(self, isc_type, IscListPropertyView([]))
 
         for magres_isc in magres_file.data_dict['magres'][isc_type]:
           atom1 = temp_label_index[(magres_isc['atom1']['label'], magres_isc['atom1']['index'])]
           atom2 = temp_label_index[(magres_isc['atom2']['label'], magres_isc['atom2']['index'])]
+
+          # Don't bother with self couplings
+          if atom1 == atom2:
+            continue
+
           magres_atom_isc = MagresAtomIsc(atom1, atom2, magres_isc)
+
           #getattr(self, isc_type).append(magres_atom_isc) 
 
           if not hasattr(atom1, isc_type):
-            setattr(atom1, isc_type, {})
+            setattr(atom1, isc_type, ListPropertyView([]))
 
-          getattr(atom1, isc_type)[atom2] = magres_atom_isc
+          getattr(atom1, isc_type).append(magres_atom_isc)
 
     return (atoms, lattice)
 

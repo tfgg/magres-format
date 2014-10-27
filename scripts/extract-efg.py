@@ -17,15 +17,17 @@ a = parser.parse_args(sys.argv[1:])
 find_s = a.atom_species
 find_i = a.atom_index
 
-tensors = ['efg', 'efg_local', 'efg_nonlocal']
+#tensors = ['efg', 'efg_local', 'efg_nonlocal']
+tensors = ['efg']
 
 lines = []
 
-print "# Number\tAtom\tCq\tCq_local\tCq_nonlocal\tEta\tEta_local\tEta_nonlocal\tPath"
+#print "# Number\tAtom\tCq\tCq_local\tCq_nonlocal\tEta\tEta_local\tEta_nonlocal\tPath"
+print "# Number\tAtom\tCq\tEta\tPath"
 
 magres_atoms = load_all_magres(a.source_dir)
 
-for atoms in magres_atoms:
+for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
 
   if num:

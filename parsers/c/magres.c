@@ -99,6 +99,24 @@ void magres_file_init(MagresFile *magres_file) {
 void magres_file_dealloc(MagresFile *magres_file) {
   int i;
 
+  if(magres_file->atoms != NULL) {
+    for(i = 0; i<magres_file->num_atoms; ++i) {
+      magres_atom_dealloc(magres_file->atoms[i]);
+      free(magres_file->atoms[i]);
+    }
+
+    free(magres_file->atoms);
+  }
+  
+  if(magres_file->symmetries != NULL) {
+    for(i = 0; i<magres_file->num_symmetries; ++i) {
+      magres_symmetry_dealloc(magres_file->symmetries[i]);
+      free(magres_file->symmetries[i]);
+    }
+
+    free(magres_file->symmetries);
+  }
+
   if(magres_file->lattice != NULL) {
     free(magres_file->lattice);
     magres_file->lattice = NULL;

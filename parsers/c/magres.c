@@ -79,10 +79,20 @@ typedef struct {
 
 void magres_file_init(MagresFile *magres_file) {
   magres_file->lattice = NULL;
+  
+  magres_file->num_atoms = 0;
   magres_file->atoms = NULL;
+
+  magres_file->num_symmetries = 0;
   magres_file->symmetries = NULL;
+
+  magres_file->num_ms = 0;
   magres_file->ms = NULL;
+
+  magres_file->num_isc = 0;
   magres_file->isc = NULL;
+
+  magres_file->num_efg = 0;
   magres_file->efg = NULL;
 }
 

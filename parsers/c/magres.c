@@ -778,9 +778,7 @@ bool magres_parse(MagresFile *magres_file, char *file)
   return true;
 }
 
-char *read_file(const char* path) {
-  FILE* fp = fopen(path, "r");
-
+char *read_file(FILE *fp) {
   char *buffer;
 
   if(fp != NULL) {
@@ -808,7 +806,22 @@ char *read_file(const char* path) {
 }
 
 int main(int argc, const char **argv) {
-  char *magres_file_data = read_file(argv[1]);
+  FILE *fp = NULL;
+
+  if(argc > 1) {
+    fp = fopen(argv[1], "r");
+  } else {
+    fp = stdin;  
+  }
+
+  if(fp == NULL) {
+    fprintf(stderr, "Error reading file\n");
+    return 0;
+  }
+
+  char *magres_file_data = read_file(fp);
+
+  fclose(fp);
   
   MagresFile *magres_file = malloc(sizeof(MagresFile));
 
@@ -824,6 +837,7 @@ int main(int argc, const char **argv) {
 
   } else {
     printf("Error loading file\n");
+    return 0;
   }
 
   if(magres_file_data != NULL) {
@@ -891,4 +905,6 @@ int main(int argc, const char **argv) {
     free(magres_file);
     magres_file = NULL;
   }
+
+  return 1;
 }

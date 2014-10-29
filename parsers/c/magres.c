@@ -317,7 +317,7 @@ bool magres_parse_atoms(MagresLine *lines, int num_lines, MagresFile *magres_fil
   }
 
   if(num_lattice > 0) {
-    magres_file->lattice = malloc(sizeof(MagresLattice) * num_symmetries);
+    magres_file->lattice = malloc(sizeof(MagresLattice));
   } else {
     magres_file->lattice = NULL;
   }
@@ -612,7 +612,6 @@ int magres_parse_lines(char *block, MagresLine **rtn_lines) {
   }
 
   MagresLine *lines = NULL;
-  MagresLine *line = NULL;
 
   lines = malloc(sizeof(MagresLine) * num_lines);
   int i_line = 0;
@@ -853,30 +852,38 @@ int main(int argc, const char **argv) {
     printf("  %i %s %s %f %f %f\n", atom->index, atom->species, atom->label, atom->position[0],  atom->position[1], atom->position[2]);
   }
 
-  printf("Lattice:\n");
-  printf("  %f %f %f\n", magres_file->lattice->lattice[0][0],  magres_file->lattice->lattice[0][1], magres_file->lattice->lattice[0][2]);
-  printf("  %f %f %f\n", magres_file->lattice->lattice[1][0],  magres_file->lattice->lattice[1][1], magres_file->lattice->lattice[1][2]);
-  printf("  %f %f %f\n", magres_file->lattice->lattice[2][0],  magres_file->lattice->lattice[2][1], magres_file->lattice->lattice[2][2]);
-
-  printf("Symmetries:\n");
-  for(i = 0; i<magres_file->num_symmetries; ++i) {
-    printf("%s\n", magres_file->symmetries[i].symmetry_string);
+  if(magres_file->lattice != NULL) {
+    printf("Lattice:\n");
+    printf("  %f %f %f\n", magres_file->lattice->lattice[0][0],  magres_file->lattice->lattice[0][1], magres_file->lattice->lattice[0][2]);
+    printf("  %f %f %f\n", magres_file->lattice->lattice[1][0],  magres_file->lattice->lattice[1][1], magres_file->lattice->lattice[1][2]);
+    printf("  %f %f %f\n", magres_file->lattice->lattice[2][0],  magres_file->lattice->lattice[2][1], magres_file->lattice->lattice[2][2]);
   }
 
-  MagresIsc *isc = NULL;
-  for(i = 0; i<magres_file->num_isc; ++i) {
-    isc = &magres_file->isc[i];
-
-    double K_iso = (isc->K[0][0] + isc->K[1][1] + isc->K[2][2])/3.0;
-    printf("ISC: %s %d --> %s %d = %f\n", isc->atom1->species, isc->atom1->index, isc->atom2->species, isc->atom2->index, K_iso);
+  if(magres_file->symmetries != NULL) {
+    printf("Symmetries:\n");
+    for(i = 0; i<magres_file->num_symmetries; ++i) {
+      printf("%s\n", magres_file->symmetries[i].symmetry_string);
+    }
   }
 
-  MagresMs *ms = NULL;
-  for(i = 0; i<magres_file->num_ms; ++i) {
-    ms = &magres_file->ms[i];
+  if(magres_file->isc != NULL) {
+    MagresIsc *isc = NULL;
+    for(i = 0; i<magres_file->num_isc; ++i) {
+      isc = &magres_file->isc[i];
 
-    double ms_iso = (ms->sigma[0][0] + ms->sigma[1][1] + ms->sigma[2][2])/3.0;
-    printf("MS: %s %d = %f\n", ms->atom->species, ms->atom->index, ms_iso);
+      double K_iso = (isc->K[0][0] + isc->K[1][1] + isc->K[2][2])/3.0;
+      printf("ISC: %s %d --> %s %d = %f\n", isc->atom1->species, isc->atom1->index, isc->atom2->species, isc->atom2->index, K_iso);
+    }
+  }
+
+  if(magres_file->ms != NULL) {
+    MagresMs *ms = NULL;
+    for(i = 0; i<magres_file->num_ms; ++i) {
+      ms = &magres_file->ms[i];
+
+      double ms_iso = (ms->sigma[0][0] + ms->sigma[1][1] + ms->sigma[2][2])/3.0;
+      printf("MS: %s %d = %f\n", ms->atom->species, ms->atom->index, ms_iso);
+    }
   }
 
   if(magres_file != NULL) {

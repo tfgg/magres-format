@@ -62,19 +62,19 @@ typedef struct {
   MagresLattice *lattice;
 
   int num_atoms;
-  MagresAtom **atoms;
+  MagresAtom *atoms;
 
   int num_symmetries;
-  MagresSymmetry **symmetries;
+  MagresSymmetry *symmetries;
 
   int num_ms;
-  MagresMs** ms;
+  MagresMs *ms;
 
   int num_isc;
-  MagresIsc** isc;
+  MagresIsc *isc;
 
   int num_efg;
-  MagresEfg** efg;
+  MagresEfg *efg;
 } MagresFile;
 
 void magres_file_init(MagresFile *magres_file) {
@@ -101,8 +101,7 @@ void magres_file_dealloc(MagresFile *magres_file) {
 
   if(magres_file->atoms != NULL) {
     for(i = 0; i<magres_file->num_atoms; ++i) {
-      magres_atom_dealloc(magres_file->atoms[i]);
-      free(magres_file->atoms[i]);
+      magres_atom_dealloc(&magres_file->atoms[i]);
     }
 
     free(magres_file->atoms);
@@ -110,8 +109,7 @@ void magres_file_dealloc(MagresFile *magres_file) {
   
   if(magres_file->symmetries != NULL) {
     for(i = 0; i<magres_file->num_symmetries; ++i) {
-      magres_symmetry_dealloc(magres_file->symmetries[i]);
-      free(magres_file->symmetries[i]);
+      magres_symmetry_dealloc(&magres_file->symmetries[i]);
     }
 
     free(magres_file->symmetries);
@@ -123,35 +121,14 @@ void magres_file_dealloc(MagresFile *magres_file) {
   }
 
   if(magres_file->isc != NULL) {
-    for(i = 0; i<magres_file->num_isc; ++i) {
-      if(magres_file->isc[i] != NULL) {
-        free(magres_file->isc[i]);
-        magres_file->isc[i] = 0;
-      }
-    }
-
     free(magres_file->isc);
   }
 
   if(magres_file->efg != NULL) {
-    for(i = 0; i<magres_file->num_efg; ++i) {
-      if(magres_file->efg[i] != NULL) {
-        free(magres_file->efg[i]);
-        magres_file->efg[i] = 0;
-      }
-    }
-
     free(magres_file->efg);
   }
 
   if(magres_file->ms != NULL) {
-    for(i = 0; i<magres_file->num_ms; ++i) {
-      if(magres_file->ms[i] != NULL) {
-        free(magres_file->ms[i]);
-        magres_file->ms[i] = 0;
-      }
-    }
-
     free(magres_file->ms);
   }
 }
@@ -188,9 +165,7 @@ char* str_trim(char *str) {
   return str;
 }
 
-MagresLine *magres_tokenize(char *str_line) {
-  MagresLine *line = malloc(sizeof(MagresLine));
-
+void magres_tokenize(MagresLine *line, char *str_line) {
   char *str_line_trimmed = str_trim(str_line);
   
   // First, work out how many columns there are
@@ -239,19 +214,15 @@ MagresLine *magres_tokenize(char *str_line) {
       whitespace = false;
     }
   }
-
-  return line;
 }
 
 // [atoms] block parser
-MagresAtom* magres_parse_atom(MagresLine *line) {
+bool magres_parse_atom(MagresAtom *atom, MagresLine *line) {
   if(line->num_cols != 7) {
     fprintf(stderr, "atom: Wrong number of columns, %d\n", line->num_cols);
-    return NULL;
+    return false;
   }
 
-  MagresAtom *atom = malloc(sizeof(MagresAtom));
-  
   int species_len = strlen(line->cols[1]);
 
   atom->species = malloc(sizeof(char) * (species_len + 1));
@@ -270,33 +241,30 @@ MagresAtom* magres_parse_atom(MagresLine *line) {
   sscanf(line->cols[5], "%lg", &atom->position[1]);
   sscanf(line->cols[6], "%lg", &atom->position[2]);
 
-  return atom;
+  return true;
 }
 
-MagresSymmetry* magres_parse_symmetry(MagresLine *line) {
+bool magres_parse_symmetry(MagresSymmetry *symmetry, MagresLine *line) {
   if(line->num_cols != 2) {
     fprintf(stderr, "symmetry: Wrong number of columns, %d\n", line->num_cols);
-    return NULL;
+    return false;
   }
 
-  MagresSymmetry *symmetry = malloc(sizeof(MagresSymmetry));
   int str_len = strlen(line->cols[1]);
 
   symmetry->symmetry_string = malloc(sizeof(char) * (str_len + 1));
   memcpy(symmetry->symmetry_string, line->cols[1], str_len);
   symmetry->symmetry_string[str_len] = 0;
 
-  return symmetry;
+  return true;
 }
 
-MagresLattice *magres_parse_lattice(MagresLine *line) {
+bool magres_parse_lattice(MagresLattice *lattice, MagresLine *line) {
   if(line->num_cols != 10) {
     fprintf(stderr, "lattice: Wrong number of columns, %d\n", line->num_cols);
-    return NULL;
+    return false;
   }
 
-  MagresLattice *lattice = malloc(sizeof(MagresLattice));
-  
   sscanf(line->cols[1], "%lg", &lattice->lattice[0][0]);
   sscanf(line->cols[2], "%lg", &lattice->lattice[0][1]);
   sscanf(line->cols[3], "%lg", &lattice->lattice[0][2]);
@@ -309,17 +277,17 @@ MagresLattice *magres_parse_lattice(MagresLine *line) {
   sscanf(line->cols[8], "%lg", &lattice->lattice[2][1]);
   sscanf(line->cols[9], "%lg", &lattice->lattice[2][2]);
 
-  return lattice;
+  return true;
 }
 
-bool magres_parse_atoms(MagresLine **lines, int num_lines, MagresFile *magres_file) {
+bool magres_parse_atoms(MagresLine *lines, int num_lines, MagresFile *magres_file) {
   // Count how many of each line type we have and allocate space in the MagresFile
   int num_atoms = 0, num_symmetries = 0, num_lattice = 0;
   int i_line = 0;
   MagresLine *line = NULL;
 
   for(i_line = 0; i_line < num_lines; ++i_line) {
-    line = lines[i_line];
+    line = &lines[i_line];
 
     if(line->num_cols != 0) {
       if(strcmp(line->cols[0], "atom") == 0) {
@@ -333,7 +301,7 @@ bool magres_parse_atoms(MagresLine **lines, int num_lines, MagresFile *magres_fi
   }
 
   if(num_atoms > 0) {
-    magres_file->atoms = malloc(sizeof(MagresAtom*) * num_atoms);
+    magres_file->atoms = malloc(sizeof(MagresAtom) * num_atoms);
     magres_file->num_atoms = num_atoms;
   } else {
     magres_file->atoms = NULL;
@@ -341,7 +309,7 @@ bool magres_parse_atoms(MagresLine **lines, int num_lines, MagresFile *magres_fi
   }
 
   if(num_symmetries > 0) {
-    magres_file->symmetries = malloc(sizeof(MagresSymmetry*) * num_symmetries);
+    magres_file->symmetries = malloc(sizeof(MagresSymmetry) * num_symmetries);
     magres_file->num_symmetries = num_symmetries;
   } else {
     magres_file->symmetries = NULL;
@@ -356,37 +324,36 @@ bool magres_parse_atoms(MagresLine **lines, int num_lines, MagresFile *magres_fi
 
   // Parse the lines into different types
   int i_atom=0, i_symmetry=0;
-
-  MagresAtom *current_atom = NULL;
-  MagresSymmetry *current_symmetry = NULL;
+  bool rtn;
 
   for(i_line = 0; i_line < num_lines; ++i_line) {
-    line = lines[i_line];
+    line = &lines[i_line];
 
     if(line->num_cols != 0) {
       if(strcmp(line->cols[0], "atom") == 0) {
-        current_atom = magres_parse_atom(line);
+        rtn = magres_parse_atom(&magres_file->atoms[i_atom], line);
         
-        if(current_atom == NULL) {
+        if(!rtn) {
           return false;
         }
 
-        magres_file->atoms[i_atom++] = current_atom;
+        i_atom++;
+
       } else if(strcmp(line->cols[0], "lattice") == 0) {
-        magres_file->lattice = magres_parse_lattice(line);
+        rtn = magres_parse_lattice(magres_file->lattice, line);
         
-        if(magres_file->lattice == NULL) {
+        if(!rtn) {
           return false;
         }
 
       } else if(strcmp(line->cols[0], "symmetry") == 0) {
-        current_symmetry = magres_parse_symmetry(line);
+        rtn = magres_parse_symmetry(&magres_file->symmetries[i_symmetry], line);
 
-        if(current_symmetry == NULL) {
+        if(!rtn) {
           return false;
         }
 
-        magres_file->symmetries[i_symmetry++] = current_symmetry;
+        i_symmetry++;
 
       } else if(strcmp(line->cols[0], "units") == 0) {
         // Ignore units
@@ -402,7 +369,7 @@ MagresAtom *magres_find_atom(MagresFile *magres_file, const char* species, int i
 
   int i;
   for(i=0; i<magres_file->num_atoms; ++i) {
-    MagresAtom *atom = magres_file->atoms[i];
+    MagresAtom *atom = &magres_file->atoms[i];
 
     if(strcmp(atom->species, species) == 0 && atom->index == index) {
       return atom;
@@ -414,13 +381,11 @@ MagresAtom *magres_find_atom(MagresFile *magres_file, const char* species, int i
   return NULL;
 }
 
-MagresIsc *magres_parse_isc(MagresLine *line, MagresFile *magres_file) {
+bool magres_parse_isc(MagresIsc *isc, MagresLine *line, MagresFile *magres_file) {
   if(line->num_cols != 14) {
     fprintf(stderr, "isc: Wrong number of columns, %d\n", line->num_cols);
-    return NULL;
+    return false;
   }
-
-  MagresIsc *isc = malloc(sizeof(MagresIsc));
 
   int species1_len = strlen(line->cols[1]);
   char *species1 = malloc(sizeof(char)*(species1_len + 1));
@@ -461,16 +426,14 @@ MagresIsc *magres_parse_isc(MagresLine *line, MagresFile *magres_file) {
     species2 = NULL;
   }
 
-  return isc;
+  return true;
 }
 
-MagresEfg *magres_parse_efg(MagresLine *line, MagresFile *magres_file) {
+bool magres_parse_efg(MagresEfg *efg, MagresLine *line, MagresFile *magres_file) {
   if(line->num_cols != 12) {
     fprintf(stderr, "efg: Wrong number of columns, %d\n", line->num_cols);
-    return NULL;
+    return false;
   }
-
-  MagresEfg *efg = malloc(sizeof(MagresEfg));
 
   int species_len = strlen(line->cols[1]);
   char *species = malloc(sizeof(char)*(species_len + 1));
@@ -498,16 +461,14 @@ MagresEfg *magres_parse_efg(MagresLine *line, MagresFile *magres_file) {
     species = NULL;
   }
 
-  return efg;
+  return true;
 }
 
-MagresMs *magres_parse_ms(MagresLine *line, MagresFile *magres_file) {
+bool magres_parse_ms(MagresMs *ms, MagresLine *line, MagresFile *magres_file) {
   if(line->num_cols != 12) {
     fprintf(stderr, "ms: Wrong number of columns, %d", line->num_cols);
-    return NULL;
+    return false;
   }
-
-  MagresMs *ms = malloc(sizeof(MagresMs));
 
   int species_len = strlen(line->cols[1]);
   char *species = malloc(sizeof(char)*(species_len + 1));
@@ -535,18 +496,18 @@ MagresMs *magres_parse_ms(MagresLine *line, MagresFile *magres_file) {
     species = NULL;
   }
 
-  return ms;
+  return true;
 }
 
 
-bool magres_parse_magres(MagresLine **lines, int num_lines, MagresFile *magres_file) {
+bool magres_parse_magres(MagresLine *lines, int num_lines, MagresFile *magres_file) {
   // Count how many of each line type we have and allocate space in the MagresFile
   int num_isc = 0, num_efg = 0, num_ms = 0;
   int i_line = 0;
   MagresLine *line = NULL;
 
   for(i_line = 0; i_line < num_lines; ++i_line) {
-    line = lines[i_line];
+    line = &lines[i_line];
 
     if(line->num_cols != 0) {
       if(strcmp(line->cols[0], "isc") == 0) {
@@ -560,7 +521,7 @@ bool magres_parse_magres(MagresLine **lines, int num_lines, MagresFile *magres_f
   }
 
   if(num_isc > 0) {
-    magres_file->isc = malloc(sizeof(MagresIsc*) * num_isc);
+    magres_file->isc = malloc(sizeof(MagresIsc) * num_isc);
     magres_file->num_isc = num_isc;
   } else {
     magres_file->isc = NULL;
@@ -568,7 +529,7 @@ bool magres_parse_magres(MagresLine **lines, int num_lines, MagresFile *magres_f
   }
 
   if(num_efg > 0) {
-    magres_file->efg = malloc(sizeof(MagresEfg*) * num_efg);
+    magres_file->efg = malloc(sizeof(MagresEfg) * num_efg);
     magres_file->num_efg = num_efg;
   } else {
     magres_file->efg = NULL;
@@ -576,7 +537,7 @@ bool magres_parse_magres(MagresLine **lines, int num_lines, MagresFile *magres_f
   }
 
   if(num_ms > 0) {
-    magres_file->ms = malloc(sizeof(MagresMs*) * num_ms);
+    magres_file->ms = malloc(sizeof(MagresMs) * num_ms);
     magres_file->num_ms = num_ms;
   } else {
     magres_file->ms = NULL;
@@ -585,41 +546,38 @@ bool magres_parse_magres(MagresLine **lines, int num_lines, MagresFile *magres_f
 
   // Parse the lines into different types
   int i_isc=0, i_efg=0, i_ms=0;
-
-  MagresIsc *current_isc = NULL;
-  MagresEfg *current_efg = NULL;
-  MagresMs *current_ms = NULL;
+  bool rtn = false;
 
   for(i_line = 0; i_line < num_lines; ++i_line) {
-    line = lines[i_line];
+    line = &lines[i_line];
 
     if(line->num_cols != 0) {
       if(strcmp(line->cols[0], "isc") == 0) {
-        current_isc = magres_parse_isc(line, magres_file);
+        rtn = magres_parse_isc(&magres_file->isc[i_isc], line, magres_file);
 
-        if(current_isc == NULL) {
+        if(!rtn) {
           return false;
         }
 
-        magres_file->isc[i_isc++] = current_isc;
+        i_isc++;
 
       } else if(strcmp(line->cols[0], "efg") == 0) {
-        current_efg = magres_parse_efg(line, magres_file);
+        rtn = magres_parse_efg(&magres_file->efg[i_efg], line, magres_file);
         
-        if(current_efg == NULL) {
+        if(!rtn) {
           return false;
         }
 
-        magres_file->efg[i_efg++] = current_efg;
+        i_efg++;
 
       } else if(strcmp(line->cols[0], "ms") == 0) {
-        current_ms = magres_parse_ms(line, magres_file);
+        rtn = magres_parse_ms(&magres_file->ms[i_ms], line, magres_file);
         
-        if(current_ms == NULL) {
+        if(!rtn) {
           return false;
         }
 
-        magres_file->ms[i_ms++] = current_ms;
+        i_ms++;
 
       }
     }
@@ -628,7 +586,7 @@ bool magres_parse_magres(MagresLine **lines, int num_lines, MagresFile *magres_f
   return true;
 }
 
-int magres_parse_lines(char *block, MagresLine ***rtn_lines) {
+int magres_parse_lines(char *block, MagresLine **rtn_lines) {
   char *p = block;
   char *q = block;
   int line_size = 0;
@@ -653,33 +611,32 @@ int magres_parse_lines(char *block, MagresLine ***rtn_lines) {
     }
   }
 
-  MagresLine **lines = NULL;
+  MagresLine *lines = NULL;
   MagresLine *line = NULL;
 
-  lines = malloc(sizeof(MagresLine*) * num_lines);
+  lines = malloc(sizeof(MagresLine) * num_lines);
   int i_line = 0;
-  char *current_line = NULL;
+  char *str_current_line = NULL;
 
   p = block;
   q = block;
 
   while(true) {
     if(*p == '\n' || *p == 0 || *p == '#') {
-      if(current_line != NULL) {
-        free(current_line);
-        current_line = NULL;
+      if(str_current_line != NULL) {
+        free(str_current_line);
+        str_current_line = NULL;
       }
 
       line_size = p - q;
 
       if(line_size != 0) {
-        current_line = malloc(sizeof(char) * (line_size + 1));
-        memcpy(current_line, q, line_size);
-        current_line[line_size] = 0;
+        str_current_line = malloc(sizeof(char) * (line_size + 1));
+        memcpy(str_current_line, q, line_size);
+        str_current_line[line_size] = 0;
 
-        line = magres_tokenize(current_line);
+        magres_tokenize(&lines[i_line], str_current_line);
 
-        lines[i_line] = line;
         i_line++;
       }
 
@@ -700,9 +657,9 @@ int magres_parse_lines(char *block, MagresLine ***rtn_lines) {
     }
   }
  
-  if(current_line != NULL) {
-    free(current_line);
-    current_line = NULL;
+  if(str_current_line != NULL) {
+    free(str_current_line);
+    str_current_line = NULL;
   }
 
   *rtn_lines = lines;
@@ -775,7 +732,7 @@ bool magres_parse(MagresFile *magres_file, char *file)
           block_data[block_data_size] = 0;
 
           int num_lines = 0;
-          MagresLine **lines = NULL;
+          MagresLine *lines = NULL;
 
           num_lines = magres_parse_lines(block_data, &lines);
 
@@ -794,16 +751,12 @@ bool magres_parse(MagresFile *magres_file, char *file)
           }
   
           // Deallocation
-          int i_line = 0;
-          for(; i_line < num_lines; ++i_line) {
-            if(lines[i_line] != NULL) {
-              magres_line_dealloc(lines[i_line]);
-              free(lines[i_line]);
-              lines[i_line] = NULL;
-            }
-          }
-          
           if(lines != NULL) {
+            int i_line = 0;
+            for(; i_line < num_lines; ++i_line) {
+              magres_line_dealloc(&lines[i_line]);
+            }
+          
             free(lines);
             lines = NULL;
           }
@@ -896,7 +849,7 @@ int main(int argc, const char **argv) {
   int i;
   MagresAtom *atom = NULL;
   for(i = 0; i<magres_file->num_atoms; ++i) {
-    atom = magres_file->atoms[i];
+    atom = &magres_file->atoms[i];
     printf("  %i %s %s %f %f %f\n", atom->index, atom->species, atom->label, atom->position[0],  atom->position[1], atom->position[2]);
   }
 
@@ -907,12 +860,12 @@ int main(int argc, const char **argv) {
 
   printf("Symmetries:\n");
   for(i = 0; i<magres_file->num_symmetries; ++i) {
-    printf("%s\n", magres_file->symmetries[i]->symmetry_string);
+    printf("%s\n", magres_file->symmetries[i].symmetry_string);
   }
 
   MagresIsc *isc = NULL;
   for(i = 0; i<magres_file->num_isc; ++i) {
-    isc = magres_file->isc[i];
+    isc = &magres_file->isc[i];
 
     double K_iso = (isc->K[0][0] + isc->K[1][1] + isc->K[2][2])/3.0;
     printf("ISC: %s %d --> %s %d = %f\n", isc->atom1->species, isc->atom1->index, isc->atom2->species, isc->atom2->index, K_iso);
@@ -920,7 +873,7 @@ int main(int argc, const char **argv) {
 
   MagresMs *ms = NULL;
   for(i = 0; i<magres_file->num_ms; ++i) {
-    ms = magres_file->ms[i];
+    ms = &magres_file->ms[i];
 
     double ms_iso = (ms->sigma[0][0] + ms->sigma[1][1] + ms->sigma[2][2])/3.0;
     printf("MS: %s %d = %f\n", ms->atom->species, ms->atom->index, ms_iso);

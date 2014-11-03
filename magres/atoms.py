@@ -5,6 +5,8 @@
   a variety of conventions.
 """
 
+VERSION = (0,0)
+
 import sys,os
 import math
 import numpy
@@ -104,47 +106,6 @@ class MagresAtomsView(object):
       else:
         self.species_index[atom.species] = [atom]
 
-      # This is a bit hacky. Need some way to transfer through arbitrary properties?
-      # Possibly improve PropertyView so it's an arbitrary sequence of objects, and queries
-      # on its properties will return a sequence.
-      #if hasattr(atom, 'isc'):
-      #  if not hasattr(self, 'isc'):
-      #    self.isc = []
-      #
-      #  self.isc.append(atom.isc)
-
-  def get_label(self, label, index=None):
-    """
-      Get a single atom of a particular label and index.
-
-      >>> atoms.get_label("C1", 2)
-    """
-
-    if label not in self.label_index:
-      return []
-    else:
-      if index is None:
-        return self.label_index[label]
-      elif len(self.label_index[label]) >= index:
-        return self.label_index[label][index-1]
-      else:
-        raise AtomNotFound("Atom %s %d does not exist in this system. There are %d atoms at the %s label." % (label, index, len(self.label_index[label]), label))
-
-  #def label(self, label):
-  #  """
-  #    Return a MagresAtomsView containing only atoms of the specified label.
-  #
-  #    >>> atoms.label("C1")
-  #  """
-  #  if type(label) != list:
-  #    label = [label]
-      
-  #  rtn_atoms = []
-  #  for l in label:
-  #    if l in self.label_index:
-  #      rtn_atoms += self.label_index[l]
-  #  return MagresAtomsView(rtn_atoms, self.lattice)
-
   def filter(self, fn):
     """
       Filter atoms by some function fn.
@@ -159,7 +120,7 @@ class MagresAtomsView(object):
     """
 
     if species not in self.species_index:
-      return None
+      return SpeciesNotFound("Species {} does not exist in this system".format(species))
     else:
       if len(self.species_index[species]) >= index:
         return self.species_index[species][index-1]
@@ -231,6 +192,21 @@ class MagresAtomsView(object):
 
     return (math.sqrt(min), min_p)
 
+  def dist(self, atom1, atom2):
+    return self.least_mirror(atom1.position, atom2.position)[0]
+  
+  def angle(self, atom1, atom2, atom3, degrees=False):
+    dr1 = atom1.position - atom2.position
+    dr2 = atom3.position - atom2.position
+
+    dr1 = dr1 / math.sqrt(numpy.dot(dr1, dr1))
+    dr2 = dr2 / math.sqrt(numpy.dot(dr2, dr2))
+
+    if degrees:
+      return math.acos(numpy.dot(dr1, dr2)) * 180.0 / math.pi
+    else:
+      return math.acos(numpy.dot(dr1, dr2))
+
   def _all_images_within(self, a, b, r):
     """
       Give all images of a to b within distance r.
@@ -281,7 +257,7 @@ class MagresAtomsView(object):
       try:
         s, i = self.re_species_index.findall(attr_name)[0]
         return self.get(s, int(i))
-      except:
+      except e:
         return getattr(ListPropertyView(self.atoms), attr_name)
 
   def __getitem__(self, idx):
@@ -315,7 +291,10 @@ class MagresAtomsView(object):
       return MagresAtomsView(list(new_atoms), self.lattice)
 
   def _repr_png_(self):
-    import pydot
+    try:
+      import pydot
+    except ImportError:
+      return None
 
     dist_graph = pydot.Dot(graph_type='graph', size="100", prog='neato', dim=2)
 

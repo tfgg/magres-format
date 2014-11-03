@@ -154,7 +154,7 @@ class MagresAtomsView(object):
       >>> atoms.within(p, 5.0)
     """
 
-    if type(pos) is MagresAtom:
+    if type(pos) is MagresAtom or type(pos) is MagresAtomImage:
       pos = pos.position
 
     atoms = []
@@ -196,8 +196,8 @@ class MagresAtomsView(object):
     return self.least_mirror(atom1.position, atom2.position)[0]
   
   def angle(self, atom1, atom2, atom3, degrees=False):
-    dr1 = atom1.position - atom2.position
-    dr2 = atom3.position - atom2.position
+    dr1 = self.least_mirror(atom1.position, atom2.position)[1] - atom2.position
+    dr2 = self.least_mirror(atom3.position, atom2.position)[1] - atom2.position
 
     dr1 = dr1 / math.sqrt(numpy.dot(dr1, dr1))
     dr2 = dr2 / math.sqrt(numpy.dot(dr2, dr2))

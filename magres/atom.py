@@ -123,6 +123,26 @@ class MagresAtom(object):
     else:
       return None # We don't even know what spin this isotope is.
 
+  def __eq__(self, other):
+    idx1 = (self.species, self.index)
+
+    if not (hasattr(other, 'species') and hasattr(other, 'index')):
+      return False
+    else:
+      idx2 = (other.species, other.index)
+
+      if idx1 == idx2:
+        return True
+      else:
+        return False
+
+  def __ne__(self, other):
+    if not (self == other):
+      return True
+    else:
+      return False
+
+
 class MagresAtomImage(object):
   """
     A periodic image of a particular atom. Exactly like the underlying atom except for its position.

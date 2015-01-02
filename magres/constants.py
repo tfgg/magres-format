@@ -1,7 +1,5 @@
 import math
 
-import constants
-
 speed_light_si = 299792458.0
 electron_mass_si = 9.10938215e-31
 elementary_charge_si = 1.602176487e-19

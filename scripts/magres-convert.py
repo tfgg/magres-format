@@ -25,6 +25,9 @@ if __name__ == "__main__":
       print >>sys.stderr, "Could not load castep output file '%s'" % sys.argv[2]
       sys.exit(1)
 
+  if castep_file is None:
+    print >>sys.stderr, "WARNING: You have not supplied a .castep file as the second argument, so I don't know the crystal lattice."
+
   if magres_file is not None:
     oldmagres_file = OldMagres(magres_file, castep_file)
 

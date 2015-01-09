@@ -260,7 +260,7 @@ class MagresAtomsView(object):
       try:
         s, i = self.re_species_index.findall(attr_name)[0]
         return self.get(s, int(i))
-      except e:
+      except Exception:
         return getattr(ListPropertyView(self.atoms), attr_name)
 
   def __getitem__(self, idx):

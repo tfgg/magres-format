@@ -9,7 +9,7 @@ from magres.utils import load_all_magres, get_numeric, parse_atom_list
 
 parser = argparse.ArgumentParser(description='Extract and print EFG values from a set of calculations.')
 parser.add_argument('-N', '--numbers', action="store_const", help="Parse numbers from path and print. This is useful for e.g. convergence calculations.", default=False, const=True)
-parser.add_argument('source_dir', help='Directory to look for calculations below.')
+parser.add_argument('source', help='Directory to look for calculations below or specific file.')
 
 parser.add_argument('atoms', nargs='?', type=str, default=None, help='Which atoms to print shieldings of. Specify with atom list notation, e.g. "H1" or "H1,H2,H3" or "H,C" or "H1-3".')
 
@@ -26,13 +26,15 @@ tensors = ['efg',]# 'efg_local', 'efg_nonlocal']
 
 lines = []
 
-#print "# Number\tAtom\tCq\tCq_local\tCq_nonlocal\tEta\tEta_local\tEta_nonlocal\tPath"
-print "# Number\tAtom\tCq\tEta\tPath"
-
-if os.path.isfile(a.source_dir):
-  magres_atoms = [MagresAtoms.load_magres(a.source_dir)]
+if a.numbers:
+  print "# Number\tAtom\tCq\tEta\tPath"
 else:
-  magres_atoms = load_all_magres(a.source_dir)
+  print "# Atom\tCq\tEta\tPath"
+
+if os.path.isfile(a.source):
+  magres_atoms = [MagresAtoms.load_magres(a.source)]
+else:
+  magres_atoms = load_all_magres(a.source)
 
 for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)

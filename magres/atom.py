@@ -30,6 +30,9 @@ class MagresAtom(object):
     else:
       return "%d%s%d" % (self.isotope, self.species, self.index)
 
+  def __repr__(self):
+    return "<magres.atom.MagresAtom - {}>".format(str(self))
+
   def dist(self, r):
     """
       Calculate distance from this atom to another position or atom.
@@ -164,6 +167,9 @@ class MagresAtomImage(object):
   def __str__(self):
     return str(self.atom)
   
+  def __repr__(self):
+    return "<magres.atom.MagresAtomImage - {}>".format(str(self))
+ 
   def __unicode__(self):
     return unicode(self.atom)
 

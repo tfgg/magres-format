@@ -78,6 +78,9 @@ class MagresAtomsView(object):
 
     self._build_index()
 
+  def __repr__(self):
+    return "<magres.atom.MagresAtomsView - {} atoms>".format(len(self))
+
   def add(self, atoms):
     """
       Add an extra atom or list of atoms.
@@ -428,6 +431,9 @@ class MagresAtoms(MagresAtomsView):
     
     if len(self) < 20:
       self.calculate_bonds()
+  
+  def __repr__(self):
+    return "<magres.atom.MagresAtoms - {} atoms>".format(len(self))
 
   def _from_magres(self, magres_file):
     """

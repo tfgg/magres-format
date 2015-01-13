@@ -513,7 +513,7 @@ class MagresAtoms(MagresAtomsView):
 
     bonds = parse_bonds(castep_file).next()
 
-    bonded_dict = {(atom.species,atom.index): [] for atom in self}
+    bonded_dict = dict([((atom.species, atom.index), []) for atom in self])
 
     for idx1, idx2, pop, length in bonds:
       if pop >= pop_tol:

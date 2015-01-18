@@ -1,5 +1,5 @@
 #!python
-
+import re
 import os
 import sys
 import argparse
@@ -10,7 +10,7 @@ from magres.utils import load_all_magres, get_numeric, parse_atom_list
 parser = argparse.ArgumentParser(description='Extract magnetic shielding parameters from a set of calculations.')
 parser.add_argument('-N', '--numbers', action="store_const", help="Parse numbers from path and print. This is useful for e.g. convergence calculations.", default=False, const=True)
 parser.add_argument('source_dir', help='Directory to look for calculations below.')
-
+parser.add_argument('--iso', action='append')
 parser.add_argument('atoms', nargs='?', type=str, default=None, help='Which atoms to print shieldings of. Specify with atom list notation, e.g. "H1" or "H1,H2,H3" or "H,C" or "H1-3".')
 
 a = parser.parse_args(sys.argv[1:])
@@ -33,8 +33,20 @@ if os.path.isfile(a.source_dir):
 else:
   magres_atoms = load_all_magres(a.source_dir)
 
+isos = {}
+
+for iso_ in a.iso:
+  num = re.findall('([0-9]+)', iso_)[0]
+  sym = re.findall('([A-Za-z]+)', iso_)[0]
+
+  isos[sym] = int(num)
+
 for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
+
+  for s, iso in isos.items():
+    for atom in atoms.species(s):
+      atom.isotope = iso
 
   if num:
     idx = num

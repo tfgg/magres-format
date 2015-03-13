@@ -2,7 +2,7 @@ import numpy
 
 import html_repr
 
-from decorators import lazyproperty
+#from decorators import property
 
 class MagresAtomMs(object):
   """
@@ -15,14 +15,22 @@ class MagresAtomMs(object):
     self.atom = atom
     self.magres_ms = magres_ms
 
-  @lazyproperty
+  @property
   def sigma(self):
     """
       The sigma tensor, i.e. the magnetic shielding.
     """
     return numpy.array(self.magres_ms['sigma'])
 
-  @lazyproperty
+  @sigma.setter
+  def sigma(self, value):
+    sh = numpy.shape(value)
+    if sh != (3,3):
+      raise Exception("Wrong shape for new magnetic shielding tensor, {}. Should be (3,3)".format(sh))
+
+    self.magres_ms['sigma'] = value
+
+  @property
   def sym(self):
     """
       The symmetric part of sigma.
@@ -31,7 +39,7 @@ class MagresAtomMs(object):
     """
     return (self.sigma + self.sigma.T)/2.0
   
-  @lazyproperty
+  @property
   def asym(self):
     """
       The asymmetric part of sigma.
@@ -40,7 +48,7 @@ class MagresAtomMs(object):
     """
     return (self.sigma - self.sigma.T)/2.0
 
-  @lazyproperty
+  @property
   def iso(self):
     """
       The isotropic part of sigma. Defined by
@@ -50,7 +58,7 @@ class MagresAtomMs(object):
     """
     return numpy.trace(self.sigma)/3.0
 
-  @lazyproperty
+  @property
   def cs(self):
     """
       The chemical shift, referenced.
@@ -58,7 +66,7 @@ class MagresAtomMs(object):
 
     return self.atom.reference - self.iso
 
-  @lazyproperty
+  @property
   def aniso(self):
     """
       The shielding anisotropy. Defined by
@@ -68,7 +76,7 @@ class MagresAtomMs(object):
     ev = self.evals
     return ev[2] - (ev[0] + ev[1])/2.0
 
-  @lazyproperty
+  @property
   def zeta(self):
     """
       The shielding anisotropy (alternative). Defined by
@@ -77,7 +85,7 @@ class MagresAtomMs(object):
     """
     return self.evals[2] - self.iso
 
-  @lazyproperty
+  @property
   def eta(self):
     """
       The shielding asymmetry. Defined by
@@ -86,7 +94,7 @@ class MagresAtomMs(object):
     """
     return (self.evals[1] - self.evals[0]) / self.zeta
 
-  @lazyproperty
+  @property
   def evalsvecs(self):
     """
       The eigenvalues and eigenvectors of the symmetric part of sigma, ordered according to the Haeberlen convention:
@@ -106,7 +114,7 @@ class MagresAtomMs(object):
 
     return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
 
-  @lazyproperty
+  @property
   def evecs(self):
     """
       The eigenvectors of sigma, ordered according to the Haeberlen convention:
@@ -121,7 +129,7 @@ class MagresAtomMs(object):
     """
     return self.evalsvecs[1]
   
-  @lazyproperty
+  @property
   def evals(self):
     """
       The eigenvalues of sigma, ordered according to the Haeberlen convention:
@@ -136,7 +144,7 @@ class MagresAtomMs(object):
     """
     return self.evalsvecs[0]
 
-  @lazyproperty
+  @property
   def evalsvecs_mehring(self):
     """
       The eigenvalues and eigenvectors of the symmetric part of sigma ordered according to the Mehring notation:
@@ -150,7 +158,7 @@ class MagresAtomMs(object):
 
     return ([se[0][0], se[0][1], se[0][2]], [se[1][0], se[1][1], se[1][2]])
   
-  @lazyproperty
+  @property
   def evals_mehring(self):
     """
       The eigenvalues of sigma ordered according to the Mehring notation:
@@ -159,7 +167,7 @@ class MagresAtomMs(object):
     """
     return self.evalsvecs_mehring[0]
 
-  @lazyproperty
+  @property
   def evecs_mehring(self):
     """
       The eigenvectors of sigma ordered according to the Mehring notation:
@@ -168,7 +176,7 @@ class MagresAtomMs(object):
     """
     return self.evalsvecs_mehring[1]
 
-  @lazyproperty
+  @property
   def span(self):
     """
       The span of sigma. Defined by
@@ -177,7 +185,7 @@ class MagresAtomMs(object):
     """
     return self.evals_mehring[2] - self.evals_mehring[0]
   
-  @lazyproperty
+  @property
   def skew(self):
     """
       The skew of sigma. Defined by

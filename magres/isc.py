@@ -2,7 +2,6 @@ import constants
 import html_repr
 import numpy
 
-from decorators import lazyproperty
 from view import ListPropertyView
 
 class MagresAtomIsc(object):
@@ -74,7 +73,15 @@ class MagresAtomIsc(object):
       The reduced indirect spin-spin coupling K tensor.
     """
     return numpy.array(self.magres_isc['K'])
-  
+ 
+  @K.setter
+  def K(self, value):
+    sh = numpy.shape(value)
+    if sh != (3,3):
+      raise Exception("Wrong shape for new indirect spin-spin coupling tensor, {}. Should be (3,3)".format(sh))
+
+    self.magres_isc['K'] = value 
+
   @property
   def K_iso(self):
     """
@@ -124,7 +131,7 @@ class MagresAtomIsc(object):
     """
     return (self.J - self.J.T)/2.0
 
-  @lazyproperty
+  @property
   def K_evalsvecs(self):
     evals, evecs = numpy.linalg.eig(self.K_sym)
 
@@ -132,15 +139,15 @@ class MagresAtomIsc(object):
 
     return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
 
-  @lazyproperty
+  @property
   def K_evecs(self):
     return self.K_evalsvecs[1]
   
-  @lazyproperty
+  @property
   def K_evals(self):
     return self.K_evalsvecs[0]
 
-  @lazyproperty
+  @property
   def J_evalsvecs(self):
     evals, evecs = numpy.linalg.eig(self.J_sym)
 
@@ -148,11 +155,11 @@ class MagresAtomIsc(object):
 
     return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
 
-  @lazyproperty
+  @property
   def J_evecs(self):
     return self.J_evalsvecs[1]
   
-  @lazyproperty
+  @property
   def J_evals(self):
     return self.J_evalsvecs[0]
 

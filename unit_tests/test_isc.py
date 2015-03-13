@@ -30,6 +30,21 @@ class MagresIscTest(unittest.TestCase):
       self.assertTrue(abs(isc.K_evals[2] - isc.K_iso) >= abs(isc.K_evals[0] - isc.K_iso))
       self.assertTrue(abs(isc.K_evals[0] - isc.K_iso) >= abs(isc.K_evals[1] - isc.K_iso))
 
+  def test_replace_isc(self):
+    atoms = MagresAtoms.load_magres(os.path.join(DATA_DIR, "ethanol-isc.magres"))
+
+    atoms.C2.isc[0].K
+
+    with self.assertRaises(Exception):
+      atoms.C2.isc[0].K = numpy.array([1,2,3])
+
+    orig_iso = atoms.C2.isc[0].K_iso
+    new_K = atoms.C2.isc[0].K * 2.0
+
+    atoms.C2.isc[0].K = new_K
+    
+    self.assertEqual(atoms.C2.isc[0].K_iso, orig_iso * 2.0)
+
   def test_full_isc(self):
     magres_files = [MagresFile(open(os.path.join(DATA_DIR, "ethanol", f))) for f in os.listdir(os.path.join(DATA_DIR, "ethanol")) if f.startswith('ethanol-jc')]
 

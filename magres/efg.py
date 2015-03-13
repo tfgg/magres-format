@@ -1,7 +1,7 @@
 import numpy
 import constants
 import html_repr
-from decorators import lazyproperty
+#from decorators import property
 
 class MagresAtomEfg(object):
   """
@@ -14,14 +14,22 @@ class MagresAtomEfg(object):
     self.atom = atom
     self.magres_efg = magres_efg
 
-  @lazyproperty
+  @property
   def V(self):
     """
       The EFG V tensor in atomic units.
     """
     return numpy.array(self.magres_efg['V'])
 
-  @lazyproperty
+  @V.setter
+  def V(self, value):
+    sh = numpy.shape(value)
+    if sh != (3,3):
+      raise Exception("Wrong shape for new electric field gradient tensor, {}. Should be (3,3)".format(sh))
+
+    self.magres_efg['V'] = value 
+
+  @property
   def Cq(self):
     """
       The Cq of the V tensor.
@@ -35,13 +43,13 @@ class MagresAtomEfg(object):
     except KeyError:
       return 0.0
 
-  @lazyproperty
+  @property
   def eta(self):
     evals = self.evals
 
     return (evals[0] - evals[1])/evals[2]
 
-  @lazyproperty
+  @property
   def evalsvecs(self):
     """
       The eigenvalues and eigenvectors of V, ordered according to the Haeberlen convention:
@@ -62,7 +70,7 @@ class MagresAtomEfg(object):
 
     return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
 
-  @lazyproperty
+  @property
   def evecs(self):
     """
       The eigenvectors of V, ordered according to the Haeberlen convention:
@@ -79,7 +87,7 @@ class MagresAtomEfg(object):
     """
     return self.evalsvecs[1]
   
-  @lazyproperty
+  @property
   def evals(self):
     """
       The eigenvalues of V, ordered according to the Haeberlen convention:

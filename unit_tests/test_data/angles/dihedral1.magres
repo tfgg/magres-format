@@ -1,0 +1,11 @@
+#$magres-abinitio-v1.0
+<atoms>
+units lattice Angstrom
+lattice 10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 10.0   
+units atom Angstrom
+atom C C 1 -1.0 -1.0 0.0
+atom C C 2 0.0 0.0 0.0
+atom C C 3 1.0 0.0 0.0
+atom C C 4 2.0 -1.0 0.0
+</atoms>
+

@@ -15,6 +15,15 @@ import re
 import constants
 import html_repr
 
+from numpy import (
+  cross,
+  dot, 
+  sqrt, 
+  rad2deg, 
+  arctan2
+)  
+from numpy.linalg import norm
+
 from format import MagresFile
 
 from efg import MagresAtomEfg
@@ -202,13 +211,41 @@ class MagresAtomsView(object):
     dr1 = self.least_mirror(atom1.position, atom2.position)[1] - atom2.position
     dr2 = self.least_mirror(atom3.position, atom2.position)[1] - atom2.position
 
-    dr1 = dr1 / math.sqrt(numpy.dot(dr1, dr1))
-    dr2 = dr2 / math.sqrt(numpy.dot(dr2, dr2))
+    dr1 = dr1 / sqrt(dot(dr1, dr1))
+    dr2 = dr2 / sqrt(dot(dr2, dr2))
 
     if degrees:
-      return math.acos(numpy.dot(dr1, dr2)) * 180.0 / math.pi
+      return math.acos(dot(dr1, dr2)) * 180.0 / math.pi
     else:
-      return math.acos(numpy.dot(dr1, dr2))
+      return math.acos(dot(dr1, dr2))
+
+  def dihedral(self, atom1, atom2, atom3, atom4, degrees=False):
+    # Use least_mirror for positions rather than atom.position to allow for a closer image
+    dr12 = self.least_mirror(atom2.position, atom1.position)[1] - atom1.position
+    dr23 = self.least_mirror(atom3.position, atom2.position)[1] - atom2.position
+    dr34 = self.least_mirror(atom4.position, atom3.position)[1] - atom3.position
+
+    # Make unit vectors
+    dr12 = dr12 / norm(dr12)
+    dr23 = dr23 / norm(dr23)
+    dr34 = dr34 / norm(dr34)
+
+    norm1 = cross(dr12, dr23)
+    norm2 = cross(dr23, dr34)
+
+    # Get m, where m, norm1 and bond2 form an orthogonal frame
+    m = cross(norm1, dr23)
+
+    # x = cos(theta) where theta is the angle between norm1 and norm2
+    x = dot(norm1, norm2)
+
+    # y = cos(phi) where phi is the angle between m and norm2
+    y = dot(m, norm2)
+
+    if degrees:
+      return rad2deg(arctan2(y, x))
+    else:
+      return arctan2(y, x)
 
   def _all_images_within(self, a, b, r):
     """

@@ -331,6 +331,8 @@ class MagresAtomsView(object):
       return MagresAtomsView(list(new_atoms), self.lattice)
 
   def _repr_png_(self):
+    return None # Disable for now
+
     try:
       import pydot
     except ImportError:
@@ -409,23 +411,25 @@ class MagresAtomsView(object):
     if has_isc:
       isc_done = set()
 
-      K_isos = [abs(isc.K_iso) for iscs in self.isc
-                               for isc in iscs 
+      K_isos = [abs(isc.K_iso) for isc in self.isc
                                if isc.atom1 in atoms_set and isc.atom2 in atoms_set]
 
       min_isc = min(K_isos)
       max_isc = max(K_isos)
+
+      print K_isos
 
       def strength_color_K(K_iso):
           x = min(max((abs(K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
           y = x*255
 
           if K_iso > 0.0:
-            return "#FF0000%02X" % y
+            return "#FF0000{:02X}".format(int(y))
           else:
-            return "#0000FF%02X" % y
+            return "#0000FF{:02X}".format(int(y))
 
-      for isc in flatten(self.isc):
+      for isc in self.isc:
+        print isc
         strength = min(max((abs(isc.K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
 
         if strength > 0.01 and (isc.atom2, isc.atom1) not in isc_done \

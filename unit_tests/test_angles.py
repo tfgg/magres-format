@@ -45,6 +45,11 @@ class MagresDihedral(unittest.TestCase):
   def test_dihedral4(self):
     atoms = MagresAtoms.load_magres(os.path.join(DATA_DIR, "angles/dihedral4.magres"))
   
+    self.assertTrue(allclose(atoms.dihedral(atoms.C1, atoms.C2, atoms.C3, atoms.C4, degrees=True), -45.0))
+
+  def test_dihedral5(self):
+    atoms = MagresAtoms.load_magres(os.path.join(DATA_DIR, "angles/dihedral5.magres"))
+
     self.assertTrue(allclose(atoms.dihedral(atoms.C1, atoms.C2, atoms.C3, atoms.C4, degrees=True), 45.0))
 
 if __name__ == "__main__":

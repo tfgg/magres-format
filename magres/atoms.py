@@ -234,7 +234,7 @@ class MagresAtomsView(object):
     norm2 = cross(dr23, dr34)
 
     # Get m, where m, norm1 and bond2 form an orthogonal frame
-    m = cross(norm1, dr23)
+    m = cross(dr23, norm1)
 
     # x = cos(theta) where theta is the angle between norm1 and norm2
     x = dot(norm1, norm2)

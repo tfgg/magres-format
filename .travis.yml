@@ -5,7 +5,7 @@ python:
 
 before_install:
  - travis_retry sudo apt-get update
- - travis_retry sudo apt-get install gfortran g77
+ - travis_retry sudo apt-get install gfortran
  - travis_retry sudo apt-get install libblas-dev liblapack-dev
 
 install:

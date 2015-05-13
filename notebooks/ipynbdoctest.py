@@ -9,7 +9,7 @@ Each cell is submitted to the kernel, and the outputs are compared with those st
 
 from __future__ import print_function
 
-import os,sys,time
+import os, sys, time
 import base64
 import re
 from difflib import unified_diff as diff
@@ -201,10 +201,17 @@ def test_notebook(nb):
     km.shutdown_kernel()
     del km
 
+    return (successes, failures, errors)
+
 if __name__ == '__main__':
     for ipynb in sys.argv[1:]:
         print("testing %s" % ipynb)
+
         with open(ipynb) as f:
             nb = reads(f.read(), 'json')
-        test_notebook(nb)
+
+        successes, failures, errors = test_notebook(nb)
+
+        if failures > 0 or errors > 0:
+          sys.exit(1)
 

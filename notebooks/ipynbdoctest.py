@@ -53,7 +53,10 @@ def sanitize(s):
     
     # normalize UUIDs:
     s = re.sub(r'[a-f0-9]{8}(\-[a-f0-9]{4}){3}\-[a-f0-9]{12}', 'U-U-I-D', s)
-    
+   
+    # only look at a few decimal places
+    s = re.sub("([0-9]+)\.([0-9]{,3})([0-9]+)", r"\1.\2", s)
+
     return s
 
 

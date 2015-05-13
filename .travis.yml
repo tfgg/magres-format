@@ -9,8 +9,8 @@ before_install:
  - travis_retry sudo apt-get install libblas-dev liblapack-dev
 
 install:
-  - "pip install ."
-  - "pip install -q -r requirements.txt"
+  - pip install .
+  - travis_wait pip install -q -r requirements.txt
 
 script: python tests.py && ./run_all_notebooks.sh
 

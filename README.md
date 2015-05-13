@@ -1,6 +1,8 @@
 magres-format
 =============
 
+[![Build Status](https://travis-ci.org/tfgg/magres-format.svg?branch=master)](https://travis-ci.org/tfgg/magres-format)
+
 Code for parsing the CCP-NC ab-initio magnetic resonance file format as used in the latest version of [CASTEP](http://www.castep.org), coming soon to other codes such as [Quantum ESPRESSO](http://www.quantum-espresso.org). See [more on this page](http://www.ccpnc.ac.uk/pmwiki.php/CCPNC/Fileformat)
 
 Documentation for the is [available here](http://tfgg.me/magres-python/).

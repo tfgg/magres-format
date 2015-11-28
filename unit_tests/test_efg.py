@@ -10,7 +10,7 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_data"
 class MagresEfgTest(unittest.TestCase):
   def test_efg(self):
     atoms = MagresAtoms.load_magres(os.path.join(DATA_DIR, "ethanol/ethanol-nmr.magres"))
-    
+
     self.assertTrue(hasattr(atoms, "efg"))
 
     self.assertEqual(len(atoms.efg), 9)
@@ -24,6 +24,14 @@ class MagresEfgTest(unittest.TestCase):
     for efg in atoms.efg:
       self.assertTrue(abs(efg.evals[2]) >= abs(efg.evals[0]))
       self.assertTrue(abs(efg.evals[0]) >= abs(efg.evals[1]))
+
+    # Check that eta is positive and <=1 (Cq can be positive or negative)
+    # eta = (Vxx - Vyy)/Vzz, 0 <= eta <= 1
+    for efg in atoms.efg:
+      self.assertTrue((efg.evals[1]-efg.evals[0])/efg.evals[2]>=0)
+      self.assertTrue((efg.evals[1]-efg.evals[0])/efg.evals[2]<=1)
+      self.assertTrue(efg.eta>=0)
+      self.assertTrue(efg.eta<=1)
 
   def test_replace_efg(self):
     """
@@ -39,7 +47,7 @@ class MagresEfgTest(unittest.TestCase):
     new_V = atoms.C1.efg.V * 2.0
 
     atoms.C1.efg.V = new_V
-    
+
     self.assertEqual(atoms.C1.efg.Cq, orig_Cq * 2.0)
 
 if __name__ == "__main__":

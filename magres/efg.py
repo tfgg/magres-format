@@ -7,7 +7,7 @@ class MagresAtomEfg(object):
   """
     Representation of the electric field gradient on a particular atom.
   """
-  
+
   __slots__ = ["atom", "magres_efg"]
 
   def __init__(self, atom, magres_efg):
@@ -27,7 +27,7 @@ class MagresAtomEfg(object):
     if sh != (3,3):
       raise Exception("Wrong shape for new electric field gradient tensor, {}. Should be (3,3)".format(sh))
 
-    self.magres_efg['V'] = value 
+    self.magres_efg['V'] = value
 
   @property
   def Cq(self):
@@ -45,9 +45,14 @@ class MagresAtomEfg(object):
 
   @property
   def eta(self):
+    """
+      The asymmetry of the V tensor
+
+      :math: `(V_{XX}-V_{YY})/V_{ZZ}`
+    """
     evals = self.evals
 
-    return (evals[0] - evals[1])/evals[2]
+    return (evals[1] - evals[0])/evals[2]
 
   @property
   def evalsvecs(self):
@@ -55,7 +60,7 @@ class MagresAtomEfg(object):
       The eigenvalues and eigenvectors of V, ordered according to the Haeberlen convention:
 
       :math:`|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|`
-      
+
       where
 
         :math:`V_{XX}` = evals[0]
@@ -76,7 +81,7 @@ class MagresAtomEfg(object):
       The eigenvectors of V, ordered according to the Haeberlen convention:
 
       :math:`|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|`
-      
+
       where
 
         :math:`V_{XX}` = evals[0]
@@ -86,14 +91,14 @@ class MagresAtomEfg(object):
         :math:`V_{ZZ}` = evals[2]
     """
     return self.evalsvecs[1]
-  
+
   @property
   def evals(self):
     """
       The eigenvalues of V, ordered according to the Haeberlen convention:
 
       :math:`|V_{ZZ}| \geq |V_{XX}| \geq |V_{YY}|`
-      
+
       where
 
         :math:`V_{XX}` = evals[0]

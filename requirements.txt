@@ -1,5 +1,5 @@
 numpy
-ipython==2.4.1
+ipython>=2.4.1
 pyzmq
 jsonschema
 jinja2

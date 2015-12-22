@@ -1,5 +1,4 @@
 from __future__ import print_function
-
 import sys
 from magres.format import MagresFile
 from magres.utils import find_all_magres
@@ -17,5 +16,4 @@ atoms.set_reference('C', 55.0)
 atoms.set_reference('O', -2.0)
 
 for atom in atoms:
-  print(atom, atom.efg.Cq, atom.ms.iso, atom.isc[coupling_atom].J_iso)
-
+    print(atom, atom.efg.Cq, atom.ms.iso, atom.isc[coupling_atom].J_iso)

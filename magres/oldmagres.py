@@ -5,144 +5,168 @@ import math
 import numpy
 from . import format
 
+
 def castep_get_lattice(castep_file):
-#        Real Lattice(A)                      Reciprocal Lattice(1/A)
-#   15.3790010   0.0000000   0.0000000        0.4085561   0.0000000   0.0000000
-#   0.0000000  15.3790010   0.0000000        0.0000000   0.4085561   0.0000000
-#   0.0000000   0.0000000  15.1986010        0.0000000   0.0000000   0.4134055
+    #        Real Lattice(A)                      Reciprocal Lattice(1/A)
+    #   15.3790010   0.0000000   0.0000000        0.4085561   0.0000000   0.0000000
+    #   0.0000000  15.3790010   0.0000000        0.0000000   0.4085561   0.0000000
+    #   0.0000000   0.0000000  15.1986010        0.0000000   0.0000000   0.4134055
 
-   lattice_regex = re.compile(r"\s+Real Lattice\(A\)\s+Reciprocal Lattice\(1\/A\)\n(.*?)\n(.*?)\n(.*?)\n")
+    lattice_regex = re.compile(r"\s+Real Lattice\(A\)\s+Reciprocal Lattice\(1\/A\)\n(.*?)\n(.*?)\n(.*?)\n")
 
-   lattice = lattice_regex.findall(castep_file)[-1] # Get the last lattice in the output
+    lattice = lattice_regex.findall(castep_file)[-1]  # Get the last lattice in the output
 
-   xx, xy, xz, _, _, _ = list(map(float, lattice[0].split()))
-   yx, yy, yz, _, _, _ = list(map(float, lattice[1].split()))
-   zx, zy, zz, _, _, _ = list(map(float, lattice[2].split()))
+    xx, xy, xz, _, _, _ = list(map(float, lattice[0].split()))
+    yx, yy, yz, _, _, _ = list(map(float, lattice[1].split()))
+    zx, zy, zz, _, _, _ = list(map(float, lattice[2].split()))
 
-   return [[xx, xy, xz],
-           [yx, yy, yz],
-           [zx, zy, zz],]
+    return [[xx, xy, xz],
+            [yx, yy, yz],
+            [zx, zy, zz], ]
+
 
 class OldMagres(object):
-  def __init__(self, magres_file=None, castep_file=None):
-    if magres_file is not None:
-      self.parse(magres_file)
+    def __init__(self, magres_file=None, castep_file=None):
+        if magres_file is not None:
+            self.parse(magres_file)
 
-    if castep_file is not None:
-      self.parse_castep(castep_file)
+        if castep_file is not None:
+            self.parse_castep(castep_file)
 
-  def parse_castep(self, castep_file):
-    lattice = castep_get_lattice(castep_file)
+    def parse_castep(self, castep_file):
+        lattice = castep_get_lattice(castep_file)
 
-    if 'lattice' not in self.data['atoms']:
-      self.data['atoms']['lattice'] = []
-    
-    if 'units' not in self.data['atoms']:
-      self.data['atoms']['units'] = []
+        if 'lattice' not in self.data['atoms']:
+            self.data['atoms']['lattice'] = []
 
-    self.data['atoms']['units'].append(['lattice', 'Angstrom'])
-    self.data['atoms']['lattice'].append(lattice)
+        if 'units' not in self.data['atoms']:
+            self.data['atoms']['units'] = []
 
-  def parse(self, magres_file):
-    """
-      Parse an CASTEP old-style .magres file for total tensors.
-    """
+        self.data['atoms']['units'].append(['lattice', 'Angstrom'])
+        self.data['atoms']['lattice'].append(lattice)
 
-    atom_regex = re.compile("[=]+[\r\n]+( Perturbing Atom|Atom): ([A-Za-z\:0-9]+)\s+([0-9]+)[\r\n]+[=]+[\r\n]+([^=]+)[\r\n]+", re.M | re.S)
-    shielding_tensor_regex = re.compile("\s{0,}(.*?) Shielding Tensor[\r\n]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)[\n\r]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)[\n\r]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+")
+    def parse(self, magres_file):
+        """
+          Parse an CASTEP old-style .magres file for total tensors.
+        """
 
-    jc_tensor_regex = re.compile("\s{0,}J-coupling (.*?)[\r\n]+\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)[\n\r]+\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)[\r\n]+\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)\s+")
+        atom_regex = re.compile(
+            "[=]+[\r\n]+( Perturbing Atom|Atom): ([A-Za-z\:0-9]+)\s+([0-9]+)[\r\n]+[=]+[\r\n]+([^=]+)[\r\n]+",
+            re.M | re.S)
+        shielding_tensor_regex = re.compile(
+            "\s{0,}(.*?) Shielding Tensor[\r\n]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)[\n\r]+\s+(["
+            "0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)[\n\r]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+")
 
-    efg_tensor_regex = re.compile("\s{0,}(.*?) tensor[\r\n]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)[\r\n]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)[\r\n]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+")
+        jc_tensor_regex = re.compile(
+            "\s{0,}J-coupling (.*?)[\r\n]+\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)[\n\r]+\s+(["
+            "0-9eE\.\-]+)\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)[\r\n]+\s+([0-9eE\.\-]+)\s+([0-9eE\.\-]+)\s+(["
+            "0-9eE\.\-]+)\s+")
 
-    coords_regex = re.compile("([A-Za-z\:0-9]+)\s+([0-9]+)\s+Coordinates\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+A[\r\n]+")
+        efg_tensor_regex = re.compile(
+            "\s{0,}(.*?) tensor[\r\n]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)[\r\n]+\s+([0-9\.\-]+)\s+(["
+            "0-9\.\-]+)\s+([0-9\.\-]+)[\r\n]+\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+")
 
-    atoms = atom_regex.findall(magres_file)
+        coords_regex = re.compile(
+            "([A-Za-z\:0-9]+)\s+([0-9]+)\s+Coordinates\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)\s+A[\r\n]+")
 
-    coords = coords_regex.findall(magres_file)
+        atoms = atom_regex.findall(magres_file)
 
-    self.data = {'atoms': {'atom': [], 'units': []}, 'magres': {'units': []}}
+        coords = coords_regex.findall(magres_file)
 
-    self.data['atoms']['units'].append(['atom', 'Angstrom'])
+        self.data = {'atoms': {'atom': [], 'units': []}, 'magres': {'units': []}}
 
-    found_atoms = set()
+        self.data['atoms']['units'].append(['atom', 'Angstrom'])
 
-    for label, i, x, y, z in coords:
-      i = int(i)
-      s = label.split(':')[0]
-      index = (label,i)
+        found_atoms = set()
 
-      if index not in found_atoms:
-        self.data['atoms']['atom'].append({'species': s, 'label': label, 'index': i, 'position':[float(x),float(y),float(z)]})
-        found_atoms.add(index)
+        for label, i, x, y, z in coords:
+            i = int(i)
+            s = label.split(':')[0]
+            index = (label, i)
 
-    perturbing_index = None 
+            if index not in found_atoms:
+                self.data['atoms']['atom'].append(
+                    {'species': s, 'label': label, 'index': i, 'position': [float(x), float(y), float(z)]})
+                found_atoms.add(index)
 
-    def shape_tensor(els):
-      return numpy.reshape(numpy.array(list(map(float,els))), (3,3)).tolist()
+        perturbing_index = None
 
-    for atom in atoms:
-      index = atom[1].split(":")[0], int(atom[2])
-      if atom[0] == " Perturbing Atom":
-        perturbing_index = index
+        def shape_tensor(els):
+            return numpy.reshape(numpy.array(list(map(float, els))), (3, 3)).tolist()
 
-    ms_units = False
-    efg_units = False
-    jc_units = False
+        for atom in atoms:
+            index = atom[1].split(":")[0], int(atom[2])
+            if atom[0] == " Perturbing Atom":
+                perturbing_index = index
 
-    for atom in atoms:
-      index = atom[1], int(atom[2])
+        ms_units = False
+        efg_units = False
+        jc_units = False
 
-      shielding_tensors = shielding_tensor_regex.findall(atom[3])
-      if len(shielding_tensors) != 0:
-        if not ms_units:
-          self.data['magres']['units'].append(['ms', 'ppm'])
-          ms_units = True
+        for atom in atoms:
+            index = atom[1], int(atom[2])
 
-        if 'ms' not in self.data['magres']:
-          self.data['magres']['ms'] = []
+            shielding_tensors = shielding_tensor_regex.findall(atom[3])
+            if len(shielding_tensors) != 0:
+                if not ms_units:
+                    self.data['magres']['units'].append(['ms', 'ppm'])
+                    ms_units = True
 
-        for tensor in shielding_tensors:
-          self.data['magres']['ms'].append({'atom': {'label': index[0], 'index': index[1]}, 'sigma': shape_tensor(tensor[1:])})
+                if 'ms' not in self.data['magres']:
+                    self.data['magres']['ms'] = []
 
-      efg_tensors = efg_tensor_regex.findall(atom[3])
+                for tensor in shielding_tensors:
+                    self.data['magres']['ms'].append(
+                        {'atom': {'label': index[0], 'index': index[1]}, 'sigma': shape_tensor(tensor[1:])})
 
-      if len(efg_tensors) != 0:
-        if not efg_units:
-          self.data['magres']['units'].append(['efg', 'au'])
-          efg_units = True
+            efg_tensors = efg_tensor_regex.findall(atom[3])
 
-        if 'efg' not in self.data['magres']:
-          self.data['magres']['efg'] = []
+            if len(efg_tensors) != 0:
+                if not efg_units:
+                    self.data['magres']['units'].append(['efg', 'au'])
+                    efg_units = True
 
-        for tensor in efg_tensors:
-          self.data['magres']['efg'].append({'atom': {'label': index[0], 'index': index[1]}, 'V': shape_tensor(tensor[1:])})
+                if 'efg' not in self.data['magres']:
+                    self.data['magres']['efg'] = []
 
-      jc_tensors = jc_tensor_regex.findall(atom[3])
-      if len(jc_tensors) != 0:
-        if not jc_units:
-          self.data['magres']['units'].append(['isc', '10^19.T^2.J^-1'])
-          self.data['magres']['units'].append(['isc_fc', '10^19.T^2.J^-1'])
-          self.data['magres']['units'].append(['isc_spin', '10^19.T^2.J^-1'])
-          self.data['magres']['units'].append(['isc_orbital_p', '10^19.T^2.J^-1'])
-          self.data['magres']['units'].append(['isc_orbital_d', '10^19.T^2.J^-1'])
-          jc_units = True
+                for tensor in efg_tensors:
+                    self.data['magres']['efg'].append(
+                        {'atom': {'label': index[0], 'index': index[1]}, 'V': shape_tensor(tensor[1:])})
 
-        for tensor in jc_tensors:
-          if tensor[0] == "Fermi Contact": tag = "isc_fc"
-          if tensor[0] == "Spin Dipole": tag = "isc_spin"
-          if tensor[0] == "Diamagnetic": tag = "isc_orbital_d"
-          if tensor[0] == "Paramagnetic": tag = "isc_orbital_p"
-          if tensor[0] == "Total": tag = "isc"
+            jc_tensors = jc_tensor_regex.findall(atom[3])
+            if len(jc_tensors) != 0:
+                if not jc_units:
+                    self.data['magres']['units'].append(['isc', '10^19.T^2.J^-1'])
+                    self.data['magres']['units'].append(['isc_fc', '10^19.T^2.J^-1'])
+                    self.data['magres']['units'].append(['isc_spin', '10^19.T^2.J^-1'])
+                    self.data['magres']['units'].append(['isc_orbital_p', '10^19.T^2.J^-1'])
+                    self.data['magres']['units'].append(['isc_orbital_d', '10^19.T^2.J^-1'])
+                    jc_units = True
 
-          if tag not in self.data['magres']:
-            self.data['magres'][tag] = []
+                for tensor in jc_tensors:
+                    if tensor[0] == "Fermi Contact":
+                        tag = "isc_fc"
+                    if tensor[0] == "Spin Dipole":
+                        tag = "isc_spin"
+                    if tensor[0] == "Diamagnetic":
+                        tag = "isc_orbital_d"
+                    if tensor[0] == "Paramagnetic":
+                        tag = "isc_orbital_p"
+                    if tensor[0] == "Total":
+                        tag = "isc"
 
-          self.data['magres'][tag].append({'atom1': {'label': perturbing_index[0], 'index': perturbing_index[1]}, 'atom2': {'label': index[0], 'index': index[1]},  'K': shape_tensor(tensor[1:])})
- 
-  def as_new_format(self):
-    magres_file = format.MagresFile()
-    magres_file.load(self.data)
+                    if tag not in self.data['magres']:
+                        self.data['magres'][tag] = []
 
-    return magres_file
+                    self.data['magres'][tag].append({
+                                                        'atom1': {
+                                                            'label': perturbing_index[0], 'index': perturbing_index[1]
+                                                            }, 'atom2': {'label': index[0], 'index': index[1]},
+                                                        'K': shape_tensor(tensor[1:])
+                                                        })
 
+    def as_new_format(self):
+        magres_file = format.MagresFile()
+        magres_file.load(self.data)
+
+        return magres_file

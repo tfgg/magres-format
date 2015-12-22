@@ -19,28 +19,32 @@ def list_view(self):
 
     html.append(self[0]._repr_html_row_head_())
     for item in self:
-      html.append(item._repr_html_row_())
+        html.append(item._repr_html_row_())
 
     html.append("</tbody></table>")
 
     return "\n".join(html)
 
+
 def tensor(V):
     html = ["<table class='tensor'>"]
 
-    html.append("<tr><td>{:.3f}</td><td>{:.3f}</td><td>{:.3f}</td></tr>".format(*V[0,:]))
-    html.append("<tr><td>{:.3f}</td><td>{:.3f}</td><td>{:.3f}</td></tr>".format(*V[1,:]))
-    html.append("<tr><td>{:.3f}</td><td>{:.3f}</td><td>{:.3f}</td></tr>".format(*V[2,:]))
+    html.append("<tr><td>{:.3f}</td><td>{:.3f}</td><td>{:.3f}</td></tr>".format(*V[0, :]))
+    html.append("<tr><td>{:.3f}</td><td>{:.3f}</td><td>{:.3f}</td></tr>".format(*V[1, :]))
+    html.append("<tr><td>{:.3f}</td><td>{:.3f}</td><td>{:.3f}</td></tr>".format(*V[2, :]))
 
     html.append("</table>")
 
     return "\n".join(html)
 
+
 def efg_row_head(self):
-  return "<thead><tr><td>Atom</td><td>Q</td><td>Cq</td></tr></thead>"
+    return "<thead><tr><td>Atom</td><td>Q</td><td>Cq</td></tr></thead>"
+
 
 def efg_row(self):
-  return "<tr><td>{}</td><td>{:.3f}</td><td>{:.3f}</td></tr>".format(self.atom, self.atom.Q, self.Cq)
+    return "<tr><td>{}</td><td>{:.3f}</td><td>{:.3f}</td></tr>".format(self.atom, self.atom.Q, self.Cq)
+
 
 def efg(self):
     html = ["<h1>EFG on " + str(self.atom) + "</h1>"]
@@ -70,11 +74,14 @@ def efg(self):
 
     return "\n".join(html)
 
+
 def ms_row_head(self):
-  return "<thead><tr><td>Atom</td><td>ms iso</td></tr></thead>"
+    return "<thead><tr><td>Atom</td><td>ms iso</td></tr></thead>"
+
 
 def ms_row(self):
-  return "<tr><td>{}</td><td>{:.3f}</td></tr>".format(self.atom, self.iso)
+    return "<tr><td>{}</td><td>{:.3f}</td></tr>".format(self.atom, self.iso)
+
 
 def ms(self):
     html = ["<h1>MS on " + str(self.atom) + "</h1>"]
@@ -102,6 +109,7 @@ def ms(self):
     html.append("</tbody></table>")
 
     return "\n".join(html)
+
 
 def isc(self):
     html = ["<h1>ISC between {:s} and {:s}</h1>".format(self.atom1, self.atom2)]
@@ -133,4 +141,3 @@ def isc(self):
     html.append("</tbody></table>")
 
     return "\n".join(html)
-

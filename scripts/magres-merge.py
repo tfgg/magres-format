@@ -3,14 +3,15 @@
 """
   Merge several magres files into one.
 """
+from __future__ import print_function
 import sys
 from magres.format import MagresFile
 
 if __name__ == "__main__":
-  magres_file_paths = sys.argv[1:]
+    magres_file_paths = sys.argv[1:]
 
-  magres_files = [MagresFile(magres_file_path) for magres_file_path in magres_file_paths]
+    magres_files = [MagresFile(magres_file_path) for magres_file_path in magres_file_paths]
 
-  merged_magres_file = MagresFile.merge(magres_files)
+    merged_magres_file = MagresFile.merge(magres_files)
 
-  print(str(merged_magres_file))
+    print(str(merged_magres_file))

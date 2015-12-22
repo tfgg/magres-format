@@ -165,5 +165,5 @@ schema = {
          }
 
 if __name__ == "__main__":
-  print json.dumps(schema)
+  print(json.dumps(schema))
 

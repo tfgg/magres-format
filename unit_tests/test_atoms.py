@@ -17,44 +17,44 @@ class AtomsTest(unittest.TestCase):
   def test_within_cubic(self):
     atoms = MagresAtoms.load_magres(self.cubic)
 
-    self.assertEquals(len(atoms), 1)
+    self.assertEqual(len(atoms), 1)
 
     p = atoms[0].position
 
-    self.assertEquals(len(atoms.within(p, 1.0)), 7)
+    self.assertEqual(len(atoms.within(p, 1.0)), 7)
    
     num_within_3 = 0
     for atom in atoms.within(atoms[0], 5.0):
       if atom.dist(atoms[0]) <= 3.0:
         num_within_3 += 1
 
-    self.assertEquals(len(atoms.within(p, 3.0)), num_within_3)
+    self.assertEqual(len(atoms.within(p, 3.0)), num_within_3)
 
-    self.assertEquals(len(atoms.within(p, 5.0).within(p, 2.0)), len(atoms.within(p, 2.0).within(p, 5.0)))
+    self.assertEqual(len(atoms.within(p, 5.0).within(p, 2.0)), len(atoms.within(p, 2.0).within(p, 5.0)))
 
   def test_within_orthorhombic(self):
     atoms = MagresAtoms.load_magres(self.orthorhombic)
 
-    self.assertEquals(len(atoms), 1)
+    self.assertEqual(len(atoms), 1)
     
     p = atoms[0].position
 
-    self.assertEquals(len(atoms.within(p, 1.0)), 3)
+    self.assertEqual(len(atoms.within(p, 1.0)), 3)
    
     num_within_3 = 0
     for atom in atoms.within(p, 10.0):
       if atom.dist(atoms[0]) <= 3.0:
         num_within_3 += 1
 
-    self.assertEquals(len(atoms.within(p, 3.0)), num_within_3)
-    self.assertEquals(len(atoms.within(p, 5.0).within(p, 2.0)), len(atoms.within(p, 2.0).within(p, 5.0)))
+    self.assertEqual(len(atoms.within(p, 3.0)), num_within_3)
+    self.assertEqual(len(atoms.within(p, 5.0).within(p, 2.0)), len(atoms.within(p, 2.0).within(p, 5.0)))
 
   def test_species(self):
     atoms = MagresAtoms.load_magres(self.species)
 
-    self.assertEquals(len(atoms), 3)
-    self.assertEquals(len(atoms.species('H')), 1)
-    self.assertEquals(len(atoms.species('C')), 2)
+    self.assertEqual(len(atoms), 3)
+    self.assertEqual(len(atoms.species('H')), 1)
+    self.assertEqual(len(atoms.species('C')), 2)
 
   def test_labels(self):
     atoms = MagresAtoms.load_magres(self.species)

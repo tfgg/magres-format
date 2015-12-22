@@ -1,6 +1,6 @@
 import numpy
 
-import html_repr
+from . import html_repr
 
 #from decorators import property
 
@@ -110,7 +110,7 @@ class MagresAtomMs(object):
 
     evals, evecs = numpy.linalg.eig(self.sym)
 
-    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x - self.iso)))
+    se = list(zip(*sorted(zip(evals, evecs), key=lambda x_y: abs(x_y[0] - self.iso))))
 
     return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
 
@@ -154,7 +154,7 @@ class MagresAtomMs(object):
  
     evals, evecs = numpy.linalg.eig(self.sym)
 
-    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): x))
+    se = list(zip(*sorted(zip(evals, evecs), key=lambda x_y1: x_y1[0])))
 
     return ([se[0][0], se[0][1], se[0][2]], [se[1][0], se[1][1], se[1][2]])
   

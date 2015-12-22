@@ -1,7 +1,7 @@
 import os
 import re
-from format import BadVersion
-from atoms import MagresAtoms
+from .format import BadVersion
+from .atoms import MagresAtoms
 
 def get_numeric(s):
   """

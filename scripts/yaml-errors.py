@@ -22,8 +22,8 @@ for structure_name in data['structures']:
 
 tensor, quantity = expr.strip().split('.')
 
-for name, structure in data['structures'].items():
-  print "#" + name
+for name, structure in list(data['structures'].items()):
+  print("#" + name)
 
   for coupling in structure['couplings']:
     values = {}
@@ -53,7 +53,7 @@ for name, structure in data['structures'].items():
 
     bond_symbol = s(indices1[0]) + "-->" + s(indices2[0])
 
-    print "#  " + bond_symbol
+    print("#  " + bond_symbol)
  
     convert_K_to_J = False
     # Ok, so we don't have J_iso, but what about K_iso?
@@ -66,13 +66,13 @@ for name, structure in data['structures'].items():
     #    expr_idx = None
 
     if expr_idx is None:
-      print "# %s not present" % expr
+      print("# %s not present" % expr)
       continue
       #break
 
     for value in coupling['values']:
       if type(value['value']) is not list:
-        vals = map(float, str(value['value']).split(','))
+        vals = list(map(float, str(value['value']).split(',')))
       else:
         vals = value['value']
 
@@ -92,14 +92,14 @@ for name, structure in data['structures'].items():
     try:
       compare = values[main_dataset]
     except KeyError:
-      print "# skipping, no %s value" % main_dataset
+      print("# skipping, no %s value" % main_dataset)
       continue
 
     for compare_dataset in compare_datasets:
       try:
         value = values[compare_dataset]
       except:
-        print "# Missing coupling for", name, "from", compare_dataset
+        print("# Missing coupling for", name, "from", compare_dataset)
         value = None
 
       if value is not None:
@@ -115,4 +115,4 @@ for name, structure in data['structures'].items():
         abs_errors.append("%6s" % "?")
         rel_errors.append("%6s" % "?")
 
-    print "    ", "%6s" % "%.3f" % compare, "\t", "\t".join(vals), "\t".join(abs_errors), "\t", "\t".join(rel_errors), name, bond_symbol
+    print("    ", "%6s" % "%.3f" % compare, "\t", "\t".join(vals), "\t".join(abs_errors), "\t", "\t".join(rel_errors), name, bond_symbol)

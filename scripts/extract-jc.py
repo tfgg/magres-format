@@ -40,13 +40,13 @@ all_Js = {}
 tensors = ['isc', 'isc_fc', 'isc_spin', 'isc_orbital_p', 'isc_orbital_d']
 
 if a.J_tensor:
-  print "# Showing in Hz (J)"
+  print("# Showing in Hz (J)")
   property = "J_iso"
 else:
-  print "# Showing in 10e19.T^2.J^-1 (K)"
+  print("# Showing in 10e19.T^2.J^-1 (K)")
   property = "K_iso"
 
-print "# Number\tAtom1\tAtom2\t{}\tDist\tPath".format("\t".join(tensors))
+print("# Number\tAtom1\tAtom2\t{}\tDist\tPath".format("\t".join(tensors)))
 
 lines = []
 
@@ -90,8 +90,8 @@ else:
 
 for idx, path, atom1, atom2, data, dist, _ in lines:
   if a.numbers:
-    print " ".join(map(str,idx)), atom1, atom2, "\t".join(data), dist, path
+    print(" ".join(map(str,idx)), atom1, atom2, "\t".join(data), dist, path)
   else:
-    print atom1, atom2, "\t".join(data), dist, path
+    print(atom1, atom2, "\t".join(data), dist, path)
 
 

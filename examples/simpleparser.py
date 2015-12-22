@@ -15,13 +15,13 @@ for line in f:
     continue
 
   if cols[0] == "lattice":
-    lattice = map(float, cols[1:])
+    lattice = list(map(float, cols[1:]))
   elif cols[0] == "atom":
-    atoms.append((cols[1], cols[2], int(cols[3]), map(float, cols[4:7])))
+    atoms.append((cols[1], cols[2], int(cols[3]), list(map(float, cols[4:7]))))
   elif cols[0] == "isc":
-    isc_tensors.append((cols[1], int(cols[2]), cols[3], int(cols[4]), map(float, cols[5:14])))
+    isc_tensors.append((cols[1], int(cols[2]), cols[3], int(cols[4]), list(map(float, cols[5:14]))))
 
-print lattice
-print atoms
-print isc_tensors
+print(lattice)
+print(atoms)
+print(isc_tensors)
 

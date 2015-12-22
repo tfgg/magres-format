@@ -15,5 +15,5 @@ atoms.set_reference('C', 55.0)
 atoms.set_reference('O', -2.0)
 
 for atom in atoms:
-  print atom, atom.efg.Cq, atom.ms.iso, atom.isc[coupling_atom].J_iso
+  print(atom, atom.efg.Cq, atom.ms.iso, atom.isc[coupling_atom].J_iso)
 

@@ -6,7 +6,7 @@ class lazyproperty(object):
 
   def __init__(self, fget=None, fset=None, fdel=None, doc=None):
     self.fget = fget
-    self.func_name = fget.__name__
+    self.__name__ = fget.__name__
 
     self.__doc__ = doc
 

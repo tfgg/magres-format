@@ -12,8 +12,8 @@ def load_results(f):
 
   structures = {}
 
-  for name, structure in data['structures'].items():
-    print name
+  for name, structure in list(data['structures'].items()):
+    print(name)
 
     if name not in structures:
       structures[name] = {}
@@ -44,5 +44,5 @@ if __name__ == "__main__":
   coupling = structures['TlCl'][('Tl1', 'Cl1')]
 
   for value in coupling['values']:
-    print value['value']
+    print(value['value'])
 

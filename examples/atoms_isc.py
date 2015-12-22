@@ -12,10 +12,10 @@ for atom in atoms.get_species('H'):
 try:
   for atom in atoms.get_species('C'):
     atom.isotope = 12
-except ValueError, e:
-  print >>sys.stderr, "Error changing C isotopes:", e
+except ValueError as e:
+  print("Error changing C isotopes:", e, file=sys.stderr)
 
 # Loop over and print out coupling symbol, distance between atoms, isotropic coupling, anisotropic coupling and asymmetry
 for isc in atoms.isc:
-  print isc.atom1, isc.atom2, isc.dist, isc.J_iso, isc.J_aniso, isc.J_eta
+  print(isc.atom1, isc.atom2, isc.dist, isc.J_iso, isc.J_aniso, isc.J_eta)
 

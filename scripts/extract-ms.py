@@ -26,7 +26,7 @@ tensors = ['ms']
 
 lines = []
 
-print "# Number\tAtom\tIso\tAniso\tAsym\tPath"
+print("# Number\tAtom\tIso\tAniso\tAsym\tPath")
 
 if os.path.isfile(a.source_dir):
   magres_atoms = [MagresAtoms.load_magres(a.source_dir)]
@@ -44,7 +44,7 @@ for iso_ in a.iso:
 for i, atoms in enumerate(magres_atoms):
   num = get_numeric(atoms.magres_file.path)
 
-  for s, iso in isos.items():
+  for s, iso in list(isos.items()):
     for atom in atoms.species(s):
       atom.isotope = iso
 
@@ -66,7 +66,7 @@ lines = sorted(lines, key=lambda xs: xs[0])
 
 for idx, path, atom, data in lines:
   if a.numbers:
-    print " ".join(map(str, idx)) + "\t" + atom + "\t" + "\t".join("{:.3f}".format(x) for x in data) + "\t" + path
+    print(" ".join(map(str, idx)) + "\t" + atom + "\t" + "\t".join("{:.3f}".format(x) for x in data) + "\t" + path)
   else:
-    print atom + "\t" + "\t".join("{:.3f}".format(x) for x in data) + "\t" + path
+    print(atom + "\t" + "\t".join("{:.3f}".format(x) for x in data) + "\t" + path)
 

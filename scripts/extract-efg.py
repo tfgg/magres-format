@@ -27,9 +27,9 @@ tensors = ['efg',]# 'efg_local', 'efg_nonlocal']
 lines = []
 
 if a.numbers:
-  print "# Number\tAtom\tCq\tEta\tPath"
+  print("# Number\tAtom\tCq\tEta\tPath")
 else:
-  print "# Atom\tCq\tEta\tPath"
+  print("# Atom\tCq\tEta\tPath")
 
 if os.path.isfile(a.source):
   magres_atoms = [MagresAtoms.load_magres(a.source)]
@@ -58,8 +58,8 @@ lines = sorted(lines, key=lambda xs: xs[0])
 
 for idx, path, atom, data1, data2 in lines:
   if a.numbers:
-    print " ".join(map(str,idx)) + "\t" + atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2), path
+    print(" ".join(map(str,idx)) + "\t" + atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2), path)
   else:
-    print atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2), path
+    print(atom + "\t" + "\t".join(data1) + "\t" + "\t".join(data2), path)
 
 

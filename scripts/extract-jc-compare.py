@@ -40,7 +40,7 @@ for atoms in magres_atoms:
   have_all_tensors = True
   for tensor in tensors:
     if not hasattr(atoms, tensor):
-      print "# J-coupling %s not found" % (tensor,)
+      print("# J-coupling %s not found" % (tensor,))
       have_all_tensors = False
 
   if not have_all_tensors:
@@ -49,7 +49,7 @@ for atoms in magres_atoms:
   for tensor in tensors:
     for atom in atoms:
       if hasattr(atom, tensor):
-        for isc in getattr(atom, tensor).values():
+        for isc in list(getattr(atom, tensor).values()):
           if (find_s1 is None and find_i1 is None) or \
              (isc.atom2.species == find_s1 and isc.atom2.index == find_i2) or \
              (isc.atom1.species == find_s1 and isc.atom1.index == find_i2) and \
@@ -63,13 +63,13 @@ for atoms in magres_atoms:
 
 matching_Js = []
 
-for (s1,i1,s2,i2),iscs in all_Js.items():
+for (s1,i1,s2,i2),iscs in list(all_Js.items()):
   if not (s2 == s1 and i2 == i1) and (s2,i2,s1,i1) in all_Js:
     matching_Js.append((s1,i1,s2,i2,iscs))
 
-matching_Js = sorted(matching_Js, key=lambda (s1,i1,s2,i2,isc): sorted(((s1,i1),(s2,i2))))
+matching_Js = sorted(matching_Js, key=lambda s1_i1_s2_i2_isc: sorted(((s1_i1_s2_i2_isc[0],s1_i1_s2_i2_isc[1]),(s1_i1_s2_i2_isc[2],s1_i1_s2_i2_isc[3]))))
 
-print "#atm1\tatm2\t", "\t".join(tensors), "\tr"
+print("#atm1\tatm2\t", "\t".join(tensors), "\tr")
 
 for s1,i1,s2,i2,iscs in matching_Js:
   atom1 = iscs['isc'].atom1
@@ -84,7 +84,7 @@ for s1,i1,s2,i2,iscs in matching_Js:
     K_isos.append(iscs[tensor].K_iso)
 
   if a.J_tensor:
-    print "J %s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % J_iso for J_iso in J_isos]) + "\t" + str(d)
+    print("J %s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % J_iso for J_iso in J_isos]) + "\t" + str(d))
   else:
-    print "K %s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % K_iso for K_iso in K_isos]) + "\t" + str(d)
+    print("K %s\t" % atom1 + "%s\t" % atom2 + "\t".join(["%.2f" % K_iso for K_iso in K_isos]) + "\t" + str(d))
 

@@ -28,7 +28,7 @@ def frange(a, b, x):
     a += x
 
 for atoms in atomss:
-  print atoms.magres_file.path
+  print(atoms.magres_file.path)
 
   vals = []
 
@@ -37,8 +37,8 @@ for atoms in atomss:
   for atom in atoms:
     if atom.species == s:
       if first:
-        print "Using %d%s Q=%f mb" % (atom.isotope, atom.species, atom.Q)
-        print "Using %d%s S=%.1f" % (atom.isotope, atom.species, atom.spin)
+        print("Using %d%s Q=%f mb" % (atom.isotope, atom.species, atom.Q))
+        print("Using %d%s S=%.1f" % (atom.isotope, atom.species, atom.spin))
         first = False
 
       ms = [m for m in frange(-atom.spin, atom.spin+1, 1) if m >= 0.0]
@@ -53,8 +53,8 @@ for atoms in atomss:
         fq = 3*A * (2.0*abs(m) + 1.0) * math.sqrt(1.0 + eta**2/3)
 
         vals.append(fq)
-        print atom, "m=%.1f-->%.1f" % (m,m+1.0), "Vzz=%f a.u." % Vzz, "eta=%f" % eta, "f=%f MHz" % (fq / units.megahertz)
-        print "    ", vec_zz
+        print(atom, "m=%.1f-->%.1f" % (m,m+1.0), "Vzz=%f a.u." % Vzz, "eta=%f" % eta, "f=%f MHz" % (fq / units.megahertz))
+        print("    ", vec_zz)
      
-  print "mean=%f MHz" % (sum(vals)/len(vals) / units.megahertz)
+  print("mean=%f MHz" % (sum(vals)/len(vals) / units.megahertz))
 

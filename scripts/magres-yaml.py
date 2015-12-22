@@ -18,7 +18,7 @@ dataset_name = sys.argv[2]
 seed_map = {}
 
 # make all the coupling expressions lists
-for structure_name, structure in data['structures'].items():
+for structure_name, structure in list(data['structures'].items()):
   couplings = structure['couplings']
   for i, coupling in enumerate(couplings):
     if type(coupling['index1']) is not list:
@@ -38,7 +38,7 @@ couplings_map = {}
 to_mean = {}
 
 for magres_file in magres_files:
-  print >>sys.stderr, magres_file
+  print(magres_file, file=sys.stderr)
   try:
     atoms = MagresAtoms.load_magres(magres_file)
   except:
@@ -58,7 +58,7 @@ for magres_file in magres_files:
     # Go through each coupling in the structure and check if we want it.
     for atom in atoms:
       if hasattr(atom, 'isc'):
-        for isc in atom.isc.values():
+        for isc in list(atom.isc.values()):
           idx1 = "%s%d" % (isc.atom1.species, isc.atom1.index)
           idx2 = "%s%d" % (isc.atom2.species, isc.atom2.index)
 
@@ -67,7 +67,7 @@ for magres_file in magres_files:
             atom1 = isc.atom1
             atom2 = isc.atom2
 
-            print >>sys.stderr, idx1, idx2
+            print(idx1, idx2, file=sys.stderr)
 
             for i, coupling in enumerate(couplings):
               values = []
@@ -113,8 +113,8 @@ for coupling_id in to_mean:
   values = array(to_mean[coupling_id])
   coupling = couplings_map[coupling_id]
 
-  value_means = map(float, mean(values,axis=0).tolist())
-  value_stdevs = map(float, std(values,axis=0).tolist())
+  value_means = list(map(float, mean(values,axis=0).tolist()))
+  value_stdevs = list(map(float, std(values,axis=0).tolist()))
   value_count = values.shape[0]
 
   if 'values' not in coupling:
@@ -129,5 +129,5 @@ for coupling_id in to_mean:
  
   coupling['values'].append(value_obj)
 
-print yaml.dump(data, default_flow_style=False)#, sys.stdout, vspacing=[2,1])
+print(yaml.dump(data, default_flow_style=False))#, sys.stdout, vspacing=[2,1])
 

@@ -18,8 +18,8 @@ if numpy is not None:
     return numpy.squeeze(numpy.reshape(x, (3,1))).tolist()
 else:
   def tensor33(x):
-    return [x[0:3], x[3:6], x[6:]] 
-  
+    return [x[0:3], x[3:6], x[6:]]
+
   def tensor31(x):
     return x
 
@@ -83,7 +83,7 @@ def parse_block(block):
 
     tag = xs[0]
     data = xs[1:]
-    
+
     records.append((tag, data))
 
   return (name, records)
@@ -112,7 +112,7 @@ def check_units(d):
     pass
   else:
     raise BadUnits("Unrecognized units: %s %s" % (d[0], d[1]))
-  
+
   return d
 
 def parse_magres_block(block):
@@ -124,12 +124,12 @@ def parse_magres_block(block):
 
   # Atom label, atom index and 3x3 tensor
   def sitensor33(name):
-     return lambda d: {'atom': {'label': data[0], 'index': int(data[1])}, name: tensor33(map(float, data[2:]))}
-  
+     return lambda d: {'atom': {'label': data[0], 'index': int(data[1])}, name: tensor33(list(map(float, data[2:])))}
+
   # 2x(Atom label, atom index) and 3x3 tensor
   def sisitensor33(name):
-     return lambda d: {'atom1': {'label': data[0], 'index': int(data[1])}, 'atom2': {'label': data[2], 'index': int(data[3])}, name: tensor33(map(float, data[4:]))}
-    
+     return lambda d: {'atom1': {'label': data[0], 'index': int(data[1])}, 'atom2': {'label': data[2], 'index': int(data[3])}, name: tensor33(list(map(float, data[4:])))}
+
   tags = {'ms': sitensor33('sigma'),
           'efg': sitensor33('V'),
           'efg_local': sitensor33('V'),
@@ -200,11 +200,11 @@ def parse_atoms_block(block):
 
   # Lattice record: a1, a2 a3, b1, b2, b3, c1, c2 c3
   def lattice(d):
-    return tensor33(map(float, data))
+    return tensor33(list(map(float, data)))
 
   # Atom record: label, index, x, y, z
   def atom(d):
-    return {'species': data[0], 'label': data[1], 'index': int(data[2]), 'position': tensor31(map(float, data[3:]))}
+    return {'species': data[0], 'label': data[1], 'index': int(data[2]), 'position': tensor31(list(map(float, data[3:])))}
 
   def symmetry(d):
     return " ".join(data)
@@ -213,7 +213,7 @@ def parse_atoms_block(block):
           'atom': atom,
           'units': check_units,
           'symmetry': symmetry}
-  
+
   data_dict = {}
 
   for record in records:
@@ -234,7 +234,7 @@ def write_atoms_block(data):
   if 'lattice' in data:
     for lat in data['lattice']:
       out.append("  lattice %s" % tensor_string(lat))
-  
+
   if 'symmetry' in data:
     for sym in data['symmetry']:
       out.append("  symmetry %s" % sym)
@@ -251,7 +251,7 @@ def parse_generic_block(block):
   """
 
   name, records = block
-  
+
   data_dict = {}
 
   for record in records:
@@ -267,7 +267,7 @@ def parse_generic_block(block):
 def write_generic_block(data):
   out = []
 
-  for tag, data in data.items():
+  for tag, data in list(data.items()):
     for value in data:
       out.append("%s %s" % (tag, " ".join(map(str, value))))
 
@@ -319,7 +319,7 @@ class MagresFile(object):
         file_contents = data.read()
       except:
         raise BadMagresFile("Can't load given magres file")
-    
+
     version = get_version(file_contents)
 
     if version is None:
@@ -352,7 +352,7 @@ class MagresFile(object):
     """
       Load from a json dictionary
     """
-    
+
     return MagresFile(json.loads(json_string))
 
   @classmethod
@@ -436,5 +436,5 @@ if __name__ == "__main__":
   #print magres_file.as_json()
   magres_file.load_json(magres_file.as_json())
 
-  print magres_file
+  print(magres_file)
 

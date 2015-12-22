@@ -1,5 +1,5 @@
 import sys
-from schema import schema
+from .schema import schema
 
 try:
   from jsonschema import validate

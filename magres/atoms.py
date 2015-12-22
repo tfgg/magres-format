@@ -12,8 +12,8 @@ import math
 import numpy
 import re
 
-import constants
-import html_repr
+from . import constants
+from . import html_repr
 
 from numpy import (
   cross,
@@ -24,14 +24,14 @@ from numpy import (
 )  
 from numpy.linalg import norm
 
-from format import MagresFile
+from .format import MagresFile
 
-from efg import MagresAtomEfg
-from isc import MagresAtomIsc
-from ms import MagresAtomMs
-from atom import MagresAtom, MagresAtomImage
+from .efg import MagresAtomEfg
+from .isc import MagresAtomIsc
+from .ms import MagresAtomMs
+from .atom import MagresAtom, MagresAtomImage
 
-from view import ListPropertyView
+from .view import ListPropertyView
 
 element_colours = {'H': ("#EEEEEE", "#000000"),
                    'C': ("#999999", "#000000"),
@@ -284,7 +284,7 @@ class MagresAtomsView(object):
       if not any_j and i < 0:
         break
 
-    images = sorted(images, key=lambda (d,p): d)
+    images = sorted(images, key=lambda d_p: d_p[0])
 
     return images
 
@@ -417,7 +417,7 @@ class MagresAtomsView(object):
       min_isc = min(K_isos)
       max_isc = max(K_isos)
 
-      print K_isos
+      print(K_isos)
 
       def strength_color_K(K_iso):
           x = min(max((abs(K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
@@ -429,7 +429,7 @@ class MagresAtomsView(object):
             return "#0000FF{:02X}".format(int(y))
 
       for isc in self.isc:
-        print isc
+        print(isc)
         strength = min(max((abs(isc.K_iso) - min_isc) / (max_isc - min_isc),0.0),1.0)
 
         if strength > 0.01 and (isc.atom2, isc.atom1) not in isc_done \
@@ -552,7 +552,7 @@ class MagresAtoms(MagresAtomsView):
     from castepy.output.bonds import parse_bonds
     from collections import Counter
 
-    bonds = parse_bonds(castep_file).next()
+    bonds = next(parse_bonds(castep_file))
 
     bonded_dict = dict([((atom.species, atom.index), []) for atom in self])
 
@@ -561,7 +561,7 @@ class MagresAtoms(MagresAtomsView):
         bonded_dict[idx1].append(idx2)
         bonded_dict[idx2].append(idx1)
 
-    for idx1, idx2s in bonded_dict.items():
+    for idx1, idx2s in list(bonded_dict.items()):
       atom1 = self.get(*idx1)
 
       bonded_atoms = []

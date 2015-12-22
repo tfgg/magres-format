@@ -39,19 +39,19 @@ else:
 
 diff = K1 - K2
 
-print sys.argv[1], abs(det(diff))**(1.0/3)
+print(sys.argv[1], abs(det(diff))**(1.0/3))
 
-print >>sys.stderr, "K tensors"
-print >>sys.stderr, " ".join(["%10s" % ("%.3f" % x) for x in K1[0]]) + "   " + " ".join(["%10s" % ("%.3f" % x) for x in K2[0]])
-print >>sys.stderr, " ".join(["%10s" % ("%.3f" % x) for x in K1[1]]) + "   " + " ".join(["%10s" % ("%.3f" % x) for x in K2[1]])
-print >>sys.stderr, " ".join(["%10s" % ("%.3f" % x) for x in K1[2]]) + "   " + " ".join(["%10s" % ("%.3f" % x) for x in K2[2]])
+print("K tensors", file=sys.stderr)
+print(" ".join(["%10s" % ("%.3f" % x) for x in K1[0]]) + "   " + " ".join(["%10s" % ("%.3f" % x) for x in K2[0]]), file=sys.stderr)
+print(" ".join(["%10s" % ("%.3f" % x) for x in K1[1]]) + "   " + " ".join(["%10s" % ("%.3f" % x) for x in K2[1]]), file=sys.stderr)
+print(" ".join(["%10s" % ("%.3f" % x) for x in K1[2]]) + "   " + " ".join(["%10s" % ("%.3f" % x) for x in K2[2]]), file=sys.stderr)
 
-print
-print >>sys.stderr, " ".join(["%10s" % ("%.3f" % x) for x in diff[0]]) 
-print >>sys.stderr, " ".join(["%10s" % ("%.3f" % x) for x in diff[1]])
-print >>sys.stderr, " ".join(["%10s" % ("%.3f" % x) for x in diff[2]])
+print()
+print(" ".join(["%10s" % ("%.3f" % x) for x in diff[0]]), file=sys.stderr) 
+print(" ".join(["%10s" % ("%.3f" % x) for x in diff[1]]), file=sys.stderr)
+print(" ".join(["%10s" % ("%.3f" % x) for x in diff[2]]), file=sys.stderr)
 
-print atom1.position - atom2.position
+print(atom1.position - atom2.position)
 
 #print "K_sym difference, K_asym difference"
 #delta_K_sym = isc1.K_sym - isc2.K_sym

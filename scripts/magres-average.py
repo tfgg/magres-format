@@ -18,5 +18,5 @@ for atom in out_atoms:
   if hasattr(atom, 'efg'):
     atom.efg.magres_efg['V'] = mean([atom_.efg.V for atom_ in other_atoms],0).tolist()
   
-print out_atoms.magres_file
+print(out_atoms.magres_file)
 

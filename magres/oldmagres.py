@@ -3,7 +3,7 @@ import sys
 import re
 import math
 import numpy
-import format
+from . import format
 
 def castep_get_lattice(castep_file):
 #        Real Lattice(A)                      Reciprocal Lattice(1/A)
@@ -15,9 +15,9 @@ def castep_get_lattice(castep_file):
 
    lattice = lattice_regex.findall(castep_file)[-1] # Get the last lattice in the output
 
-   xx, xy, xz, _, _, _ = map(float, lattice[0].split())
-   yx, yy, yz, _, _, _ = map(float, lattice[1].split())
-   zx, zy, zz, _, _, _ = map(float, lattice[2].split())
+   xx, xy, xz, _, _, _ = list(map(float, lattice[0].split()))
+   yx, yy, yz, _, _, _ = list(map(float, lattice[1].split()))
+   zx, zy, zz, _, _, _ = list(map(float, lattice[2].split()))
 
    return [[xx, xy, xz],
            [yx, yy, yz],
@@ -79,7 +79,7 @@ class OldMagres(object):
     perturbing_index = None 
 
     def shape_tensor(els):
-      return numpy.reshape(numpy.array(map(float,els)), (3,3)).tolist()
+      return numpy.reshape(numpy.array(list(map(float,els))), (3,3)).tolist()
 
     for atom in atoms:
       index = atom[1].split(":")[0], int(atom[2])

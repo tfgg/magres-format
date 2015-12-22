@@ -3,3 +3,4 @@ build
 notebooks/.ipynb_checkpoints
 a.out
 venv/
+*.bak

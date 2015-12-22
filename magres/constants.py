@@ -246,7 +246,7 @@ gamma_iso = {'H': 1,
              'Bi': 209,}
 
 gamma_common = {}
-for s, i in gamma_iso.items():
+for s, i in list(gamma_iso.items()):
   if (s,i) in gamma:
    gamma_common[s] = gamma[(s,i)]
 
@@ -447,7 +447,7 @@ Q_iso = {'H': 2,
          'Es': 253,}
 
 Q_common = {}
-for s, i in Q_iso.items():
+for s, i in list(Q_iso.items()):
   if (s,i) in gamma:
     Q_common[s] = Q[(s,i)]
 

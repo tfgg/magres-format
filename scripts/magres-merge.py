@@ -13,4 +13,4 @@ if __name__ == "__main__":
 
   merged_magres_file = MagresFile.merge(magres_files)
 
-  print str(merged_magres_file)
+  print(str(merged_magres_file))

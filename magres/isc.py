@@ -1,8 +1,8 @@
-import constants
-import html_repr
+from . import constants
+from . import html_repr
 import numpy
 
-from view import ListPropertyView
+from .view import ListPropertyView
 
 class MagresAtomIsc(object):
   """
@@ -135,7 +135,7 @@ class MagresAtomIsc(object):
   def K_evalsvecs(self):
     evals, evecs = numpy.linalg.eig(self.K_sym)
 
-    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x-self.K_iso)))
+    se = list(zip(*sorted(zip(evals, evecs), key=lambda x_y: abs(x_y[0]-self.K_iso))))
 
     return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
 
@@ -151,7 +151,7 @@ class MagresAtomIsc(object):
   def J_evalsvecs(self):
     evals, evecs = numpy.linalg.eig(self.J_sym)
 
-    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x-self.J_iso)))
+    se = list(zip(*sorted(zip(evals, evecs), key=lambda x_y1: abs(x_y1[0]-self.J_iso))))
 
     return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
 

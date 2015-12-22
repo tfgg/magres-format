@@ -7,8 +7,8 @@ import numpy
 
 from magres.oldmagres import OldMagres
 
-import tkFileDialog
-from Tkinter import *
+import tkinter.filedialog
+from tkinter import *
 
 class ConvertGUI(object):
     """
@@ -73,16 +73,16 @@ class ConvertGUI(object):
         self.status_label.grid(row=8, column=0, columnspan=2)
         
     def file_load(self):
-        self.file_name.set(tkFileDialog.askopenfilename())
+        self.file_name.set(tkinter.filedialog.askopenfilename())
         in_name = self.file_name.get()
         dot_i = in_name.rfind('.')
         self.out_file_name.set(in_name[:dot_i] + ".new" + in_name[dot_i:])
         
     def castep_file_load(self):
-        self.castep_file_name.set(tkFileDialog.askopenfilename())
+        self.castep_file_name.set(tkinter.filedialog.askopenfilename())
     
     def out_file_pick(self):
-        self.out_file_name.set(tkFileDialog.asksaveasfilename())
+        self.out_file_name.set(tkinter.filedialog.asksaveasfilename())
         
     def convert_file(self):
         

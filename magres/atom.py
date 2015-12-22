@@ -1,9 +1,9 @@
 import numpy
 import math
 
-import constants
+from . import constants
 
-from decorators import lazyproperty
+from .decorators import lazyproperty
 
 class MagresAtom(object):
   __slots__ = ["magres_atom",
@@ -171,7 +171,7 @@ class MagresAtomImage(object):
     return "<magres.atom.MagresAtomImage - {}>".format(str(self))
  
   def __unicode__(self):
-    return unicode(self.atom)
+    return str(self.atom)
 
   def __getattribute__(self, name):
     if name == "atom":

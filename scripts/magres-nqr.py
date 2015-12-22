@@ -10,6 +10,7 @@
   for all available transitions m->m+1
 
 """
+from __future__ import print_function
 import sys
 import math
 from magres.atoms import MagresAtoms
@@ -20,41 +21,43 @@ s = sys.argv[1]
 
 atomss = []
 for f in sys.argv[2:]:
-  atomss += load_all_magres(f)
+    atomss += load_all_magres(f)
+
 
 def frange(a, b, x):
-  while a < b:
-    yield a
-    a += x
+    while a < b:
+        yield a
+        a += x
+
 
 for atoms in atomss:
-  print atoms.magres_file.path
+    print(atoms.magres_file.path)
 
-  vals = []
+    vals = []
 
-  first = True
+    first = True
 
-  for atom in atoms:
-    if atom.species == s:
-      if first:
-        print "Using %d%s Q=%f mb" % (atom.isotope, atom.species, atom.Q)
-        print "Using %d%s S=%.1f" % (atom.isotope, atom.species, atom.spin)
-        first = False
+    for atom in atoms:
+        if atom.species == s:
+            if first:
+                print("Using %d%s Q=%f mb" % (atom.isotope, atom.species, atom.Q))
+                print("Using %d%s S=%.1f" % (atom.isotope, atom.species, atom.spin))
+                first = False
 
-      ms = [m for m in frange(-atom.spin, atom.spin+1, 1) if m >= 0.0]
+            ms = [m for m in frange(-atom.spin, atom.spin + 1, 1) if m >= 0.0]
 
-      for m in ms[:-1]:
-        Vzz = atom.efg.evals[2]
-        vec_zz = atom.efg.evecs[2]
+            for m in ms[:-1]:
+                Vzz = atom.efg.evals[2]
+                vec_zz = atom.efg.evecs[2]
 
-        eta = (abs(atom.efg.evals[0]) - abs(atom.efg.evals[1]))/atom.efg.evals[2]
+                eta = (abs(atom.efg.evals[0]) - abs(atom.efg.evals[1])) / atom.efg.evals[2]
 
-        A = Vzz * (atom.Q * units.millibarn) / (4.0 * atom.spin * (2.0*atom.spin - 1.0))
-        fq = 3*A * (2.0*abs(m) + 1.0) * math.sqrt(1.0 + eta**2/3)
+                A = Vzz * (atom.Q * units.millibarn) / (4.0 * atom.spin * (2.0 * atom.spin - 1.0))
+                fq = 3 * A * (2.0 * abs(m) + 1.0) * math.sqrt(1.0 + eta ** 2 / 3)
 
-        vals.append(fq)
-        print atom, "m=%.1f-->%.1f" % (m,m+1.0), "Vzz=%f a.u." % Vzz, "eta=%f" % eta, "f=%f MHz" % (fq / units.megahertz)
-        print "    ", vec_zz
-     
-  print "mean=%f MHz" % (sum(vals)/len(vals) / units.megahertz)
+                vals.append(fq)
+                print(atom, "m=%.1f-->%.1f" % (m, m + 1.0), "Vzz=%f a.u." % Vzz, "eta=%f" % eta,
+                      "f=%f MHz" % (fq / units.megahertz))
+                print("    ", vec_zz)
 
+    print("mean=%f MHz" % (sum(vals) / len(vals) / units.megahertz))

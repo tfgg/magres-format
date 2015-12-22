@@ -7,7 +7,7 @@ Usage: `ipnbdoctest.py foo.ipynb [bar.ipynb [...]]`
 Each cell is submitted to the kernel, and the outputs are compared with those stored in the notebook.
 """
 
-from __future__ import print_function
+
 
 import os, sys, time
 import base64
@@ -15,7 +15,7 @@ import re
 from difflib import unified_diff as diff
 
 from collections import defaultdict
-from Queue import Empty
+from queue import Empty
 
 try:
     from IPython.kernel import KernelManager
@@ -40,7 +40,7 @@ def sanitize(s):
     
     fix universal newlines, strip trailing newlines, and normalize likely random values (memory addresses and UUIDs)
     """
-    if not isinstance(s, basestring):
+    if not isinstance(s, str):
         return s
     # normalize newline:
     s = s.replace('\r\n', '\n')
@@ -81,7 +81,7 @@ def consolidate_outputs(outputs):
 def compare_outputs(test, ref, skip_compare=('png', 'traceback', 'latex', 'prompt_number', 'metadata')):
     for key in ref:
         if key not in test:
-            print("missing key: %s != %s" % (test.keys(), ref.keys()))
+            print("missing key: %s != %s" % (list(test.keys()), list(ref.keys())))
             return False
         elif key not in skip_compare and sanitize(test[key]) != sanitize(ref[key]):
             print("mismatch %s:" % key)
@@ -126,7 +126,7 @@ def run_cell(shell, iopub, cell):
             out.text = content['data']
         elif msg_type in ('display_data', 'pyout'):
             out['metadata'] = content['metadata']
-            for mime, data in content['data'].iteritems():
+            for mime, data in content['data'].items():
                 attr = mime.split('/')[-1].lower()
                 # this gets most right, but fix svg+html, plain
                 attr = attr.replace('+xml', '').replace('plain', 'text')

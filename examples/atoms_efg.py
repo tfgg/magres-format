@@ -6,7 +6,7 @@ from magres.atoms import MagresAtoms
 # Load T1Si0.magres sample into an atoms structure
 atoms = MagresAtoms.load_magres("../samples/T1Si0.magres")
 
-atomAl15 = atoms.get_species('Al', 15)
+atomAl15 = atoms.get('Al', 15)
 
 for atom in atoms.species('Al'):
   if atom == atomAl15:

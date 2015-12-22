@@ -7,7 +7,7 @@ magres_files = [MagresFile(f) for f in find_all_magres(sys.argv[1])]
 
 atoms = MagresAtoms.load_magres(magres_files)
 
-coupling_atom = atoms.get_species('C', 1)
+coupling_atom = atoms.get('C', 1)
 
 # Set a bunch of arbitrary references for the magnetic shielding
 atoms.set_reference('H', 100.0)

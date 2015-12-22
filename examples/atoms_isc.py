@@ -2,15 +2,15 @@ import sys
 from magres.atoms import MagresAtoms
 
 # Load ethanol-jc.magres sample into an atoms structure
-atoms = MagresAtoms.load_magres("samples/ethanol-jc.magres")
+atoms = MagresAtoms.load_magres("../samples/ethanol-jc.magres")
 
 # For fun, set all the hydrogens to be tritium
-for atom in atoms.get_species('H'):
+for atom in atoms.species('H'):
   atom.isotope = 3
 
 # Set all the carbons to be 12C (won't work!)
 try:
-  for atom in atoms.get_species('C'):
+  for atom in atoms.species('C'):
     atom.isotope = 12
 except ValueError as e:
   print("Error changing C isotopes:", e, file=sys.stderr)

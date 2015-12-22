@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from magres.atoms import MagresAtoms
 
 atoms = MagresAtoms.load_magres('../samples/simple.magres')

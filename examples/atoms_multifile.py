@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys
 from magres.format import MagresFile
 from magres.utils import find_all_magres

@@ -4,6 +4,7 @@
   calculate a variety of properties from the underlying tensors, according to
   a variety of conventions.
 """
+from __future__ import print_function
 
 VERSION = (0,0)
 
@@ -17,11 +18,11 @@ from . import html_repr
 
 from numpy import (
   cross,
-  dot, 
-  sqrt, 
-  rad2deg, 
+  dot,
+  sqrt,
+  rad2deg,
   arctan2
-)  
+)
 from numpy.linalg import norm
 
 from .format import MagresFile
@@ -112,7 +113,7 @@ class MagresAtomsView(object):
         self.label_index[atom.label].append(atom)
       else:
         self.label_index[atom.label] = [atom]
-      
+
       if atom.species in self.species_index:
         self.species_index[atom.species].append(atom)
       else:
@@ -127,7 +128,7 @@ class MagresAtomsView(object):
   def get(self, species, index):
     """
       Get a single atom of a particular species and index.
-      
+
       >>> atoms.get('C', 2)
     """
 
@@ -147,7 +148,7 @@ class MagresAtomsView(object):
     """
 
     species = args
-      
+
     rtn_atoms = []
     for s in species:
       if s in self.species_index:
@@ -206,7 +207,7 @@ class MagresAtomsView(object):
 
   def dist(self, atom1, atom2):
     return self.least_mirror(atom1.position, atom2.position)[0]
-  
+
   def angle(self, atom1, atom2, atom3, degrees=False):
     dr1 = self.least_mirror(atom1.position, atom2.position)[1] - atom2.position
     dr2 = self.least_mirror(atom3.position, atom2.position)[1] - atom2.position
@@ -262,7 +263,7 @@ class MagresAtomsView(object):
 
         for k in insideout():
           R = numpy.dot(self.lattice.T, numpy.array([float(i), float(j), float(k)]))
-          
+
           if numpy.dot(a+R-b,a+R-b) > r*r:
             if k < 0:
               break
@@ -271,7 +272,7 @@ class MagresAtomsView(object):
 
           any_k = True
           any_j = True
-      
+
           ap = numpy.add(a, R)
           dr = numpy.subtract(ap, b)
           d = numpy.dot(dr, dr)
@@ -321,13 +322,13 @@ class MagresAtomsView(object):
 
     elif type(b) is MagresAtom:
       new_atoms = set(self.atoms + [b])
-      
+
       return MagresAtomsView(list(new_atoms), self.lattice)
 
   def __radd__(self, b):
     if type(b) is MagresAtom:
       new_atoms = set(self.atoms + [b])
-      
+
       return MagresAtomsView(list(new_atoms), self.lattice)
 
   def _repr_png_(self):
@@ -349,12 +350,12 @@ class MagresAtomsView(object):
     def strength_color(dist):
         x = min(max((abs(dist) - min_dist) / (max_dist - min_dist),0.0),1.0)
         y = (1.0-x)*255
-        
+
         return "#000000{:02x}".format(int(y))
 
     for atom in self:
         fillcolor, fontcolor = element_colours.get(atom.species, ("#CCCCCC","#000000"))
-         
+
         #if has_ms:
         #  label = "{}\n{:.3f}".format(str(atom), atom.ms.iso)
         #else:
@@ -391,9 +392,9 @@ class MagresAtomsView(object):
           #if has_isc:
           #  color = "#000000{:02x}".format(64)
           #else:
-          
+
           color = strength_color(dist)
-            
+
           edge = pydot.Edge(str(atom1),
                             str(atom2),
                             color=color,
@@ -461,7 +462,7 @@ class MagresAtoms(MagresAtomsView):
         pass
       # We've been passed a MagresFile, build all the atoms off it
       elif type(atoms) == MagresFile:
-        atoms, lattice = self._from_magres(atoms) 
+        atoms, lattice = self._from_magres(atoms)
       # We've been passed a list of MagresFiles, merge them and build the atoms
       elif type(atoms) == list and all([type(magres_file) is MagresFile for magres_file in atoms]):
         atoms, lattice = self._from_magres(MagresFile.merge(atoms))
@@ -469,10 +470,10 @@ class MagresAtoms(MagresAtomsView):
       atoms = []
 
     super(MagresAtoms, self).__init__(atoms, lattice)
-    
+
     if len(self) < 20:
       self.calculate_bonds()
-  
+
   def __repr__(self):
     return "<magres.atom.MagresAtoms - {} atoms>".format(len(self))
 
@@ -502,7 +503,7 @@ class MagresAtoms(MagresAtomsView):
           continue
 
         ms_type = tag
-        
+
         for magres_ms in magres_file.data_dict['magres'][ms_type]:
           atom = temp_label_index[(magres_ms['atom']['label'], magres_ms['atom']['index'])]
           magres_atom_ms = MagresAtomMs(atom, magres_ms)
@@ -514,13 +515,13 @@ class MagresAtoms(MagresAtomsView):
           continue
 
         efg_type = tag
-        
+
         for magres_efg in magres_file.data_dict['magres'][efg_type]:
           atom = temp_label_index[(magres_efg['atom']['label'], magres_efg['atom']['index'])]
           magres_atom_efg = MagresAtomEfg(atom, magres_efg)
           #getattr(self, efg_type).append(magres_atom_efg)
           setattr(atom, efg_type, magres_atom_efg)
-     
+
       for tag in magres_file.data_dict['magres']:
         if not (tag.startswith("isc_") or tag == "isc"):
           continue
@@ -539,7 +540,7 @@ class MagresAtoms(MagresAtomsView):
 
           magres_atom_isc = MagresAtomIsc(atom1, atom2, magres_isc)
 
-          #getattr(self, isc_type).append(magres_atom_isc) 
+          #getattr(self, isc_type).append(magres_atom_isc)
 
           if not hasattr(atom1, isc_type):
             setattr(atom1, isc_type, ListPropertyView([]))
@@ -603,6 +604,6 @@ class MagresAtoms(MagresAtomsView):
       magres_file = f
     else:
       magres_file = MagresFile(f)
-    
+
     return MagresAtoms(magres_file)
 

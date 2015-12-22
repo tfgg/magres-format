@@ -1,5 +1,7 @@
 # This is an example script for doing a rough parse of a magres format file without using the proper library
 
+from __future__ import print_function
+
 import sys
 
 f = open(sys.argv[1])

@@ -13,5 +13,4 @@ install:
   - pip install .
   - travis_wait pip install -q -r requirements.txt
 
-script: python tests.py
-
+script: python tests.py     #&& ./run_all_notebooks.sh

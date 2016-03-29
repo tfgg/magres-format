@@ -1,6 +1,6 @@
 import numpy
-import constants
-import html_repr
+from . import constants
+from . import html_repr
 #from decorators import property
 
 class MagresAtomEfg(object):
@@ -71,7 +71,7 @@ class MagresAtomEfg(object):
     """
     evals, evecs = numpy.linalg.eig(self.magres_efg['V'])
 
-    se = zip(*sorted(zip(evals, evecs), key=lambda (x,y): abs(x)))
+    se = list(zip(*sorted(zip(evals, evecs), key=lambda x_y: abs(x_y[0]))))
 
     return ([se[0][1], se[0][0], se[0][2]], [se[1][1], se[1][0], se[1][2]])
 
